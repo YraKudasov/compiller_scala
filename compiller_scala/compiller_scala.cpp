@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <fstream>
-#include <FlexLexer.h>
+#include "FlexLexer.h"
 
 
 void main() {
@@ -13,7 +13,6 @@ void main() {
 	printf("%d\n", lex->yylex());
 	delete lex;
 }
-
 /*
 #include <iostream>
 int main() {
@@ -21,8 +20,6 @@ int main() {
 	return 0;
 }
 */
-
-
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 

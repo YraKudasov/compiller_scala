@@ -1,3 +1,20 @@
+
+0 
+21___078800__45
+0x75 
+0X79_F__842
+0xFFF__A45
+
+
+0.0 
+1e30f 
+3.14159f 
+1.0e-4
+.1
+
+
+
+
 // Class Definition
 class Person(val name: String, var age: Int) {
 // A method for displaying information about a person

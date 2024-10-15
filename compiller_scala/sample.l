@@ -9,19 +9,14 @@
 %x CHAR
 
 DIGIT [0-9]
-NUM_10 ({DIGIT}+_+)*{DIGIT}+
+NUM_10 ({DIGIT}(?:_+)?)*{DIGIT}
 
 HEXIT          [0-9a-fA-F]
-NUM_16 0[xX]({HEXIT}+_+){HEXIT}+
+NUM_16 0[xX]({HEXIT}(?:_+)?)*{HEXIT}
 
-OCTIT          [0-7]
-NUM_8     0[cCoO]({OCTIT}+_+){OCTIT}+
-
-BINIT          [01]
-NUM_2 0[bB]({BINIT}+_+){BINIT}+
 
 REAL_NUMBER                {NUM_10}?\.{NUM_10}|{NUM_10}\.{NUM_10}+
-REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}
+REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})([eE][\-+]?{NUM_10})?[fF]?
 
 %{
 #include <stdio.h>
@@ -91,7 +86,6 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CONST_STRING>\\\\ {strcat(buffer, "\\");}
 <CONST_STRING>\\n {strcat(buffer, "\n");}
 <CONST_STRING>\\t {strcat(buffer, "\t");}
-<CONST_STRING>\\0 {strcat(buffer, "\0");}
 <CONST_STRING>\\r {strcat(buffer, "\r");}
 <CONST_STRING>\\\" {strcat(buffer, "\"");}
 <CONST_STRING>\\\' {strcat(buffer, "\'");}
@@ -106,7 +100,6 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CHAR>\\\\ {strcat(buffer, "\\");}
 <CHAR>\\n {strcat(buffer, "\n");}
 <CHAR>\\t {strcat(buffer, "\t");}
-<CHAR>\\0 {strcat(buffer, "\0");}
 <CHAR>\\r {strcat(buffer, "\r");}
 <CHAR>\\\" {strcat(buffer, "\"");}
 <CHAR>\\\' {strcat(buffer, "\'");}
@@ -196,15 +189,6 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
     printf("Line %d: found hex number: %d\n", yylineno, int_number);
 }
 
-{NUM_8} {
-    parse_integer(&int_number, yytext, 8);
-    printf("Line %d: found oct number: %d\n", yylineno, int_number);
-}
-
-{NUM_2} {
-    parse_integer(&int_number, yytext, 2);
-    printf("Line %d: found bin number: %d\n", yylineno, int_number);
-}
 
 {REAL_NUMBER} {
     parse_real(&real_number, yytext);
