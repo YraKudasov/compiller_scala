@@ -9,14 +9,14 @@
 %x CHAR
 
 DIGIT [0-9]
-NUM_10 ({DIGIT}(?:_+)?)*{DIGIT}
+NUM_10 ({DIGIT}(?:_+)?)*{DIGIT}[L]?
 
 HEXIT          [0-9a-fA-F]
-NUM_16 0[xX]({HEXIT}(?:_+)?)*{HEXIT}
+NUM_16 0[xX]({HEXIT}(?:_+)?)*{HEXIT}[L]?
 
 
-REAL_NUMBER                {NUM_10}?\.{NUM_10}|{NUM_10}\.{NUM_10}+
-REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})([eE][\-+]?{NUM_10})?[fF]?
+REAL_NUMBER                {NUM_10}?\.{NUM_10}|{NUM_10}\.{NUM_10}+|{NUM_10}[FfDd]|{NUM_10}\.{NUM_10}[FfDd]
+REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 
 %{
 #include <stdio.h>
@@ -65,6 +65,7 @@ private { printf("(%s) - Found KW_PRIVATE\n", yytext); }
 protected { printf("(%s) - Found KW_PROTECTED\n", yytext); }
 print { printf("(%s) - Found KW_PRINT\n", yytext); }
 println { printf("(%s) - Found KW_PRINTLN\n", yytext); }
+printf { printf("(%s) - Found KW_PRINTF\n", yytext); }
 return { printf("(%s) - Found KW_RETURN\n", yytext); }
 sealed { printf("(%s) - Found KW_SEALED\n", yytext); }
 super { printf("(%s) - Found KW_SUPER\n", yytext); }
