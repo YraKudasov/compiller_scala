@@ -1,5 +1,5 @@
 
-0 
+017
 21___078800__45
 0x75 
 0X79_F__842
@@ -18,8 +18,8 @@
 34F
 50FD
 
-
-
+val str = '\u0050'
+val str_2 = "\u0012 \u0013 gfhfhfghgf"
 
 // Class Definition
 class Person(val name: String, var age: Int) {

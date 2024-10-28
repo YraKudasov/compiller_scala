@@ -85,20 +85,45 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CONST_STRING>[^\\\"]+ {strcat(buffer,yytext);}
 <CONST_STRING>\\\n[\n\t\r ]* 
 <CONST_STRING>\\\\ {strcat(buffer, "\\");}
+<CONST_STRING>\\b {strcat(buffer, "\b");}
 <CONST_STRING>\\n {strcat(buffer, "\n");}
 <CONST_STRING>\\t {strcat(buffer, "\t");}
 <CONST_STRING>\\r {strcat(buffer, "\r");}
 <CONST_STRING>\\\" {strcat(buffer, "\"");}
 <CONST_STRING>\\\' {strcat(buffer, "\'");}
-<CONST_STRING>\\x[0-7][0-9A-Fa-f] { buf_char[0] = strtol(yytext+2, NULL, 16); buf_char[1] = 0; strcat(buffer, buf_char);}
+<CONST_STRING>\\u[0-9A-Fa-f]{4} { 
+    unsigned int unicode_value = strtol(yytext + 2, NULL, 16); // Преобразуем шестнадцатеричное значение в целое число
+    if (unicode_value >= 0 && unicode_value <= 255) { // Проверяем диапазон
+        buf_char[0] = (wchar_t)unicode_value; // Присваиваем его буферу
+        buf_char[1] = 0; // Завершаем строку
+        strcat(buffer, buf_char); // Конкатенируем в буфер
+    } else {
+        printf("Error: Unicode value is out of range (0000-0255)\n");
+    }
+}
 <CONST_STRING><<EOF>> {printf("(%s) - Found ERROR_STRING\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\\ {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\" {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
 
 \' {buffer[0]=0; BEGIN(CHAR);}
-<CHAR>\\x[0-7][0-9A-Fa-f]\' { yytext[strlen(yytext)-1] = '\0'; buf_char[0] = strtol(yytext+2, NULL, 16); printf( "(%c) - Found CHAR\n", buf_char[0] ); BEGIN(INITIAL);}
+<CHAR>\\u[0-9A-Fa-f]{4}\' {
+    yytext[strlen(yytext)-1] = '\0'; // Удаляем одинарную кавычку в конце
+    wchar_t buf_char[1]; // Буфер для хранения символа Unicode
+    unsigned int unicode_value = strtol(yytext + 2, NULL, 16); // Преобразуем шестнадцатеричное значение в целое число
+
+    // Проверяем, находится ли значение в диапазоне от 0 до 255
+    if (unicode_value >= 0 && unicode_value <= 255) {
+        buf_char[0] = (wchar_t)unicode_value; // Присваиваем его буферу
+        printf("(%lc) - Found CHAR\n", buf_char[0]); // Выводим символ
+    } else {
+        printf("Error: Unicode value is out of range (0000-0255)\n");
+    }
+
+    BEGIN(INITIAL);
+}
 <CHAR>[^\\\']+ {strcat(buffer,yytext);}
 <CHAR>\\\\ {strcat(buffer, "\\");}
+<CHAR>\\b {strcat(buffer, "\b");}
 <CHAR>\\n {strcat(buffer, "\n");}
 <CHAR>\\t {strcat(buffer, "\t");}
 <CHAR>\\r {strcat(buffer, "\r");}
@@ -117,7 +142,7 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 <MULTILINE_COMMENT>[^\*\/]+ {strcat(buffer,yytext);}
 <MULTILINE_COMMENT>\* {strcat(buffer, "*");}
 <MULTILINE_COMMENT>\/ {strcat(buffer, "/");}
-<MULTILINE_COMMENT><<EOF>> { printf("(%s) - Error COMMENT\n", buffer); BEGIN(INITIAL);}
+<MULTILINE_COMMENT><<EOF>> { printf("(%s) - Error MULTILINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 <MULTILINE_COMMENT>\*\/ {printf("(%s) - Found MULTILINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 
 \/\/ {buffer[0]=0; BEGIN(ONELINE_COMMENT);}
@@ -200,6 +225,7 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
     parse_real(&real_number, yytext);
     printf("Line %d: found real exponent number: %f\n", yylineno, real_number);
 }
+
 
 [a-zA-Z_][a-zA-Z0-9_]* { printf("(%s) - Found IDENTIFIER\n", yytext); }
 
