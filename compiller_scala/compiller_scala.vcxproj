@@ -54,7 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="..\..\..\win_flex_bison-2.5.25\custom_build_rules\win_flex_bison\win_flex_bison_custom_build.props" />
+    <Import Project="..\win_flex_bison-2.5.25\custom_build_rules\win_flex_bison\win_flex_bison_custom_build.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -113,6 +113,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Bison>
+      <Debug>false</Debug>
+    </Bison>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -132,6 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="compiller_scala.cpp" />
+    <ClCompile Include="parser.tab.cpp" />
     <ClCompile Include="sample.flex.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -140,13 +144,15 @@
     </Flex>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FlexLexer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="FlexLexer.h" />
     <ClInclude Include="ParseNumbers.h" />
+    <ClInclude Include="parser.tab.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Bison Include="parser.y" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\..\win_flex_bison-2.5.25\custom_build_rules\win_flex_bison\win_flex_bison_custom_build.targets" />
+    <Import Project="..\win_flex_bison-2.5.25\custom_build_rules\win_flex_bison\win_flex_bison_custom_build.targets" />
   </ImportGroup>
 </Project>

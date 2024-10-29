@@ -18,6 +18,9 @@
     <ClCompile Include="compiller_scala.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="parser.tab.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
     <ClCompile Include="sample.flex.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -26,11 +29,17 @@
     <Flex Include="sample.l" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FlexLexer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="ParseNumbers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="FlexLexer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.tab.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Bison Include="parser.y" />
   </ItemGroup>
 </Project>

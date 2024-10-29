@@ -8,8 +8,11 @@
 %x ONELINE_COMMENT
 %x CHAR
 
+
+
 DIGIT [0-9]
 NUM_10 ({DIGIT}(?:_+)?)*{DIGIT}[L]?
+
 
 HEXIT          [0-9a-fA-F]
 NUM_16 0[xX]({HEXIT}(?:_+)?)*{HEXIT}[L]?
@@ -24,6 +27,7 @@ REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 #include <stdlib.h>
 #include <stdint.h>
 #include "ParseNumbers.h"
+#include "parser.tab.h"
 #pragma warning(disable : 4996)
 %}
 
@@ -192,11 +196,11 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 
 \[ { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
 \] { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
-\( { printf("(%s) - Found ROUND_BRACKET\n", yytext); }
-\) { printf("(%s) - Found ROUND_BRACKET\n", yytext); }
+\( { printf("(%s) - Found ROUND_BRACKET\n", yytext); return '(';}
+\) { printf("(%s) - Found ROUND_BRACKET\n", yytext); return ')';}
 \{ { printf("(%s) - Found BRACE\n", yytext); }
 \} { printf("(%s) - Found BRACE\n", yytext); }
-\; { printf("(%s) - Found SEMICOLON\n", yytext); }
+\; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
 \, { printf("(%s) - Found COMMA\n", yytext); }
 \: { printf("(%s) - Found COLON\n", yytext); }
 \. { printf("(%s) - Found DOT\n", yytext); }
@@ -206,9 +210,26 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 
 
 {NUM_10} {
-    parse_integer(&int_number, yytext, 10);
-    printf("Line %d: found decimal number: %d\n", yylineno, int_number);
+    char* number = strdup(yytext);
+    
+    char* end = number + strlen(number) - 1;
+    while (end > number && isspace((unsigned char)*end)) {
+        end--;
+    }
+    
+    *(end + 1) = '\0';
+
+    if (strlen(number) == 0) {
+        fprintf(stderr, "Error: Unable to parse number from input: '%s'\n", yytext);
+    } else {
+        int64_t int_number; 
+        parse_integer(&int_number, number, 10); 
+        printf("Found decimal number: %lld\n", int_number); 
+    }
+
+    free(number); 
 }
+
 
 {NUM_16} {
     parse_integer(&int_number, yytext, 16);
@@ -227,14 +248,19 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
 
 
-[a-zA-Z_][a-zA-Z0-9_]* { printf("(%s) - Found IDENTIFIER\n", yytext); }
+
+[a-zA-Z_][a-zA-Z0-9_]* { 
+    yylval.str_value = strdup(yytext);
+    printf("(%s) - Found IDENTIFIER\n", yytext); 
+    return IDENTIFIER;
+}
 
 
 [0-9]*[a-zA-Z_][a-zA-Z0-9_]* { printf("(%s) - Error IDENTIFIER\n", yytext); }
 
-" " {}
+[ \t]+  {}
 \n {}
-
+.  {}
 %%
 
 

@@ -1,5 +1,8 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <ctype.h>
 
 void remove_underscores_in_integer(char* str_integer) {
     int i, j;
@@ -22,11 +25,14 @@ void parse_integer(int64_t* integer, char* str_integer, int base) {
     switch (base) {
     case 2:
     case 16:
-        offset = 2;
+        offset = 2; // Для бинарного и шестнадцатеричного представления
+        break;
+    case 10:
+        offset = 0; // Для десятичного представления
+        break;
     }
 
     remove_underscores_in_integer(str_integer);
-
     *integer = strtol(str_integer + offset, NULL, base);
 }
 

@@ -1,28 +1,64 @@
 ﻿// compiller_scala.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <stdio.h>
+#include <iostream>
 #include <fstream>
-#include "FlexLexer.h"
+#include "parser.tab.h" // Заголовок, сгенерированный Bison
+#include "FlexLexer.h"  // Заголовок для вашего лексера
 
-
-void main() {
-	std::ifstream in;
-	in.open("./code_examples/sample.scala");
-	yyFlexLexer* lex = new yyFlexLexer(in, std::cout);
-	printf("%d\n", lex->yylex());
-	delete lex;
+// Определение функции yyerror
+void yyerror(const char* s) {
+    std::cerr << "Error: " << s << std::endl;
 }
+
+// Объявляем глобальный экземпляр лексера
+yyFlexLexer* lex;
+
+// Функция, которая вызывает yylex() из экземпляра лексера
+int yylex() {
+    return lex->yylex();
+}
+
+int main() {
+    std::ifstream in("./code_examples/sample.scala");
+    if (!in.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return 1;
+    }
+
+    // Создаем экземпляр лексера
+    lex = new yyFlexLexer(in, std::cout);  // Передаем std::cout как второй аргумент
+
+    // Устанавливаем глобальную переменную для хранения значения токена
+    extern YYSTYPE yylval;
+
+    // Запускаем парсер
+    int parseResult = yyparse();
+
+    // Проверяем результат парсинга
+    if (parseResult == 0) {
+        std::cout << "Parsing completed successfully." << std::endl;
+    }
+    else {
+        std::cerr << "Parsing failed." << std::endl;
+    }
+
+    // Освобождаем память
+    delete lex;
+    return 0;
+}
+
+
+
+
 
 
 /*
 #include <iostream>
 int main() {
 	std::cout << "Hello, World!" << std::endl;
+
 	return 0;
 }
 */
-
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
