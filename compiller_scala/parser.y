@@ -16,6 +16,16 @@ void yyerror(const char *s);
 }
 
 
+%right '='
+%left '|'
+%left '&'
+%left EQ NEQ
+%left '>' '<' MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
+%left '+' '-'
+%left '*' '/' '%'
+
+
+
 %token <int_value> NUM_10 NUM_16
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER
@@ -77,9 +87,30 @@ func_call:
     ;
 
 
+condition:
+      expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
+    | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
+    | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
+    | expr LESS_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr <= expr\n"); }
+    | expr EQ expr {printf("PARSER found expr - expr == expr\n"); }
+    | expr NEQ expr {printf("PARSER found expr - expr != expr\n"); }
+    ;
+
+
+if_stmt:
+    IF '(' condition ')'
+
+else
+
+
+bracketed_expr:
+    | '(' expr ')'
+    ;
+
 expr:
       numbers
     | IDENTIFIER
+    | bracketed_expr
     | expr '+' expr { printf("PARSER found expr - expr + expr\n"); }
     | expr '-' expr { printf("PARSER found expr - expr - expr\n"); }
     | expr '/' expr { printf("PARSER found expr - expr / expr\n"); }
@@ -87,10 +118,7 @@ expr:
     | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
     | expr '&' expr {printf("PARSER found expr - expr && expr\n"); }
     | expr '|' expr {printf("PARSER found expr - expr | expr\n"); }
-    | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
-    | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
-    | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
-    | expr LESS_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr <= expr\n"); }
+    | condition {printf("PARSER found expr - condition\n"); }
     | func_call {printf("PARSER found expr - func_call\n"); }
     ;
 
