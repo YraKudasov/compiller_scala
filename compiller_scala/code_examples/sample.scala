@@ -1,2 +1,1 @@
-x();
-sdas();
+val a = xczc(5, a+10, dfgd);

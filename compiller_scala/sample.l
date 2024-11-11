@@ -42,7 +42,7 @@ char buf_char[2];
 %}
 
 abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); }
-val { printf("(%s) - Found KW_VAL\n", yytext); }
+val { printf("(%s) - Found KW_VAL\n", yytext); return VAL; }
 case { printf("(%s) - Found KW_CASE\n", yytext); }
 catch { printf("(%s) - Found KW_CATCH\n", yytext); }
 class { printf("(%s) - Found KW_CLASS\n", yytext); }
@@ -86,7 +86,7 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 
 
 \" {buffer[0]=0; BEGIN(CONST_STRING);}
-<CONST_STRING>[^\\\"]+ {strcat(buffer,yytext);}
+<CONST_STRING>[^\\\"\n]+ {strcat(buffer,yytext);}
 <CONST_STRING>\\\n[\n\t\r ]* 
 <CONST_STRING>\\\\ {strcat(buffer, "\\");}
 <CONST_STRING>\\b {strcat(buffer, "\b");}
@@ -105,6 +105,7 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
         printf("Error: Unicode value is out of range (0000-0255)\n");
     }
 }
+<CONST_STRING>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING><<EOF>> {printf("(%s) - Found ERROR_STRING\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\\ {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\" {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
@@ -125,7 +126,7 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 
     BEGIN(INITIAL);
 }
-<CHAR>[^\\\']+ {strcat(buffer,yytext);}
+<CHAR>[^\\\'\n]+ {strcat(buffer,yytext);}
 <CHAR>\\\\ {strcat(buffer, "\\");}
 <CHAR>\\b {strcat(buffer, "\b");}
 <CHAR>\\n {strcat(buffer, "\n");}
@@ -133,6 +134,7 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CHAR>\\r {strcat(buffer, "\r");}
 <CHAR>\\\" {strcat(buffer, "\"");}
 <CHAR>\\\' {strcat(buffer, "\'");}
+<CHAR>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
 <CHAR><<EOF>> {printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);}
 <CHAR>\' {
 if(strlen(buffer)==1){
@@ -155,7 +157,7 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 <ONELINE_COMMENT><<EOF>> {printf("(%s) - Found ONELINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 
 
-\+ { printf("(%s) - Found PLUS_OPERATOR\n", yytext); }
+\+ { printf("(%s) - Found PLUS_OPERATOR\n", yytext); return '+';}
 \- { printf("(%s) - Found MINUS_OPERATOR\n", yytext); }
 \* { printf("(%s) - Found MUL_OPERATOR\n", yytext); }
 \% { printf("(%s) - Found MOD_OPERATOR\n", yytext); }
@@ -167,14 +169,14 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 \-\= { printf("(%s) - Found MINUS_ASSIGNMENT_OPERATOR\n", yytext); }
 \*\= { printf("(%s) - Found MUL_ASSIGNMENT_OPERATOR\n", yytext); }
 \/\= { printf("(%s) - Found DIV_ASSIGNMENT_OPERATOR\n", yytext); }
-\<= { printf("(%s) - Found LESS_OR_EQUAL_OPERATOR\n", yytext); }
+\<= { printf("(%s) - Found LESS_OR_EQUAL_OPERATOR\n", yytext); return LESS_OR_EQUAL_OPERATOR;}
 \<\<\= { printf("(%s) - Found LEFTSHIFT_ASSIGNMENT_OPERATOR\n", yytext); }
 \>\>\= { printf("(%s) - Found RIGHTSHIFT_ASSIGNMENT_OPERATOR\n", yytext); }
-\>= { printf("(%s) - Found MORE_OR_EQUAL_OPERATOR\n", yytext); }
+\>= { printf("(%s) - Found MORE_OR_EQUAL_OPERATOR\n", yytext); return MORE_OR_EQUAL_OPERATOR;}
 \< { printf("(%s) - Found LESS_OPERATOR\n", yytext); }
 \> { printf("(%s) - Found MORE_OPERATOR\n", yytext); }
 \!= { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); }
-= { printf("(%s) - Found ASSIGNMENT_OPERATOR\n", yytext); }
+= { printf("(%s) - Found ASSIGNMENT_OPERATOR\n", yytext); return '=';}
 \^ { printf("(%s) - Found CIRCUMFLEX\n", yytext); }
 
 
@@ -201,7 +203,7 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 \{ { printf("(%s) - Found BRACE\n", yytext); }
 \} { printf("(%s) - Found BRACE\n", yytext); }
 \; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
-\, { printf("(%s) - Found COMMA\n", yytext); }
+\, { printf("(%s) - Found COMMA\n", yytext); return ',';}
 \: { printf("(%s) - Found COLON\n", yytext); }
 \. { printf("(%s) - Found DOT\n", yytext); }
 \& { printf("(%s) - Found AMPERSAND\n", yytext); }
@@ -210,24 +212,10 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 
 
 {NUM_10} {
-    char* number = strdup(yytext);
-    
-    char* end = number + strlen(number) - 1;
-    while (end > number && isspace((unsigned char)*end)) {
-        end--;
-    }
-    
-    *(end + 1) = '\0';
-
-    if (strlen(number) == 0) {
-        fprintf(stderr, "Error: Unable to parse number from input: '%s'\n", yytext);
-    } else {
-        int64_t int_number; 
-        parse_integer(&int_number, number, 10); 
-        printf("Found decimal number: %lld\n", int_number); 
-    }
-
-    free(number); 
+    parse_integer(&int_number, yytext, 10);
+    printf("Line %d: found decimal number: %d\n", yylineno, int_number);
+    yylval.int_value = int_number;
+    return NUM_10;
 }
 
 

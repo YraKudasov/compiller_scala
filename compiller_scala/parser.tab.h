@@ -85,7 +85,10 @@ extern int yydebug;
     TRUE = 286,                    /* TRUE  */
     TRY = 287,                     /* TRY  */
     VAR = 288,                     /* VAR  */
-    WHILE = 289                    /* WHILE  */
+    WHILE = 289,                   /* WHILE  */
+    PLUS_OPERATOR = 290,           /* PLUS_OPERATOR  */
+    MORE_OR_EQUAL_OPERATOR = 291,  /* MORE_OR_EQUAL_OPERATOR  */
+    LESS_OR_EQUAL_OPERATOR = 292   /* LESS_OR_EQUAL_OPERATOR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -100,7 +103,7 @@ union YYSTYPE
     double real_value;
     char* str_value;
 
-#line 104 "parser.tab.h"
+#line 107 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
