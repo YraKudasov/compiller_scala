@@ -107,14 +107,14 @@ if_else_stmt:
     ;
 
 if_condition:
-              IF '(' condition ')'
-            | IF condition
-            ;
+          IF '(' condition ')'
+        | IF condition
+        ;
 
 if_condition_list:
-                  if_condition
-                | if_condition_list if_condition
-                ;
+          if_condition
+        | if_condition_list if_condition
+        ;
 
 
 /*..................................................... FOR................................................... */
@@ -126,32 +126,32 @@ for_stmt:
 
 /*standart*/
 for_base_params:
-                  IDENTIFIER GENERATOR_OPERATOR NUM_10 to NUM_10
-                | IDENTIFIER GENERATOR_OPERATOR NUM_10 to NUM_10 by NUM_10
-                | IDENTIFIER GENERATOR_OPERATOR char to char
-                ;
+          IDENTIFIER GENERATOR_OPERATOR NUM_10 to NUM_10
+        | IDENTIFIER GENERATOR_OPERATOR NUM_10 to NUM_10 by NUM_10
+        | IDENTIFIER GENERATOR_OPERATOR char to char
+        ;
 
 for_params:
-              for_base_params
-            | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
-            ;
+            for_base_params
+        | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
+        ;
 
 
 
 for_multy_list:
-                  for_base_params
-                | for_multy_list for_base_params
-                ;
+          for_base_params
+        | for_multy_list for_base_params
+        ;
 
 
 /*..................................................... DO / WHILE................................................... */
 while_stmt: 
-            WHILE '(' condition ')' '{' statement_list '}'
-            ;
+        WHILE '(' condition ')' '{' statement_list '}'
+        ;
 
 do_while_stmt:
-                DO '{' statement_list '}' WHILE'(' condition ')'
-                ;
+        DO '{' statement_list '}' WHILE'(' condition ')'
+        ;
 /*..................................................... MATCH................................................... */
 match:
           IDENTIFIER MATCH '{' case_list'}'
@@ -167,14 +167,14 @@ case:
         ;
 
 numbers_list_case:
-                      numbers '|' 
-                    | numbers_list_case numbers
-                    ;
+            numbers '|' 
+        | numbers_list_case numbers
+        ;
 
 case_list:
-             case
-           | case_list case
-           ;
+            case
+        | case_list case
+        ;
             
 /*************************************************************/
 /* Expr */
