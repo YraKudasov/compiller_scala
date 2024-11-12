@@ -59,36 +59,14 @@ extern int yydebug;
     REAL_NUMBER = 260,             /* REAL_NUMBER  */
     REAL_NUMBER_EXPONENT = 261,    /* REAL_NUMBER_EXPONENT  */
     IDENTIFIER = 262,              /* IDENTIFIER  */
-    ABSTRACT = 263,                /* ABSTRACT  */
-    VAL = 264,                     /* VAL  */
-    CASE = 265,                    /* CASE  */
-    CATCH = 266,                   /* CATCH  */
-    CLASS = 267,                   /* CLASS  */
-    DEF = 268,                     /* DEF  */
-    DO = 269,                      /* DO  */
-    ELSE = 270,                    /* ELSE  */
-    EXTENDS = 271,                 /* EXTENDS  */
-    FALSE = 272,                   /* FALSE  */
-    FOR = 273,                     /* FOR  */
-    FINAL = 274,                   /* FINAL  */
-    FINALLY = 275,                 /* FINALLY  */
-    FOR_SOME = 276,                /* FOR_SOME  */
-    IF = 277,                      /* IF  */
-    IMPLICIT = 278,                /* IMPLICIT  */
-    IMPORT = 279,                  /* IMPORT  */
-    LAZY = 280,                    /* LAZY  */
-    MATCH = 281,                   /* MATCH  */
-    NEW = 282,                     /* NEW  */
-    OBJECT = 283,                  /* OBJECT  */
-    OVERRIDE = 284,                /* OVERRIDE  */
-    TRAIT = 285,                   /* TRAIT  */
-    TRUE = 286,                    /* TRUE  */
-    TRY = 287,                     /* TRY  */
-    VAR = 288,                     /* VAR  */
-    WHILE = 289,                   /* WHILE  */
-    PLUS_OPERATOR = 290,           /* PLUS_OPERATOR  */
-    MORE_OR_EQUAL_OPERATOR = 291,  /* MORE_OR_EQUAL_OPERATOR  */
-    LESS_OR_EQUAL_OPERATOR = 292   /* LESS_OR_EQUAL_OPERATOR  */
+    VAL = 263,                     /* VAL  */
+    ELSE = 264,                    /* ELSE  */
+    IF = 265,                      /* IF  */
+    ELSE_IF = 266,                 /* ELSE_IF  */
+    EQ = 267,                      /* EQ  */
+    NEQ = 268,                     /* NEQ  */
+    MORE_OR_EQUAL_OPERATOR = 269,  /* MORE_OR_EQUAL_OPERATOR  */
+    LESS_OR_EQUAL_OPERATOR = 270   /* LESS_OR_EQUAL_OPERATOR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -103,7 +81,7 @@ union YYSTYPE
     double real_value;
     char* str_value;
 
-#line 107 "parser.tab.h"
+#line 85 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

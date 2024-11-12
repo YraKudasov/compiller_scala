@@ -6,7 +6,7 @@
 %x CONST_STRING
 %x MULTILINE_COMMENT
 %x ONELINE_COMMENT
-%x CHAR
+%x CONST_CHAR
 
 
 
@@ -111,7 +111,7 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CONST_STRING>\" {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
 
 \' {buffer[0]=0; BEGIN(CHAR);}
-<CHAR>\\u[0-9A-Fa-f]{4}\' {
+<CONST_CHAR>\\u[0-9A-Fa-f]{4}\' {
     yytext[strlen(yytext)-1] = '\0'; // Удаляем одинарную кавычку в конце
     wchar_t buf_char[1]; // Буфер для хранения символа Unicode
     unsigned int unicode_value = strtol(yytext + 2, NULL, 16); // Преобразуем шестнадцатеричное значение в целое число
@@ -126,17 +126,17 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 
     BEGIN(INITIAL);
 }
-<CHAR>[^\\\'\n]+ {strcat(buffer,yytext);}
-<CHAR>\\\\ {strcat(buffer, "\\");}
-<CHAR>\\b {strcat(buffer, "\b");}
-<CHAR>\\n {strcat(buffer, "\n");}
-<CHAR>\\t {strcat(buffer, "\t");}
-<CHAR>\\r {strcat(buffer, "\r");}
-<CHAR>\\\" {strcat(buffer, "\"");}
-<CHAR>\\\' {strcat(buffer, "\'");}
-<CHAR>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
-<CHAR><<EOF>> {printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);}
-<CHAR>\' {
+<CONST_CHAR>[^\\\'\n]+ {strcat(buffer,yytext);}
+<CONST_CHAR>\\\\ {strcat(buffer, "\\");}
+<CONST_CHAR>\\b {strcat(buffer, "\b");}
+<CONST_CHAR>\\n {strcat(buffer, "\n");}
+<CONST_CHAR>\\t {strcat(buffer, "\t");}
+<CONST_CHAR>\\r {strcat(buffer, "\r");}
+<CONST_CHAR>\\\" {strcat(buffer, "\"");}
+<CONST_CHAR>\\\' {strcat(buffer, "\'");}
+<CONST_CHAR>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
+<CONST_CHAR><<EOF>> {printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);}
+<CONST_CHAR>\' {
 if(strlen(buffer)==1){
 printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL);
 }else{
