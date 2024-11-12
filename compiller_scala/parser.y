@@ -229,7 +229,7 @@ expr:
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
     | for_stmt { printf("PARSER found expr - for_stmt\n"); }
-    | match
+    | match { printf("PARSER found expr - match\n"); }
     ;
 
 
