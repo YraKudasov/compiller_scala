@@ -29,7 +29,7 @@ void yyerror(const char *s);
 
 
 
-%type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt
+%type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt while_stmt do_while_stmt
 %type <expr> expr expr_list expr_list_e numbers condition
 
 
@@ -37,7 +37,7 @@ void yyerror(const char *s);
 %token <int_value> NUM_10 NUM_16
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER
-%token  VAL ELSE IF ELSE_IF
+%token  VAL ELSE IF ELSE_IF FOR DO
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %token to by
@@ -69,6 +69,9 @@ statement:
       IDENTIFIER '=' expr ';' { printf("Assignment:\n"); }
     | VAL IDENTIFIER '=' expr ';' { printf("Value declaration:\n"); }
     | if_else_stmt { printf("IF_ELSE construction:\n"); }
+    | for_stmt { printf("FOR_STMT construction:\n"); }
+    | while_stmt { printf("WHILE_STMT construction:\n"); }
+    | do_while_stmt { printf("DO_WHILE_STMT construction:\n"); }
     ;
 
 /* IF_ELSE Statement */
@@ -135,7 +138,14 @@ for_multy_IFSTMT:
                 | for_multy_IFSTMT if_stmt
                 ; 
 
+/*..................................................... DO / WHILE................................................... */
+while_stmt: 
+            WHILE '(' condition ')' '{' statement_list '}'
+            ;
 
+do_while_stmt:
+                DO '{' statement_list '}' WHILE'(' condition ')'
+                ;
 /*************************************************************/
 /* Expr */
 
@@ -188,6 +198,7 @@ expr:
     | condition { printf("PARSER found expr - condition\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
+    | for_stmt { printf("PARSER found expr - for_stmt\n"); }
     ;
 
 
