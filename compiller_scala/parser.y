@@ -80,7 +80,7 @@ statement:
     | do_while_stmt { printf("DO_WHILE_STMT construction:\n"); }
     ;
 
-/* IF_ELSE Statement */
+/*..................................................... IF-ELSE................................................... */
 
 if_else_stmt:
       if_stmt
@@ -344,24 +344,6 @@ set_list:
 set_list_e:
       set_list
     | /* nothing */
-expr:
-      numbers
-    | IDENTIFIER
-    | '(' expr ')'
-    | expr '+' expr { printf("PARSER found expr - expr + expr\n"); }
-    | expr '-' expr { printf("PARSER found expr - expr - expr\n"); }
-    | expr '/' expr { printf("PARSER found expr - expr / expr\n"); }
-    | expr '*' expr { printf("PARSER found expr - expr * expr\n"); }
-    | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
-    | expr '&' expr { printf("PARSER found expr - expr && expr\n"); }
-    | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
-    | condition { printf("PARSER found expr - condition\n"); }
-    | func_call { printf("PARSER found expr - func_call\n"); }
-    | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
-    | for_stmt { printf("PARSER found expr - for_stmt\n"); }
-    | match { printf("PARSER found expr - match\n"); }
-    ;
-
 
 
 %%
