@@ -16,6 +16,8 @@ void yyerror(const char *s);
 }
 
 
+
+
 %right '='
 %left '|'
 %left '&'
@@ -26,40 +28,83 @@ void yyerror(const char *s);
 
 
 
+
+%type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt
+%type <expr> expr expr_list expr_list_e numbers condition
+
+
+
 %token <int_value> NUM_10 NUM_16
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER
-%token ABSTRACT VAL CASE CATCH CLASS DEF DO ELSE EXTENDS FALSE FOR FINAL FINALLY FOR_SOME IF IMPLICIT IMPORT LAZY MATCH NEW OBJECT OVERRIDE TRAIT TRUE TRY VAR WHILE PLUS_OPERATOR
+%token  VAL ELSE IF ELSE_IF
+%token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 
 %%
 
+/*************************************************************/
+/* Описание программы */
 
 program:
     | program statement
+    | program statement_list_e
     ;
+
+/*************************************************************/
+/* Statements */
 
 statement_list:
       statement
     | statement_list statement
     ;
 
+statement_list_e:
+      statement_list
+    | /* nothing */
+    ;
 
 statement:
       IDENTIFIER '=' expr ';' { printf("Assignment:\n"); }
-    | IDENTIFIER '(' ')' ';' { printf("Function call:\n"); }
-    | ABSTRACT IDENTIFIER '{' statement '}' { printf("Abstract class:\n"); }
     | VAL IDENTIFIER '=' expr ';' { printf("Value declaration:\n"); }
-    | CASE expr ':' statement { printf("Case statement\n"); }
-    | IF expr '{' statement '}' { printf("If statement\n"); }
-    | WHILE expr '{' statement '}' { printf("While loop\n"); }
-    | DO '{' statement '}' WHILE expr { printf("Do-while loop\n"); }
-    | CATCH '{' statement '}' { printf("Catch block\n"); }
-    | CLASS IDENTIFIER '{' statement '}' { printf("Class definition\n"); }
-    | DEF IDENTIFIER '(' ')' '{' statement '}' { printf("Function definition\n"); }
-    | EXTENDS IDENTIFIER { printf("Extends: \n"); }
+    | if_else_stmt { printf("IF_ELSE construction:\n"); }
     ;
 
+/* IF_ELSE Statement */
+
+if_stmt:
+      IF '(' condition ')' statement
+    | IF '(' condition ')' '{' statement_list_e '}'
+    | IF '(' condition ')' '{' statement_list_e if_else_stmt statement_list_e '}'
+    ;
+
+
+else_if_stmt:
+      ELSE_IF '(' condition ')' statement
+    | ELSE_IF '(' condition ')' '{' statement_list_e '}'
+    | ELSE_IF '(' condition ')' statement else_if_stmt
+    | ELSE_IF '(' condition ')' '{' statement_list_e '}' else_if_stmt
+    | ELSE_IF '(' condition ')' '{' statement_list_e if_else_stmt statement_list_e'}'
+    ;
+
+
+else_stmt:
+      ELSE statement                          
+    | ELSE '{' statement_list_e '}'
+    | ELSE '{' statement_list_e if_else_stmt statement_list_e '}'
+    ;
+
+
+if_else_stmt:
+      if_stmt
+    | if_stmt else_if_stmt else_stmt
+    | if_stmt else_stmt
+    ;
+
+
+
+/*************************************************************/
+/* Expr */
 
 numbers:
       NUM_10 { printf("PARSER found - INT\n"); }
@@ -96,30 +141,20 @@ condition:
     | expr NEQ expr {printf("PARSER found expr - expr != expr\n"); }
     ;
 
-
-if_stmt:
-    IF '(' condition ')'
-
-else
-
-
-bracketed_expr:
-    | '(' expr ')'
-    ;
-
 expr:
       numbers
     | IDENTIFIER
-    | bracketed_expr
+    | '(' expr ')'
     | expr '+' expr { printf("PARSER found expr - expr + expr\n"); }
     | expr '-' expr { printf("PARSER found expr - expr - expr\n"); }
     | expr '/' expr { printf("PARSER found expr - expr / expr\n"); }
     | expr '*' expr { printf("PARSER found expr - expr * expr\n"); }
     | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
-    | expr '&' expr {printf("PARSER found expr - expr && expr\n"); }
-    | expr '|' expr {printf("PARSER found expr - expr | expr\n"); }
-    | condition {printf("PARSER found expr - condition\n"); }
-    | func_call {printf("PARSER found expr - func_call\n"); }
+    | expr '&' expr { printf("PARSER found expr - expr && expr\n"); }
+    | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
+    | condition { printf("PARSER found expr - condition\n"); }
+    | func_call { printf("PARSER found expr - func_call\n"); }
+    | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
     ;
 
 
