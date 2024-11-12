@@ -30,7 +30,7 @@ void yyerror(const char *s);
 
 
 %type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt while_stmt do_while_stmt
-%type <expr> expr expr_list expr_list_e numbers condition
+%type <expr> expr expr_list expr_list_e numbers condition match
 
 
 
@@ -159,11 +159,16 @@ match:
         ;
 
 case:
-          CASE numbers RIGHT_ARROW_OPERATOR statement_list
-        | CASE IDENTIFIER RIGHT_ARROW_OPERATOR statement_list
-        | CASE IDENTIFIER if_condition RIGHT_ARROW_OPERATOR statement_list
-        | CASE numbers if_condition RIGHT_ARROW_OPERATOR statement_list
-        | CASE numbers_list_case RIGHT_ARROW_OPERATOR statement_list
+          CASE case_condition RIGHT_ARROW_OPERATOR statement_list
+        | CASE case_condition RIGHT_ARROW_OPERATOR str
+        ;
+
+case_condition:
+          numbers
+        | numbers if_condition
+        | IDENTIFIER
+        | IDENTIFIER if_condition
+        | numbers_list_case
         ;
 
 numbers_list_case:
