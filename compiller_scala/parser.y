@@ -109,9 +109,8 @@ if_else_stmt:
 /*..................................................... FOR................................................... */
 for_stmt:
         FOR '(' for_params ')' '{' statement_list '}' { printf("FOR LOOP\n"); }
-        FOR '{'for_multy_list'}' '{' statement_list '}' { printf("FOR MULTY LOOP\n"); }
-        | FOR '{' for_params
-        for_multy_IFSTMT '}' '{' statement_list '}' { printf("FOR LOOP: multy with IF_STMT\n"); }
+        | FOR '{'for_multy_list'}' '{' statement_list '}' { printf("FOR MULTY LOOP\n"); }
+        | FOR '{' for_params for_multy_IFSTMT '}' '{' statement_list '}' { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
 /*standart*/
@@ -146,6 +145,9 @@ while_stmt:
 do_while_stmt:
                 DO '{' statement_list '}' WHILE'(' condition ')'
                 ;
+/*..................................................... MATCH................................................... */
+match:
+        IDENTIFIER MATCH
 /*************************************************************/
 /* Expr */
 
