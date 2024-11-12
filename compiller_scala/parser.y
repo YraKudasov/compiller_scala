@@ -167,12 +167,12 @@ case:
         ;
 
 numbers_list_case:
-            numbers '|' 
+          numbers '|' 
         | numbers_list_case numbers
         ;
 
 case_list:
-            case
+          case
         | case_list case
         ;
             
