@@ -29,7 +29,7 @@ void yyerror(const char *s);
 
 
 
-%type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt
+%type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt
 %type <expr> expr expr_list expr_list_e numbers condition
 
 
@@ -40,6 +40,7 @@ void yyerror(const char *s);
 %token  VAL ELSE IF ELSE_IF
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
+%token to by
 
 %%
 
@@ -101,6 +102,38 @@ if_else_stmt:
     | if_stmt else_stmt
     ;
 
+
+/*..................................................... FOR................................................... */
+for_stmt:
+        FOR '(' for_params ')' '{' statement_list '}' { printf("FOR LOOP\n"); }
+        FOR '{'for_multy_list'}' '{' statement_list '}' { printf("FOR MULTY LOOP\n"); }
+        | FOR '{' for_params
+        for_multy_IFSTMT '}' '{' statement_list '}' { printf("FOR LOOP: multy with IF_STMT\n"); }
+        ;
+
+/*standart*/
+for_base_params:
+                IDENTIFIER <- NUM_10 to NUM_10
+                | IDENTIFIER <- NUM_10 to NUM_10 by NUM_10
+                | IDENTIFIER <- char to char
+                ;
+
+for_params:
+            for_base_params
+            | IDENTIFIER <- ID_COLLECTION
+            ;
+
+
+
+for_multy_list:
+                for_base_params
+                | for_multy_list for_base_params
+                ;
+
+for_multy_IFSTMT:
+                if_stmt
+                | for_multy_IFSTMT if_stmt
+                ; 
 
 
 /*************************************************************/
