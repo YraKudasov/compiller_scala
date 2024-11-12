@@ -105,37 +105,43 @@ if_else_stmt:
     | if_stmt else_stmt
     ;
 
+if_condition:
+              IF '(' condition ')'
+            | IF condition
+            ;
+
+if_condition_list:
+                  if_condition
+                | if_condition_list if_condition
+                ;
+
 
 /*..................................................... FOR................................................... */
 for_stmt:
-        FOR '(' for_params ')' '{' statement_list '}' { printf("FOR LOOP\n"); }
+          FOR '(' for_params ')' '{' statement_list '}' { printf("FOR LOOP\n"); }
         | FOR '{'for_multy_list'}' '{' statement_list '}' { printf("FOR MULTY LOOP\n"); }
-        | FOR '{' for_params for_multy_IFSTMT '}' '{' statement_list '}' { printf("FOR LOOP: multy with IF_STMT\n"); }
+        | FOR '{' for_params if_condition_list '}' '{' statement_list '}' { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
 /*standart*/
 for_base_params:
-                IDENTIFIER <- NUM_10 to NUM_10
+                  IDENTIFIER <- NUM_10 to NUM_10
                 | IDENTIFIER <- NUM_10 to NUM_10 by NUM_10
                 | IDENTIFIER <- char to char
                 ;
 
 for_params:
-            for_base_params
+              for_base_params
             | IDENTIFIER <- ID_COLLECTION
             ;
 
 
 
 for_multy_list:
-                for_base_params
+                  for_base_params
                 | for_multy_list for_base_params
                 ;
 
-for_multy_IFSTMT:
-                if_stmt
-                | for_multy_IFSTMT if_stmt
-                ; 
 
 /*..................................................... DO / WHILE................................................... */
 while_stmt: 
@@ -147,7 +153,7 @@ do_while_stmt:
                 ;
 /*..................................................... MATCH................................................... */
 match:
-        IDENTIFIER MATCH
+        IDENTIFIER MATCH '{''}'
 /*************************************************************/
 /* Expr */
 
