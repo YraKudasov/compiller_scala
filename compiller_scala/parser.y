@@ -41,6 +41,7 @@ void yyerror(const char *s);
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %token to by
+%token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /*FOR | CASE */
 
 %%
 
@@ -125,14 +126,14 @@ for_stmt:
 
 /*standart*/
 for_base_params:
-                  IDENTIFIER <- NUM_10 to NUM_10
-                | IDENTIFIER <- NUM_10 to NUM_10 by NUM_10
-                | IDENTIFIER <- char to char
+                  IDENTIFIER GENERATOR_OPERATOR NUM_10 to NUM_10
+                | IDENTIFIER GENERATOR_OPERATOR NUM_10 to NUM_10 by NUM_10
+                | IDENTIFIER GENERATOR_OPERATOR char to char
                 ;
 
 for_params:
               for_base_params
-            | IDENTIFIER <- ID_COLLECTION
+            | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
             ;
 
 
@@ -153,7 +154,28 @@ do_while_stmt:
                 ;
 /*..................................................... MATCH................................................... */
 match:
-        IDENTIFIER MATCH '{''}'
+          IDENTIFIER MATCH '{' case_list'}'
+        | numbers MATCH '{' case_list '}'
+        ;
+
+case:
+          CASE numbers RIGHT_ARROW_OPERATOR statement_list
+        | CASE IDENTIFIER RIGHT_ARROW_OPERATOR statement_list
+        | CASE IDENTIFIER if_condition RIGHT_ARROW_OPERATOR statement_list
+        | CASE numbers if_condition RIGHT_ARROW_OPERATOR statement_list
+        | CASE numbers_list_case RIGHT_ARROW_OPERATOR statement_list
+        ;
+
+numbers_list_case:
+                      numbers '|' 
+                    | numbers_list_case numbers
+                    ;
+
+case_list:
+             case
+           | case_list case
+           ;
+            
 /*************************************************************/
 /* Expr */
 
