@@ -167,7 +167,7 @@ match:
 
 case:
           CASE case_condition RIGHT_ARROW_OPERATOR statement_list
-        | CASE case_condition RIGHT_ARROW_OPERATOR str
+        | CASE case_condition RIGHT_ARROW_OPERATOR CONST_STRING
         ;
 
 case_condition:
@@ -175,6 +175,10 @@ case_condition:
         | numbers if_condition
         | IDENTIFIER
         | IDENTIFIER if_condition
+        | KW_TRUE
+        | KW_FALSE
+        | KW_TRUE if_condition
+        | KW_FALSE if_condition
         | numbers_list_case
         ;
 
