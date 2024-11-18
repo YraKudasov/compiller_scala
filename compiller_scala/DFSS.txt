@@ -1,0 +1,16 @@
+parser.y: warning: 21 shift/reduce conflicts [-Wconflicts-sr]
+parser.y: warning: 543 reduce/reduce conflicts [-Wconflicts-rr]
+parser.y: warning: reduce/reduce conflict on tokens $end, '|', '&', '>', '<', '+', '-', '*', '/', '%', EQ, NEQ, MORE_OR_EQUAL_OPERATOR, LESS_OR_EQUAL_OPERATOR [-Wcounterexamples]
+  Example: .
+  First reduce derivation
+    expr
+    `-> 56: array
+            `-> 80: %empty .
+  Second reduce derivation
+    expr
+    `-> 57: list
+            `-> 87: %empty .
+
+
+
+win_bison.exe -Wcounterexamples parser.y
