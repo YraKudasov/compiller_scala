@@ -64,6 +64,7 @@ program:
 statement_list:
       statement
     | statement_list statement
+    | statement_list ';' statement
     ;
 
 statement_list_e:
