@@ -93,7 +93,6 @@ if_else_stmt:
 if_stmt:
       IF '(' expr ')' statement
     | IF '(' expr ')' '{' statement_list_e '}'
-    | IF '(' expr ')' '{' statement_list_e if_else_stmt statement_list_e '}'
     ;
 
 
@@ -102,16 +101,13 @@ else_if_stmt:
     | ELSE_IF '(' expr ')' '{' statement_list_e '}'
     | ELSE_IF '(' expr ')' statement else_if_stmt
     | ELSE_IF '(' expr ')' '{' statement_list_e '}' else_if_stmt
-    | ELSE_IF '(' expr ')' '{' statement_list_e if_else_stmt statement_list_e'}'
     ;
 
 
 else_stmt:
       ELSE statement                          
     | ELSE '{' statement_list_e '}'
-    | ELSE '{' statement_list_e if_else_stmt statement_list_e '}'
     ;
-
 
 
 if_condition:
