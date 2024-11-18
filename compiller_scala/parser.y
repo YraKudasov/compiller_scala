@@ -221,10 +221,6 @@ expr:
     | condition { printf("PARSER found expr - condition\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
-    | array
-    | list
-    | vector
-    | set
     ;
 
 
@@ -249,6 +245,9 @@ const:
     | KW_TRUE
     | KW_FALSE
     | KW_NULL
+    | array
+    | list
+    | set
     ;
 
 
@@ -282,11 +281,6 @@ type:
 
 /************************************************/
 
-/* Array */
-array:
-      ARRAY '(' massive_list_e ')' { printf("PARSER found Array\n"); }
-    | /* Can do with FOR LOOP */
-
 massive_list:
       expr_list 
     ;
@@ -297,55 +291,30 @@ massive_list_e:
     ;
 
 
+/* Array */
+array:
+      ARRAY '(' massive_list_e ')' { printf("PARSER found Array\n"); }
+    | /* Can do with FOR LOOP */
+
+
 /* List */
 list:
-      LIST '(' list_list_e ')' { printf("PARSER found List\n"); }
+      LIST '(' massive_list_e ')' { printf("PARSER found List\n"); }
     | /* Can do with FOR LOOP */
-    ;
-
-list_list:
-      expr_list
-    | list
-    | expr_list ',' list_list 
-    ;
-
-list_list_e:
-      list_list
-    | /* nothing */
     ;
 
 
  /* Vector */
 vector:
-      VECTOR '(' vector_list_e ')' { printf("PARSER found Vector\n"); }
-    ;
-
-vector_list:
-      expr_list
-    | vector
-    | expr_list ',' vector_list 
-    ;
-
-vector_list_e:
-      vector_list
-    | /* nothing */
+      VECTOR '(' massive_list_e ')' { printf("PARSER found Vector\n"); }
     ;
 
 
 /* Set */
 set:
-      SET '(' set_list_e ')' { printf("PARSER found Set\n"); }
+      SET '(' massive_list_e ')' { printf("PARSER found Set\n"); }
     ;
 
-set_list:
-      expr_list
-    | set
-    | expr_list ',' set_list 
-    ;
-
-set_list_e:
-      set_list
-    | /* nothing */
 
 
 %%
