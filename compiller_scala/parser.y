@@ -31,7 +31,7 @@ void yyerror(const char *s);
 
 
 %type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt while_stmt do_while_stmt
-%type <expr> expr expr_list expr_list_e condition match
+%type <expr> expr expr_list expr_list_e match
 
 
 
@@ -90,18 +90,18 @@ if_else_stmt:
 
 
 if_stmt:
-      IF '(' condition ')' statement
-    | IF '(' condition ')' '{' statement_list_e '}'
-    | IF '(' condition ')' '{' statement_list_e if_else_stmt statement_list_e '}'
+      IF '(' expr ')' statement
+    | IF '(' expr ')' '{' statement_list_e '}'
+    | IF '(' expr ')' '{' statement_list_e if_else_stmt statement_list_e '}'
     ;
 
 
 else_if_stmt:
-      ELSE_IF '(' condition ')' statement
-    | ELSE_IF '(' condition ')' '{' statement_list_e '}'
-    | ELSE_IF '(' condition ')' statement else_if_stmt
-    | ELSE_IF '(' condition ')' '{' statement_list_e '}' else_if_stmt
-    | ELSE_IF '(' condition ')' '{' statement_list_e if_else_stmt statement_list_e'}'
+      ELSE_IF '(' expr ')' statement
+    | ELSE_IF '(' expr ')' '{' statement_list_e '}'
+    | ELSE_IF '(' expr ')' statement else_if_stmt
+    | ELSE_IF '(' expr ')' '{' statement_list_e '}' else_if_stmt
+    | ELSE_IF '(' expr ')' '{' statement_list_e if_else_stmt statement_list_e'}'
     ;
 
 
@@ -114,8 +114,8 @@ else_stmt:
 
 
 if_condition:
-          IF '(' condition ')'
-        | IF condition
+          IF '(' expr ')'
+        | IF expr
         ;
 
 if_condition_list:
@@ -153,11 +153,11 @@ for_multy_list:
 
 /*..................................................... DO / WHILE................................................... */
 while_stmt: 
-        WHILE '(' condition ')' '{' statement_list '}'
+        WHILE '(' expr ')' '{' statement_list '}'
         ;
 
 do_while_stmt:
-        DO '{' statement_list '}' WHILE'(' condition ')'
+        DO '{' statement_list '}' WHILE'(' expr ')'
         ;
 /*..................................................... MATCH................................................... */
 match:
@@ -211,6 +211,12 @@ expr:
       const
     | IDENTIFIER
     | '(' expr ')'
+    | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
+    | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
+    | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
+    | expr LESS_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr <= expr\n"); }
+    | expr EQ expr {printf("PARSER found expr - expr == expr\n"); }
+    | expr NEQ expr {printf("PARSER found expr - expr != expr\n"); }
     | expr '+' expr { printf("PARSER found expr - expr + expr\n"); }
     | expr '-' expr { printf("PARSER found expr - expr - expr\n"); }
     | expr '/' expr { printf("PARSER found expr - expr / expr\n"); }
@@ -218,7 +224,6 @@ expr:
     | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
     | expr '&' expr { printf("PARSER found expr - expr && expr\n"); }
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
-    | condition { printf("PARSER found expr - condition\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
     ;
@@ -258,15 +263,6 @@ func_call:
     ;
 
 
-/* Condition */
-condition:
-      expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
-    | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
-    | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
-    | expr LESS_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr <= expr\n"); }
-    | expr EQ expr {printf("PARSER found expr - expr == expr\n"); }
-    | expr NEQ expr {printf("PARSER found expr - expr != expr\n"); }
-    ;
 
 /* Types */
 type:
