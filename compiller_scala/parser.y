@@ -16,7 +16,7 @@ void yyerror(const char *s);
 }
 
 
-%start expr
+%start if_stmt
 
 
 %right '='
@@ -26,6 +26,7 @@ void yyerror(const char *s);
 %left '>' '<' MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %left '+' '-'
 %left '*' '/' '%'
+%left '(' ')' '[' ']'
 
 
 
@@ -69,7 +70,7 @@ statement_list:
 
 statement_list_e:
       statement_list
-    | /* nothing */
+    | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
 statement:
@@ -205,9 +206,9 @@ expr_list:
 
 
 expr:
-      const
-    | IDENTIFIER
-    | '(' expr ')'
+      const {printf("PARSER found expr - const\n"); }
+    | IDENTIFIER {printf("PARSER found expr - IDENTIFIER\n"); }
+    | '(' expr ')' {printf("PARSER found expr - ( expr )\n"); }
     | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
     | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
     | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
@@ -290,13 +291,12 @@ massive_list_e:
 /* Array */
 array:
       ARRAY '(' massive_list_e ')' { printf("PARSER found Array\n"); }
-    | /* Can do with FOR LOOP */
+      ;
 
 
 /* List */
 list:
       LIST '(' massive_list_e ')' { printf("PARSER found List\n"); }
-    | /* Can do with FOR LOOP */
     ;
 
 
