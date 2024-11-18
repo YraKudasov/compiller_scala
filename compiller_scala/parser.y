@@ -30,7 +30,7 @@ void yyerror(const char *s);
 
 
 
-%type <stmt> statement statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt while_stmt do_while_stmt
+%type <stmt> statement statement_list statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt while_stmt do_while_stmt
 %type <expr> expr expr_list expr_list_e match
 
 
@@ -223,6 +223,8 @@ expr:
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
+    | for_stmt { printf("PARSER found expr - for_stmt\n"); }
+    | match { printf("PARSER found expr - match\n"); }
     ;
 
 
@@ -249,6 +251,7 @@ const:
     | KW_NULL
     | array
     | list
+    | vector
     | set
     ;
 
