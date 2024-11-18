@@ -16,7 +16,7 @@ void yyerror(const char *s);
 }
 
 
-%start if_stmt
+%start program
 
 
 %right '='
@@ -31,7 +31,7 @@ void yyerror(const char *s);
 
 
 
-%type <stmt> statement statement_list statement_list_e if_else_stmt if_stmt else_if_stmt else_stmt for_stmt while_stmt do_while_stmt
+%type <stmt> statement statement_list statement_list_e if_else_stmt else_stmt for_stmt while_stmt do_while_stmt
 %type <expr> expr expr_list expr_list_e match
 
 
@@ -55,8 +55,7 @@ void yyerror(const char *s);
 
 /* Program description */
 program:
-    | program statement
-    | program statement_list_e
+      statement_list_e
     ;
 
 /*************************************************************/
@@ -65,7 +64,6 @@ program:
 statement_list:
       statement
     | statement_list statement
-    | statement_list ';' statement
     ;
 
 statement_list_e:
@@ -80,45 +78,24 @@ statement:
     | for_stmt { printf("FOR_STMT construction:\n"); }
     | while_stmt { printf("WHILE_STMT construction:\n"); }
     | do_while_stmt { printf("DO_WHILE_STMT construction:\n"); }
+    | '{' statement_list_e '}'
     ;
 
 /*..................................................... IF-ELSE................................................... */
 
+
 if_else_stmt:
-      if_stmt
-    | if_stmt else_if_stmt else_stmt
-    | if_stmt else_stmt
+      IF expr statement else_stmt
     ;
-
-
-if_stmt:
-      IF '(' expr ')' statement
-    | IF '(' expr ')' '{' statement_list_e '}'
-    ;
-
-
-else_if_stmt:
-      ELSE_IF '(' expr ')' statement
-    | ELSE_IF '(' expr ')' '{' statement_list_e '}'
-    | ELSE_IF '(' expr ')' statement else_if_stmt
-    | ELSE_IF '(' expr ')' '{' statement_list_e '}' else_if_stmt
-    ;
-
 
 else_stmt:
-      ELSE statement                          
-    | ELSE '{' statement_list_e '}'
+      ELSE statement
     ;
 
 
-if_condition:
-          IF '(' expr ')'
-        | IF expr
-        ;
-
 if_condition_list:
-          if_condition
-        | if_condition_list if_condition
+          IF expr
+        | if_condition_list IF expr
         ;
 
 
@@ -170,13 +147,13 @@ case:
 
 case_condition:
           int_literal
-        | int_literal if_condition
+        | int_literal IF expr
         | IDENTIFIER
-        | IDENTIFIER if_condition
+        | IDENTIFIER IF expr
         | KW_TRUE
         | KW_FALSE
-        | KW_TRUE if_condition
-        | KW_FALSE if_condition
+        | KW_TRUE IF expr
+        | KW_FALSE IF expr
         | int_literal_list_case
         ;
 
