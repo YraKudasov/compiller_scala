@@ -256,37 +256,28 @@ type:
 
 /************************************************/
 
-massive_list:
-      expr_list 
-    ;
-
-massive_list_e:
-      massive_list
-    | /* nothing */
-    ;
-
 
 /* Array */
 array:
-      ARRAY '(' massive_list_e ')' { printf("PARSER found Array\n"); }
+      ARRAY '(' expr_list_e ')' { printf("PARSER found Array\n"); }
       ;
 
 
 /* List */
 list:
-      LIST '(' massive_list_e ')' { printf("PARSER found List\n"); }
+      LIST '(' expr_list_e ')' { printf("PARSER found List\n"); }
     ;
 
 
  /* Vector */
 vector:
-      VECTOR '(' massive_list_e ')' { printf("PARSER found Vector\n"); }
+      VECTOR '(' expr_list_e ')' { printf("PARSER found Vector\n"); }
     ;
 
 
 /* Set */
 set:
-      SET '(' massive_list_e ')' { printf("PARSER found Set\n"); }
+      SET '(' expr_list_e ')' { printf("PARSER found Set\n"); }
     ;
 
 
