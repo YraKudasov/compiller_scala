@@ -75,13 +75,14 @@ statement_list_e:
     ;
 
 statement:
-      IDENTIFIER '=' expr ';' { printf("Assignment:\n"); }
-    | VAL IDENTIFIER '=' expr ';' { printf("Value declaration:\n"); }
-    | VAR IDENTIFIER '=' expr ';' { printf("Variable declaration:\n"); }
+      IDENTIFIER '=' expr { printf("Assignment:\n"); }
+    | VAL IDENTIFIER '=' expr  { printf("Value declaration:\n"); }
+    | VAR IDENTIFIER '=' expr  { printf("Variable declaration:\n"); }
     | if_else_stmt { printf("IF_ELSE construction:\n"); }
     | for_stmt { printf("FOR_STMT construction:\n"); }
     | while_stmt { printf("WHILE_STMT construction:\n"); }
     | do_while_stmt { printf("DO_WHILE_STMT construction:\n"); }
+    | func_call { printf("FUNC_CALL construction:\n"); }
     | '{' statement_list_e '}'
     ;
 
@@ -105,9 +106,9 @@ if_condition_list:
 
 /*..................................................... FOR................................................... */
 for_stmt:
-          FOR '(' for_params ')' '{' statement_list '}' { printf("FOR LOOP\n"); }
-        | FOR '{'for_multy_list'}' '{' statement_list '}' { printf("FOR MULTY LOOP\n"); }
-        | FOR '{' for_params if_condition_list '}' '{' statement_list '}' { printf("FOR LOOP: multy with IF_STMT\n"); }
+          FOR '(' for_params ')' statement { printf("FOR LOOP\n"); }
+        | FOR '{'for_multy_list'}' statement { printf("FOR MULTY LOOP\n"); }
+        | FOR '{' for_params if_condition_list '}' statement { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
 /*standart*/
@@ -118,7 +119,7 @@ for_base_params:
         ;
 
 for_params:
-            for_base_params
+          for_base_params
         | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
         ;
 
@@ -141,7 +142,7 @@ do_while_stmt:
 /*..................................................... MATCH................................................... */
 match:
           IDENTIFIER MATCH '{' case_list'}'
-        | int_literal MATCH '{' case_list '}'
+        | num_const MATCH '{' case_list '}'
         ;
 
 case:
@@ -150,8 +151,8 @@ case:
         ;
 
 case_condition:
-          int_literal
-        | int_literal IF expr
+          num_const
+        | num_const IF expr
         | IDENTIFIER
         | IDENTIFIER IF expr
         | KW_TRUE
@@ -162,8 +163,8 @@ case_condition:
         ;
 
 int_literal_list_case:
-          int_literal '|' 
-        | int_literal_list_case int_literal
+          num_const '|' 
+        | int_literal_list_case num_const
         ;
 
 case_list:
@@ -211,21 +212,17 @@ expr:
 
 
 /* Constants */
-int_literal:
+num_const:
       NUM_10 { printf("PARSER found - INT\n"); }
     | NUM_16 { printf("PARSER found - INT\n"); }
-    ;
-
-
-real_literal:
-      REAL_NUMBER { printf("PARSER found - REAL\n"); }
+    | REAL_NUMBER { printf("PARSER found - REAL\n"); }
     | REAL_NUMBER_EXPONENT { printf("PARSER found - REAL_EXP\n"); }
     ;
 
 
+
 const:
-      int_literal
-    | real_literal
+      num_const
     | CONST_STRING
     | CONST_CHAR
     | KW_TRUE
