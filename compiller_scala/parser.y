@@ -39,7 +39,8 @@ void yyerror(const char *s);
 %token <int_value> NUM_10 NUM_16
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
-%token  VAL ELSE IF ELSE_IF FOR DO WHILE MATCH CASE 
+%token NEWLINE
+%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE 
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
@@ -62,8 +63,10 @@ program:
 
 /* Statements */
 statement_list:
-      statement
-    | statement_list statement
+      statement ';'
+    | statement NEWLINE
+    | statement_list statement ';'
+    | statement_list statement NEWLINE
     ;
 
 statement_list_e:
@@ -74,6 +77,7 @@ statement_list_e:
 statement:
       IDENTIFIER '=' expr ';' { printf("Assignment:\n"); }
     | VAL IDENTIFIER '=' expr ';' { printf("Value declaration:\n"); }
+    | VAR IDENTIFIER '=' expr ';' { printf("Variable declaration:\n"); }
     | if_else_stmt { printf("IF_ELSE construction:\n"); }
     | for_stmt { printf("FOR_STMT construction:\n"); }
     | while_stmt { printf("WHILE_STMT construction:\n"); }
@@ -94,9 +98,9 @@ else_stmt:
 
 
 if_condition_list:
-          IF expr
-        | if_condition_list IF expr
-        ;
+      IF expr
+    | if_condition_list IF expr
+    ;
 
 
 /*..................................................... FOR................................................... */
