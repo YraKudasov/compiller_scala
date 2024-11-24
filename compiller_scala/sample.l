@@ -110,7 +110,7 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CONST_STRING>\\ {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\" {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
 
-\' {buffer[0]=0; BEGIN(CHAR);}
+\' {buffer[0]=0; BEGIN(CONST_CHAR);}
 <CONST_CHAR>\\u[0-9A-Fa-f]{4}\' {
     yytext[strlen(yytext)-1] = '\0'; // Удаляем одинарную кавычку в конце
     wchar_t buf_char[1]; // Буфер для хранения символа Unicode

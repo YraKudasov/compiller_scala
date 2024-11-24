@@ -14,3 +14,26 @@ parser.y: warning: reduce/reduce conflict on tokens $end, '|', '&', '>', '<', '+
 
 
 win_bison.exe -Wcounterexamples parser.y
+
+
+if_else_stmt:
+      if_stmt
+    | if_stmt else_if_stmt else_stmt
+    | if_stmt else_stmt
+    ;
+
+if_stmt:
+      IF '(' expr ')' statement
+    | IF '(' expr ')' '{' statement_list_e '}'
+    ;
+
+else_if_stmt:
+      ELSE_IF '(' expr ')' statement
+    | ELSE_IF '(' expr ')' '{' statement_list_e '}'
+    | ELSE_IF '(' expr ')' if_stmt
+    ;
+
+else_stmt:
+      ELSE statement                          
+    | ELSE '{' statement_list_e '}'
+    ;
