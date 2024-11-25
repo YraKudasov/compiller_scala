@@ -40,12 +40,12 @@ void yyerror(const char *s);
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE 
+%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE  TRY CATCH FINALLY
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %token INT_KW DOUBLE_KW STRING_KW CHAR_KW BOOLEAN_KW ANY_KW 
-%token TO BY
+%token TO BY YIELD
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
@@ -109,12 +109,11 @@ for_stmt:
         ;
 
 /*standart*/
-for_base_params:
-          IDENTIFIER GENERATOR_OPERATOR const TO const
-        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
-        ;
-
 for_params:
+          IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10
+        | IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10 BY NUM_10
+        | IDENTIFIER GENERATOR_OPERATOR CONST_CHAR TO CONST_CHAR
+          for_base_params
           for_base_params
         | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
         ;
@@ -168,6 +167,20 @@ case_list:
         | case_list case
         ;
             
+/*..................................................... TRY/CATCH/FINALLY................................................... */
+
+try:
+     TRY'{' statement '}' catch finally
+     ;
+
+catch:
+     CATCH '{' case_list '}'
+     ;
+
+finally:
+      FINALLY '{' statement '}'
+      ;
+
 /*************************************************************/
 
 /* Expr */
@@ -202,10 +215,11 @@ expr:
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
-    | for_stmt { printf("PARSER found expr - for_stmt\n"); }
-    | match { printf("PARSER found expr - match\n"); }
     | IDENTIFIER '=' expr { printf("Assignment:\n"); }
     | '{' statement_expr_list_e '}'
+    | try { printf("PARSER found expr - try\n"); }
+    | for_expr { printf("PARSER found expr - for_stmt\n"); }
+    | match { printf("PARSER found expr - match\n"); }
     ;
 
 
