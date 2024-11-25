@@ -24,7 +24,8 @@ void yyerror(const char *s);
 %left '&'
 %left EQ NEQ
 %left '>' '<' MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
-%left '+' '-'
+%left '+' '-' 
+%nonassoc UMINUS UPLUS
 %left '*' '/' '%'
 %left '(' ')' '[' ']'
 
@@ -64,14 +65,12 @@ program:
 
 /* Statements */
 statement_expr_list:
-      statement ';'
-    | statement NEWLINE
-    | expr ';'
-    | expr NEWLINE
-    | statement_expr_list statement ';'
-    | statement_expr_list statement NEWLINE
-    | statement_expr_list expr ';'
-    | statement_expr_list expr NEWLINE
+      statement
+    | expr
+    | statement_expr_list statement
+    | statement_expr_list expr
+    | statement_expr_list ';'
+    | statement_expr_list NEWLINE
     ;
 
 statement_expr_list_e:
@@ -88,105 +87,98 @@ statement:
 /*..................................................... IF-ELSE................................................... */
 
 
-if_else_stmt:
-      IF expr statement else_stmt
+if_else_expr:
+      IF '(' expr ')' expr else_expr
     ;
 
-else_stmt:
-      ELSE statement
+else_expr:
+      ELSE expr
     ;
 
 if_condition_list:
       IF expr
     | if_condition_list IF expr
+    | if_condition_list ';' IF expr 
+    | if_condition_list NEWLINE
     ;
 
 
 /*..................................................... FOR................................................... */
-for_stmt:
-          FOR '(' for_params ')' expr { printf("FOR LOOP\n"); }
+
+for_expr:
+          FOR '(' for_params ')' YIELD expr
+        | FOR '{'for_multy_list'}' YIELD expr
+        | FOR '{' for_params if_condition_list '}' YIELD expr
+        | FOR '(' for_params ')' expr { printf("FOR LOOP\n"); }
         | FOR '{'for_multy_list'}' expr { printf("FOR MULTY LOOP\n"); }
         | FOR '{' for_params if_condition_list '}' expr { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
-efor_expr:
-          FOR '(' for_params ')' YIELD expr
-        | FOR '{'for_multy_list'}' YIELD expr
-        | FOR '{' for_params if_condition_list '}' YIELD expr
-        ;
 /*standart*/
 for_params:
-          IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10
-        | IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10 BY NUM_10
-        | IDENTIFIER GENERATOR_OPERATOR CONST_CHAR TO CONST_CHAR
-          for_base_params
-          for_base_params
-        | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
+          IDENTIFIER GENERATOR_OPERATOR const TO const
+        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
         ;
-
-
 
 
 for_multy_list:
-          for_base_params
-        | for_multy_list for_base_params
+          for_params
+        | for_multy_list for_params 
+        | for_multy_list ';' for_params
+        | for_multy_list NEWLINE
         ;
 
 
 /*..................................................... DO / WHILE................................................... */
-while_stmt: 
-        WHILE '(' expr ')' '{' statement_list '}'
+while_expr: 
+        WHILE '(' expr ')' expr
         ;
 
-do_while_stmt:
-        DO '{' statement_list '}' WHILE'(' expr ')'
+do_while_expr:
+        DO expr WHILE'(' expr ')'
         ;
 /*..................................................... MATCH................................................... */
-match:
+match_expr:
           IDENTIFIER MATCH '{' case_list'}'
         | num_const MATCH '{' case_list '}'
         ;
 
-case:
-          CASE case_condition RIGHT_ARROW_OPERATOR expr
-        | CASE case_condition RIGHT_ARROW_OPERATOR CONST_STRING
-        ;
 
 case_condition:
-          num_const
-        | num_const IF expr
+          const
+        | const IF expr
         | IDENTIFIER
         | IDENTIFIER IF expr
-        | KW_TRUE
-        | KW_FALSE
-        | KW_TRUE IF expr
-        | KW_FALSE IF expr
         | int_literal_list_case
         ;
 
 int_literal_list_case:
-          num_const '|' 
-        | int_literal_list_case num_const
+          const 
+        | int_literal_list_case '|' const 
         ;
 
 case_list:
-          case
-        | case_list case
+          CASE case_condition RIGHT_ARROW_OPERATOR expr
+        | case_list CASE case_condition RIGHT_ARROW_OPERATOR expr
+        | case_list CASE case_condition RIGHT_ARROW_OPERATOR expr
+        | case_list NEWLINE
+        | case_list ';'
         ;
             
 /*..................................................... TRY/CATCH/FINALLY................................................... */
 
-try:
-     TRY'{' expr '}' catch finally
-     ;
+try_expr:
+          TRY'{' expr '}' catch
+        | TRY'{' expr '}' catch finally
+        ;
 
 catch:
-     CATCH '{' case_list '}'
-     ;
+          CATCH '{' case_list '}'
+        ;
 
 finally:
-      FINALLY '{' expr '}'
-      ;
+         FINALLY '{' expr '}'
+        ;
 
 /*************************************************************/
 
@@ -206,6 +198,7 @@ expr_list:
 expr:
       const {printf("PARSER found expr - const\n"); }
     | IDENTIFIER {printf("PARSER found expr - IDENTIFIER\n"); }
+    | IDENTIFIER '=' expr { printf("Assignment:\n"); }
     | '(' expr ')' {printf("PARSER found expr - ( expr )\n"); }
     | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
     | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
@@ -220,13 +213,18 @@ expr:
     | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
     | expr '&' expr { printf("PARSER found expr - expr && expr\n"); }
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
+    | expr '||' expr { printf("PARSER found expr - expr || expr\n"); }
+    | expr '&&' expr { printf("PARSER found expr - expr && expr\n"); }
+    | '-' expr  %prec UMINUS
+    | '+' expr  %prec UMINUS
     | func_call { printf("PARSER found expr - func_call\n"); }
-    | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
-    | IDENTIFIER '=' expr { printf("Assignment:\n"); }
+    | if_else_expr{ printf("PARSER found expr - if_else_expr\n"); }
+    | for_expr { printf("PARSER found expr - for_expr\n"); }
+    | while_expr { printf("PARSER found expr - while_expr\n"); }
+    | do_while_expr { printf("PARSER found expr - do_while_expr\n"); }
+    | try_expr { printf("PARSER found expr - try_expr\n"); }
+    | match_expr { printf("PARSER found expr - match_expr\n"); }
     | '{' statement_expr_list_e '}'
-    | try { printf("PARSER found expr - try\n"); }
-    | for_expr { printf("PARSER found expr - for_stmt\n"); }
-    | match { printf("PARSER found expr - match\n"); }
     ;
 
 
