@@ -40,7 +40,7 @@ void yyerror(const char *s);
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE 
+%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE  TRY CATCH FINALLY
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
@@ -174,6 +174,20 @@ case_list:
         | case_list case
         ;
             
+/*..................................................... TRY/CATCH/FINALLY................................................... */
+
+try:
+     TRY'{' statement '}' catch finally
+     ;
+
+catch:
+     CATCH '{' case_list '}'
+     ;
+
+finally:
+      FINALLY '{' statement '}'
+      ;
+
 /*************************************************************/
 
 /* Expr */
