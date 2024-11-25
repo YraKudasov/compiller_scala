@@ -56,34 +56,32 @@ void yyerror(const char *s);
 
 /* Program description */
 program:
-      statement_list_e
+      statement_expr_list_e
     ;
 
 /*************************************************************/
 
 /* Statements */
-statement_list:
+statement_expr_list:
       statement ';'
     | statement NEWLINE
-    | statement_list statement ';'
-    | statement_list statement NEWLINE
+    | expr ';'
+    | expr NEWLINE
+    | statement_expr_list statement ';'
+    | statement_expr_list statement NEWLINE
+    | statement_expr_list expr ';'
+    | statement_expr_list expr NEWLINE
     ;
 
-statement_list_e:
-      statement_list
+statement_expr_list_e:
+      statement_expr_list
     | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
 statement:
-      IDENTIFIER '=' expr { printf("Assignment:\n"); }
-    | VAL IDENTIFIER '=' expr  { printf("Value declaration:\n"); }
+      VAL IDENTIFIER '=' expr  { printf("Value declaration:\n"); }
     | VAR IDENTIFIER '=' expr  { printf("Variable declaration:\n"); }
-    | if_else_stmt { printf("IF_ELSE construction:\n"); }
-    | for_stmt { printf("FOR_STMT construction:\n"); }
-    | while_stmt { printf("WHILE_STMT construction:\n"); }
-    | do_while_stmt { printf("DO_WHILE_STMT construction:\n"); }
-    | func_call { printf("FUNC_CALL construction:\n"); }
-    | '{' statement_list_e '}'
+    | DEF IDENTIFIER 
     ;
 
 /*..................................................... IF-ELSE................................................... */
@@ -97,7 +95,6 @@ else_stmt:
       ELSE statement
     ;
 
-
 if_condition_list:
       IF expr
     | if_condition_list IF expr
@@ -106,16 +103,15 @@ if_condition_list:
 
 /*..................................................... FOR................................................... */
 for_stmt:
-          FOR '(' for_params ')' statement { printf("FOR LOOP\n"); }
-        | FOR '{'for_multy_list'}' statement { printf("FOR MULTY LOOP\n"); }
-        | FOR '{' for_params if_condition_list '}' statement { printf("FOR LOOP: multy with IF_STMT\n"); }
+          FOR '(' for_params ')' expr { printf("FOR LOOP\n"); }
+        | FOR '{'for_multy_list'}' expr { printf("FOR MULTY LOOP\n"); }
+        | FOR '{' for_params if_condition_list '}' expr { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
 /*standart*/
 for_base_params:
-          IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10
-        | IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10 BY NUM_10
-        | IDENTIFIER GENERATOR_OPERATOR CONST_CHAR TO CONST_CHAR
+          IDENTIFIER GENERATOR_OPERATOR const TO const
+        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
         ;
 
 for_params:
@@ -208,6 +204,8 @@ expr:
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
     | for_stmt { printf("PARSER found expr - for_stmt\n"); }
     | match { printf("PARSER found expr - match\n"); }
+    | IDENTIFIER '=' expr { printf("Assignment:\n"); }
+    | '{' statement_expr_list_e '}'
     ;
 
 
