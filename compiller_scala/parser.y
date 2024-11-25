@@ -45,7 +45,7 @@ void yyerror(const char *s);
 %token EQ NEQ
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %token INT_KW DOUBLE_KW STRING_KW CHAR_KW BOOLEAN_KW ANY_KW 
-%token TO BY
+%token TO BY YIELD
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
@@ -106,20 +106,22 @@ if_condition_list:
 
 /*..................................................... FOR................................................... */
 for_stmt:
-          FOR '(' for_params ')' statement { printf("FOR LOOP\n"); }
-        | FOR '{'for_multy_list'}' statement { printf("FOR MULTY LOOP\n"); }
-        | FOR '{' for_params if_condition_list '}' statement { printf("FOR LOOP: multy with IF_STMT\n"); }
+          FOR '(' for_params ')' statement 
+        | FOR '{'for_multy_list'}' statement 
+        | FOR '{' for_params if_condition_list '}' statement 
+        ;
+
+for_expr:
+          FOR '(' for_params ')' YIELD expr
+        | FOR '{'for_multy_list'}' YIELD expr
+        | FOR '{' for_params if_condition_list '}' YIELD expr
         ;
 
 /*standart*/
-for_base_params:
+for_params:
           IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10
         | IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10 BY NUM_10
         | IDENTIFIER GENERATOR_OPERATOR CONST_CHAR TO CONST_CHAR
-        ;
-
-for_params:
-          for_base_params
         | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
         ;
 
@@ -206,7 +208,7 @@ expr:
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
-    | for_stmt { printf("PARSER found expr - for_stmt\n"); }
+    | for_expr { printf("PARSER found expr - for_stmt\n"); }
     | match { printf("PARSER found expr - match\n"); }
     ;
 
