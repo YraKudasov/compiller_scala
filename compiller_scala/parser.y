@@ -50,7 +50,8 @@ void yyerror(const char *s);
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
-%token CLASS CLASS_ID
+%token DEF
+%token CLASS CLASS_ID 
 
 %%
 
@@ -62,6 +63,28 @@ program:
     ;
 
 /*************************************************************/
+
+/*.....................................................CLASSES ƒŒƒ≈À¿“‹................................................... */
+class_body:
+    '{'  '}'
+
+class_header:
+    CLASS CLASS_ID '(' class_params ')'
+    ;
+
+class_params:
+      VAR IDENTIFIER ':' type
+    | VAL IDENTIFIER ':' type
+    | VAR IDENTIFIER ':' type '=' const
+    | VAL IDENTIFIER ':' type '=' const
+    | class_params ',' VAR IDENTIFIER ':' type
+    | class_params ',' VAL IDENTIFIER ':' type
+    | class_params ',' VAR IDENTIFIER ':' type '=' const
+    | class_params ',' VAL IDENTIFIER ':' type '=' const
+    | /* nothing */ 
+    ;
+
+    
 
 /* Statements */
 statement_expr_list:
@@ -83,6 +106,8 @@ statement:
     | VAR IDENTIFIER '=' expr  { printf("Variable declaration:\n"); }
     | DEF IDENTIFIER 
     ;
+
+
 
 /*..................................................... IF-ELSE................................................... */
 
@@ -180,7 +205,7 @@ finally:
          FINALLY '{' expr '}'
         ;
 
-/*************************************************************/
+
 
 /* Expr */
 expr_list_e:
@@ -251,12 +276,29 @@ const:
     | set
     ;
 
+    /*.....................................................FUNCTIONS/METHODS................................................... */
 
 /* Function call */
 func_call:
       IDENTIFIER '(' ')' { printf("Function call: NO PARAMS\n"); }
     | IDENTIFIER '(' expr_list ')' { printf("Function call: WITH PARAMS\n"); }
     ;
+
+params:
+      IDENTIFIER ':' type
+    | params ',' IDENTIFIER ':' type
+    | /* nothing */
+
+func:
+      '(params)' RIGHT_ARROW_OPERATOR expr
+    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR expr
+    | '(params)' RIGHT_ARROW_OPERATOR NEWLINE expr
+    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
+    
+    ;
+
+method:
+     DEF '('params')' 
 
 
 
