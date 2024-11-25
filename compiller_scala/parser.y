@@ -49,6 +49,7 @@ void yyerror(const char *s);
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
+%token CLASS CLASS_ID
 
 %%
 
@@ -141,7 +142,7 @@ match:
         ;
 
 case:
-          CASE case_condition RIGHT_ARROW_OPERATOR statement_list
+          CASE case_condition RIGHT_ARROW_OPERATOR expr
         | CASE case_condition RIGHT_ARROW_OPERATOR CONST_STRING
         ;
 
@@ -170,7 +171,7 @@ case_list:
 /*..................................................... TRY/CATCH/FINALLY................................................... */
 
 try:
-     TRY'{' statement '}' catch finally
+     TRY'{' expr '}' catch finally
      ;
 
 catch:
@@ -178,7 +179,7 @@ catch:
      ;
 
 finally:
-      FINALLY '{' statement '}'
+      FINALLY '{' expr '}'
       ;
 
 /*************************************************************/
