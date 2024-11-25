@@ -224,6 +224,7 @@ expr:
     | if_else_stmt { printf("PARSER found expr - if_else_stmt\n"); }
     | for_expr { printf("PARSER found expr - for_stmt\n"); }
     | match { printf("PARSER found expr - match\n"); }
+    | try { printf("PARSER found expr - try\n"); }
     ;
 
 
