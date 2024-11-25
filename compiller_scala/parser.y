@@ -104,7 +104,8 @@ statement_expr_list_e:
 statement:
       VAL IDENTIFIER '=' expr  { printf("Value declaration:\n"); }
     | VAR IDENTIFIER '=' expr  { printf("Variable declaration:\n"); }
-    | DEF IDENTIFIER 
+    | method { printf("Method:\n"); }
+    | func { printf("Function:\n"); }
     ;
 
 
@@ -288,17 +289,25 @@ params:
       IDENTIFIER ':' type
     | params ',' IDENTIFIER ':' type
     | /* nothing */
+    ;
 
 func:
       '(params)' RIGHT_ARROW_OPERATOR expr
     | '(params)' NEWLINE RIGHT_ARROW_OPERATOR expr
     | '(params)' RIGHT_ARROW_OPERATOR NEWLINE expr
     | '(params)' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
-    
+    ;
+
+method_params:
+      '('params')'
+    | method_params '('params')'
+    | /* nothing */
     ;
 
 method:
-     DEF '('params')' 
+      DEF IDENTIFIER method_params ':' type '=' expr
+    | DEF IDENTIFIER method_params ':' type '=' '{' expr '}'
+    ;
 
 
 
@@ -310,6 +319,7 @@ type:
     | CHAR_KW
     | BOOLEAN_KW
     | ANY_KW
+    ;
     
 
 
