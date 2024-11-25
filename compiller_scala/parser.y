@@ -109,6 +109,11 @@ for_stmt:
         | FOR '{' for_params if_condition_list '}' expr { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
+efor_expr:
+          FOR '(' for_params ')' YIELD expr
+        | FOR '{'for_multy_list'}' YIELD expr
+        | FOR '{' for_params if_condition_list '}' YIELD expr
+        ;
 /*standart*/
 for_params:
           IDENTIFIER GENERATOR_OPERATOR NUM_10 TO NUM_10
@@ -118,6 +123,7 @@ for_params:
           for_base_params
         | IDENTIFIER GENERATOR_OPERATOR ID_COLLECTION
         ;
+
 
 
 
