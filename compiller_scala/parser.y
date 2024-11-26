@@ -32,7 +32,7 @@ void yyerror(const char *s);
 
 
 
-%type <stmt> statement statement_list statement_list_e if_else_stmt else_stmt for_stmt while_stmt do_while_stmt
+%type <stmt> statement statement_list statement_list_e 
 %type <expr> expr expr_list expr_list_e match
 
 
@@ -44,8 +44,9 @@ void yyerror(const char *s);
 %token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE  TRY CATCH FINALLY
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
+%token KW_OR KW_AND
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
-%token INT_KW DOUBLE_KW STRING_KW CHAR_KW BOOLEAN_KW ANY_KW 
+%token INT_KW DOUBLE_KW STRING_KW CHAR_KW BOOLEAN_KW ANY_KW UNIT_KW
 %token TO BY YIELD
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
@@ -67,6 +68,7 @@ program:
 /*.....................................................CLASSES ƒŒƒ≈À¿“‹................................................... */
 class_body:
     '{'  '}'
+    ;
 
 class_header:
     CLASS CLASS_ID '(' class_params ')'
@@ -107,10 +109,9 @@ statement:
     | VAL IDENTIFIER ':' type '=' expr { printf("explicit value declaration:\n"); }
     | VAR IDENTIFIER ':' type '=' expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
-    | func { printf("Function:\n"); }
     ;
 
-
+ 
 
 /*..................................................... IF-ELSE................................................... */
 
@@ -188,7 +189,6 @@ int_literal_list_case:
 case_list:
           CASE case_condition RIGHT_ARROW_OPERATOR expr
         | case_list CASE case_condition RIGHT_ARROW_OPERATOR expr
-        | case_list CASE case_condition RIGHT_ARROW_OPERATOR expr
         | case_list NEWLINE
         | case_list ';'
         ;
@@ -197,6 +197,7 @@ case_list:
 
 try_expr:
           TRY'{' expr '}' catch
+        | TRY'{' expr '}' finally
         | TRY'{' expr '}' catch finally
         ;
 
@@ -205,7 +206,7 @@ catch:
         ;
 
 finally:
-         FINALLY '{' expr '}'
+          FINALLY '{' expr '}'
         ;
 
 
@@ -241,8 +242,8 @@ expr:
     | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
     | expr '&' expr { printf("PARSER found expr - expr && expr\n"); }
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
-    | expr '||' expr { printf("PARSER found expr - expr || expr\n"); }
-    | expr '&&' expr { printf("PARSER found expr - expr && expr\n"); }
+    | expr KW_OR expr { printf("PARSER found expr - expr || expr\n"); }
+    | expr KW_AND expr { printf("PARSER found expr - expr && expr\n"); }
     | '-' expr  %prec UMINUS
     | '+' expr  %prec UMINUS
     | func_call { printf("PARSER found expr - func_call\n"); }
@@ -253,6 +254,7 @@ expr:
     | try_expr { printf("PARSER found expr - try_expr\n"); }
     | match_expr { printf("PARSER found expr - match_expr\n"); }
     | '{' statement_expr_list_e '}'
+    | func { printf("Function:\n"); }
     ;
 
 
@@ -294,10 +296,10 @@ params:
     ;
 
 func:
-      '(params)' RIGHT_ARROW_OPERATOR expr
-    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR expr
-    | '(params)' RIGHT_ARROW_OPERATOR NEWLINE expr
-    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
+      '('params')' RIGHT_ARROW_OPERATOR expr
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr
+    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
     ;
 
 method_params:
@@ -321,6 +323,7 @@ type:
     | CHAR_KW
     | BOOLEAN_KW
     | ANY_KW
+    | UNIT_KW
     ;
     
 
