@@ -299,10 +299,10 @@ params:
     ;
 
 func:
-      '(params)' RIGHT_ARROW_OPERATOR expr
-    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR expr
-    | '(params)' RIGHT_ARROW_OPERATOR NEWLINE expr
-    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
+      '('params')' RIGHT_ARROW_OPERATOR expr
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr
+    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
     ;
 
 method_params:
@@ -335,7 +335,7 @@ type:
     
 type_list_car:
       type
-    | type_list RIGHT_ARROW_OPERATOR type
+    | type_list_car RIGHT_ARROW_OPERATOR type
     ;
 
 type_list:
@@ -347,10 +347,7 @@ type_list_simple:
      '(' type_list ')' RIGHT_ARROW_OPERATOR type
     ;
     
-type_list:
-      type
-    | type_list RIGHT_ARROW_OPERATOR type
-    ;
+
 
 
 
