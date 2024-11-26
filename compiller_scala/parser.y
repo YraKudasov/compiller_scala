@@ -66,12 +66,19 @@ program:
 /*************************************************************/
 
 /*.....................................................CLASSES ƒŒƒ≈À¿“‹................................................... */
+class:
+      class_header '{' class_body '}'
+    ;
+
 class_body:
-    '{'  '}'
+      statement_expr_list_e
+    | expr 
+    | class_body
+    | /* nothing */ 
     ;
 
 class_header:
-    CLASS CLASS_ID '(' class_params ')'
+      CLASS CLASS_ID '(' class_params ')'
     ;
 
 class_params:
@@ -110,7 +117,7 @@ statement:
     | VAL IDENTIFIER ':' type_list_simple '=' expr { printf("explicit value declaration:\n"); }
     | VAR IDENTIFIER ':' type_list_car '=' expr { printf("explicit variable declaration:\n"); }
     | VAR IDENTIFIER ':' type_list_simple '=' expr { printf("explicit variable declaration:\n"); }
-    | method_head { printf("Method:\n"); }
+    | method { printf("Method:\n"); }
     ;
 
  
@@ -314,7 +321,7 @@ method_params:
     | /* nothing */
     ;
 
-method_head:
+method:
       DEF IDENTIFIER method_params ':' type '=' expr
     | DEF IDENTIFIER method_params ':' type '=' '{' expr '}'
     | DEF IDENTIFIER method_params '=' '{' expr '}'
@@ -322,6 +329,8 @@ method_head:
     | DEF IDENTIFIER method_params '=' '{' method '}'
     | DEF IDENTIFIER method_params '=' method 
     ;
+
+
 method_call_list:
       IDENTIFIER'('expr')'
     | IDENTIFIER'('')' 
