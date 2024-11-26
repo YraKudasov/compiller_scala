@@ -19,7 +19,11 @@ void yyerror(const char *s);
 %start program
 
 
-%right '='
+%nonassoc LOWER_THAN_EXPR
+%left ','
+%right '=' RIGHT_ARROW_OPERATOR
+%left KW_OR
+%left KW_AND
 %left '|'
 %left '&'
 %left EQ NEQ
@@ -99,8 +103,10 @@ class_params:
 statement_expr_list:
       statement
     | expr
-    | statement_expr_list statement
-    | statement_expr_list expr
+    | statement_expr_list ';' statement
+    | statement_expr_list NEWLINE statement
+    | statement_expr_list ';' expr
+    | statement_expr_list NEWLINE expr
     | statement_expr_list ';'
     | statement_expr_list NEWLINE
     ;
@@ -130,7 +136,7 @@ if_else_expr:
     ;
 
 else_expr:
-      ELSE expr
+      ELSE expr %prec LOWER_THAN_EXPR
     ;
 
 if_condition_list:
@@ -144,12 +150,12 @@ if_condition_list:
 /*..................................................... FOR................................................... */
 
 for_expr:
-          FOR '(' for_params ')' YIELD expr
-        | FOR '{'for_multy_list'}' YIELD expr
-        | FOR '{' for_params if_condition_list '}' YIELD expr
-        | FOR '(' for_params ')' expr { printf("FOR LOOP\n"); }
-        | FOR '{'for_multy_list'}' expr { printf("FOR MULTY LOOP\n"); }
-        | FOR '{' for_params if_condition_list '}' expr { printf("FOR LOOP: multy with IF_STMT\n"); }
+          FOR '(' for_params ')' YIELD expr %prec LOWER_THAN_EXPR
+        | FOR '{'for_multy_list'}' YIELD expr %prec LOWER_THAN_EXPR
+        | FOR '{' for_params if_condition_list '}' YIELD expr %prec LOWER_THAN_EXPR
+        | FOR '(' for_params ')' expr  %prec LOWER_THAN_EXPR { printf("FOR LOOP\n"); } 
+        | FOR '{'for_multy_list'}' expr %prec LOWER_THAN_EXPR { printf("FOR MULTY LOOP\n"); }
+        | FOR '{' for_params if_condition_list '}' expr  %prec LOWER_THAN_EXPR { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
 
 /*standart*/
@@ -183,8 +189,7 @@ match_expr:
 
 
 case_condition:
-          const
-        | const IF expr
+          const IF expr
         | IDENTIFIER
         | IDENTIFIER IF expr
         | int_literal_list_case
@@ -266,7 +271,6 @@ expr:
     | '{' statement_expr_list_e '}'
     | func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
-    | func_call { printf("func_call:\n"); }
     ;
 
 
@@ -297,8 +301,7 @@ const:
 
 /* Function call */
 func_call:
-      IDENTIFIER '(' ')' { printf("Function call: NO PARAMS\n"); }
-    | IDENTIFIER '(' expr_list ')' { printf("Function call: WITH PARAMS\n"); }
+      IDENTIFIER '(' expr_list_e ')' { printf("Function call: WITH PARAMS\n"); }
     ;
 
 params:
@@ -309,39 +312,35 @@ params:
     ;
 
 func:
-      '('params')' RIGHT_ARROW_OPERATOR expr
-    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr
-    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr
-    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
+      '('params')' RIGHT_ARROW_OPERATOR expr %prec LOWER_THAN_EXPR
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr %prec LOWER_THAN_EXPR
+    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr %prec LOWER_THAN_EXPR
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr %prec LOWER_THAN_EXPR
     ;
 
-method_params:
-      '('params')'
-    | method_params '('params')'
+
+method_params_list_e:
+      method_params_list
     | /* nothing */
     ;
 
+method_params_list:
+      '('params')'
+    | method_params_list '('params')'
+    ;
+
 method:
-      DEF IDENTIFIER method_params ':' type '=' expr
-    | DEF IDENTIFIER method_params ':' type '=' '{' expr '}'
-    | DEF IDENTIFIER method_params '=' '{' expr '}'
-    | DEF IDENTIFIER method_params '=' expr 
-    | DEF IDENTIFIER method_params '=' '{' method '}'
-    | DEF IDENTIFIER method_params '=' method 
+      DEF IDENTIFIER method_params_list_e ':' type '=' expr
+    | DEF IDENTIFIER method_params_list_e '=' expr 
+    | DEF IDENTIFIER method_params_list_e '=' method 
     ;
 
-
-method_call_list:
-      IDENTIFIER'('expr')'
-    | IDENTIFIER'('')' 
-    | IDENTIFIER
-    ;
 
 method_call:
-      expr'.'method_call_list 
-    | method_call_list
+     '('expr')' '.' IDENTIFIER'('expr_list_e')' 
+    |'('expr')' '.' IDENTIFIER
+    | const '.' IDENTIFIER
     ;
-
 
 
 /* Types */
