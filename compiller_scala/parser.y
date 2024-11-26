@@ -36,10 +36,6 @@ void yyerror(const char *s);
 
 
 
-%type <stmt> statement statement_list statement_list_e 
-%type <expr> expr expr_list expr_list_e match
-
-
 
 %token <int_value> NUM_10 NUM_16
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT

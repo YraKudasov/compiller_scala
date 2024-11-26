@@ -713,21 +713,21 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    67,    67,   104,   105,   106,   107,   108,   109,   110,
-     111,   115,   116,   120,   121,   122,   123,   124,   125,   126,
-     135,   139,   143,   144,   145,   146,   153,   154,   155,   156,
-     157,   158,   163,   164,   169,   170,   171,   172,   178,   182,
-     186,   187,   192,   193,   194,   195,   199,   200,   204,   205,
-     206,   207,   213,   214,   215,   219,   223,   230,   231,   236,
-     237,   242,   243,   244,   245,   246,   247,   248,   249,   250,
-     251,   252,   253,   254,   255,   256,   257,   258,   259,   260,
-     261,   262,   263,   264,   265,   266,   267,   268,   269,   270,
-     271,   272,   273,   279,   280,   281,   282,   288,   289,   290,
-     291,   292,   293,   294,   295,   296,   297,   304,   308,   309,
-     310,   311,   315,   316,   317,   318,   323,   324,   328,   329,
-     333,   334,   335,   340,   341,   342,   348,   349,   350,   351,
-     352,   353,   354,   358,   359,   363,   364,   368,   381,   387,
-     393,   399
+       0,    65,    65,   102,   103,   104,   105,   106,   107,   108,
+     109,   113,   114,   118,   119,   120,   121,   122,   123,   124,
+     133,   137,   141,   142,   143,   144,   151,   152,   153,   154,
+     155,   156,   161,   162,   167,   168,   169,   170,   176,   180,
+     184,   185,   190,   191,   192,   193,   197,   198,   202,   203,
+     204,   205,   211,   212,   213,   217,   221,   228,   229,   234,
+     235,   240,   241,   242,   243,   244,   245,   246,   247,   248,
+     249,   250,   251,   252,   253,   254,   255,   256,   257,   258,
+     259,   260,   261,   262,   263,   264,   265,   266,   267,   268,
+     269,   270,   271,   277,   278,   279,   280,   286,   287,   288,
+     289,   290,   291,   292,   293,   294,   295,   302,   306,   307,
+     308,   309,   313,   314,   315,   316,   321,   322,   326,   327,
+     331,   332,   333,   338,   339,   340,   346,   347,   348,   349,
+     350,   351,   352,   356,   357,   361,   362,   366,   379,   385,
+     391,   397
 };
 #endif
 
@@ -1619,319 +1619,319 @@ yyreduce:
   switch (yyn)
     {
   case 12: /* statement_expr_list_e: %empty  */
-#line 116 "parser.y"
+#line 114 "parser.y"
                      { printf("PARSER found statement_list_e - nothing\n"); }
 #line 1625 "parser.tab.c"
     break;
 
   case 13: /* statement: VAL IDENTIFIER '=' expr  */
-#line 120 "parser.y"
+#line 118 "parser.y"
                                { printf("implicit value declaration:\n"); }
 #line 1631 "parser.tab.c"
     break;
 
   case 14: /* statement: VAR IDENTIFIER '=' expr  */
-#line 121 "parser.y"
+#line 119 "parser.y"
                                { printf("implicit variable declaration:\n"); }
 #line 1637 "parser.tab.c"
     break;
 
   case 15: /* statement: VAL IDENTIFIER ':' type_list_car '=' expr  */
-#line 122 "parser.y"
+#line 120 "parser.y"
                                                 { printf("explicit value declaration:\n"); }
 #line 1643 "parser.tab.c"
     break;
 
   case 16: /* statement: VAL IDENTIFIER ':' type_list_simple '=' expr  */
-#line 123 "parser.y"
+#line 121 "parser.y"
                                                    { printf("explicit value declaration:\n"); }
 #line 1649 "parser.tab.c"
     break;
 
   case 17: /* statement: VAR IDENTIFIER ':' type_list_car '=' expr  */
-#line 124 "parser.y"
+#line 122 "parser.y"
                                                 { printf("explicit variable declaration:\n"); }
 #line 1655 "parser.tab.c"
     break;
 
   case 18: /* statement: VAR IDENTIFIER ':' type_list_simple '=' expr  */
-#line 125 "parser.y"
+#line 123 "parser.y"
                                                    { printf("explicit variable declaration:\n"); }
 #line 1661 "parser.tab.c"
     break;
 
   case 19: /* statement: method  */
-#line 126 "parser.y"
+#line 124 "parser.y"
              { printf("Method:\n"); }
 #line 1667 "parser.tab.c"
     break;
 
   case 29: /* for_expr: FOR '(' for_params ')' expr  */
-#line 156 "parser.y"
+#line 154 "parser.y"
                                                              { printf("FOR LOOP\n"); }
 #line 1673 "parser.tab.c"
     break;
 
   case 30: /* for_expr: FOR '{' for_multy_list '}' expr  */
-#line 157 "parser.y"
+#line 155 "parser.y"
                                                               { printf("FOR MULTY LOOP\n"); }
 #line 1679 "parser.tab.c"
     break;
 
   case 31: /* for_expr: FOR '{' for_params if_condition_list '}' expr  */
-#line 158 "parser.y"
+#line 156 "parser.y"
                                                                                { printf("FOR LOOP: multy with IF_STMT\n"); }
 #line 1685 "parser.tab.c"
     break;
 
   case 57: /* expr_list_e: expr_list  */
-#line 230 "parser.y"
+#line 228 "parser.y"
                    { printf("PARSER found expr_list - expr_list\n"); }
 #line 1691 "parser.tab.c"
     break;
 
   case 58: /* expr_list_e: %empty  */
-#line 231 "parser.y"
+#line 229 "parser.y"
                      { printf("PARSER found expr_list - nothing\n"); }
 #line 1697 "parser.tab.c"
     break;
 
   case 59: /* expr_list: expr  */
-#line 236 "parser.y"
+#line 234 "parser.y"
                       { printf("PARSER found expr_list - expr\n"); }
 #line 1703 "parser.tab.c"
     break;
 
   case 60: /* expr_list: expr_list ',' expr  */
-#line 237 "parser.y"
+#line 235 "parser.y"
                           { printf("PARSER found expr_list - expr_list\n"); }
 #line 1709 "parser.tab.c"
     break;
 
   case 61: /* expr: const  */
-#line 242 "parser.y"
+#line 240 "parser.y"
             {printf("PARSER found expr - const\n"); }
 #line 1715 "parser.tab.c"
     break;
 
   case 62: /* expr: IDENTIFIER  */
-#line 243 "parser.y"
+#line 241 "parser.y"
                  {printf("PARSER found expr - IDENTIFIER\n"); }
 #line 1721 "parser.tab.c"
     break;
 
   case 63: /* expr: CLASS_ID  */
-#line 244 "parser.y"
+#line 242 "parser.y"
                {printf("PARSER found expr - CLASS_ID\n"); }
 #line 1727 "parser.tab.c"
     break;
 
   case 64: /* expr: IDENTIFIER '=' expr  */
-#line 245 "parser.y"
+#line 243 "parser.y"
                           { printf("Assignment:\n"); }
 #line 1733 "parser.tab.c"
     break;
 
   case 65: /* expr: '(' expr ')'  */
-#line 246 "parser.y"
+#line 244 "parser.y"
                    {printf("PARSER found expr - ( expr )\n"); }
 #line 1739 "parser.tab.c"
     break;
 
   case 66: /* expr: expr '>' expr  */
-#line 247 "parser.y"
+#line 245 "parser.y"
                     {printf("PARSER found expr - expr > expr\n"); }
 #line 1745 "parser.tab.c"
     break;
 
   case 67: /* expr: expr '<' expr  */
-#line 248 "parser.y"
+#line 246 "parser.y"
                     {printf("PARSER found expr - expr < expr\n"); }
 #line 1751 "parser.tab.c"
     break;
 
   case 68: /* expr: expr MORE_OR_EQUAL_OPERATOR expr  */
-#line 249 "parser.y"
+#line 247 "parser.y"
                                        {printf("PARSER found expr - expr >= expr\n"); }
 #line 1757 "parser.tab.c"
     break;
 
   case 69: /* expr: expr LESS_OR_EQUAL_OPERATOR expr  */
-#line 250 "parser.y"
+#line 248 "parser.y"
                                        {printf("PARSER found expr - expr <= expr\n"); }
 #line 1763 "parser.tab.c"
     break;
 
   case 70: /* expr: expr EQ expr  */
-#line 251 "parser.y"
+#line 249 "parser.y"
                    {printf("PARSER found expr - expr == expr\n"); }
 #line 1769 "parser.tab.c"
     break;
 
   case 71: /* expr: expr NEQ expr  */
-#line 252 "parser.y"
+#line 250 "parser.y"
                     {printf("PARSER found expr - expr != expr\n"); }
 #line 1775 "parser.tab.c"
     break;
 
   case 72: /* expr: expr '+' expr  */
-#line 253 "parser.y"
+#line 251 "parser.y"
                     { printf("PARSER found expr - expr + expr\n"); }
 #line 1781 "parser.tab.c"
     break;
 
   case 73: /* expr: expr '-' expr  */
-#line 254 "parser.y"
+#line 252 "parser.y"
                     { printf("PARSER found expr - expr - expr\n"); }
 #line 1787 "parser.tab.c"
     break;
 
   case 74: /* expr: expr '/' expr  */
-#line 255 "parser.y"
+#line 253 "parser.y"
                     { printf("PARSER found expr - expr / expr\n"); }
 #line 1793 "parser.tab.c"
     break;
 
   case 75: /* expr: expr '*' expr  */
-#line 256 "parser.y"
+#line 254 "parser.y"
                     { printf("PARSER found expr - expr * expr\n"); }
 #line 1799 "parser.tab.c"
     break;
 
   case 76: /* expr: expr '%' expr  */
-#line 257 "parser.y"
+#line 255 "parser.y"
                     { printf("PARSER found expr - expr % expr\n"); }
 #line 1805 "parser.tab.c"
     break;
 
   case 77: /* expr: expr '&' expr  */
-#line 258 "parser.y"
+#line 256 "parser.y"
                     { printf("PARSER found expr - expr && expr\n"); }
 #line 1811 "parser.tab.c"
     break;
 
   case 78: /* expr: expr '|' expr  */
-#line 259 "parser.y"
+#line 257 "parser.y"
                     { printf("PARSER found expr - expr | expr\n"); }
 #line 1817 "parser.tab.c"
     break;
 
   case 79: /* expr: expr KW_OR expr  */
-#line 260 "parser.y"
+#line 258 "parser.y"
                       { printf("PARSER found expr - expr || expr\n"); }
 #line 1823 "parser.tab.c"
     break;
 
   case 80: /* expr: expr KW_AND expr  */
-#line 261 "parser.y"
+#line 259 "parser.y"
                        { printf("PARSER found expr - expr && expr\n"); }
 #line 1829 "parser.tab.c"
     break;
 
   case 83: /* expr: func_call  */
-#line 264 "parser.y"
+#line 262 "parser.y"
                 { printf("PARSER found expr - func_call\n"); }
 #line 1835 "parser.tab.c"
     break;
 
   case 84: /* expr: if_else_expr  */
-#line 265 "parser.y"
+#line 263 "parser.y"
                   { printf("PARSER found expr - if_else_expr\n"); }
 #line 1841 "parser.tab.c"
     break;
 
   case 85: /* expr: for_expr  */
-#line 266 "parser.y"
+#line 264 "parser.y"
                { printf("PARSER found expr - for_expr\n"); }
 #line 1847 "parser.tab.c"
     break;
 
   case 86: /* expr: while_expr  */
-#line 267 "parser.y"
+#line 265 "parser.y"
                  { printf("PARSER found expr - while_expr\n"); }
 #line 1853 "parser.tab.c"
     break;
 
   case 87: /* expr: do_while_expr  */
-#line 268 "parser.y"
+#line 266 "parser.y"
                     { printf("PARSER found expr - do_while_expr\n"); }
 #line 1859 "parser.tab.c"
     break;
 
   case 88: /* expr: try_expr  */
-#line 269 "parser.y"
+#line 267 "parser.y"
                { printf("PARSER found expr - try_expr\n"); }
 #line 1865 "parser.tab.c"
     break;
 
   case 89: /* expr: match_expr  */
-#line 270 "parser.y"
+#line 268 "parser.y"
                  { printf("PARSER found expr - match_expr\n"); }
 #line 1871 "parser.tab.c"
     break;
 
   case 91: /* expr: func  */
-#line 272 "parser.y"
+#line 270 "parser.y"
            { printf("Function:\n"); }
 #line 1877 "parser.tab.c"
     break;
 
   case 92: /* expr: method_call  */
-#line 273 "parser.y"
+#line 271 "parser.y"
                   { printf("method_call:\n"); }
 #line 1883 "parser.tab.c"
     break;
 
   case 93: /* num_const: NUM_10  */
-#line 279 "parser.y"
+#line 277 "parser.y"
              { printf("PARSER found - INT\n"); }
 #line 1889 "parser.tab.c"
     break;
 
   case 94: /* num_const: NUM_16  */
-#line 280 "parser.y"
+#line 278 "parser.y"
              { printf("PARSER found - INT\n"); }
 #line 1895 "parser.tab.c"
     break;
 
   case 95: /* num_const: REAL_NUMBER  */
-#line 281 "parser.y"
+#line 279 "parser.y"
                   { printf("PARSER found - REAL\n"); }
 #line 1901 "parser.tab.c"
     break;
 
   case 96: /* num_const: REAL_NUMBER_EXPONENT  */
-#line 282 "parser.y"
+#line 280 "parser.y"
                            { printf("PARSER found - REAL_EXP\n"); }
 #line 1907 "parser.tab.c"
     break;
 
   case 107: /* func_call: IDENTIFIER '(' expr_list_e ')'  */
-#line 304 "parser.y"
+#line 302 "parser.y"
                                      { printf("Function call: WITH PARAMS\n"); }
 #line 1913 "parser.tab.c"
     break;
 
   case 138: /* array: ARRAY '(' expr_list_e ')'  */
-#line 381 "parser.y"
+#line 379 "parser.y"
                                 { printf("PARSER found Array\n"); }
 #line 1919 "parser.tab.c"
     break;
 
   case 139: /* list: LIST '(' expr_list_e ')'  */
-#line 387 "parser.y"
+#line 385 "parser.y"
                                { printf("PARSER found List\n"); }
 #line 1925 "parser.tab.c"
     break;
 
   case 140: /* vector: VECTOR '(' expr_list_e ')'  */
-#line 393 "parser.y"
+#line 391 "parser.y"
                                  { printf("PARSER found Vector\n"); }
 #line 1931 "parser.tab.c"
     break;
 
   case 141: /* set: SET '(' expr_list_e ')'  */
-#line 399 "parser.y"
+#line 397 "parser.y"
                               { printf("PARSER found Set\n"); }
 #line 1937 "parser.tab.c"
     break;
@@ -2130,5 +2130,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 404 "parser.y"
+#line 402 "parser.y"
 
