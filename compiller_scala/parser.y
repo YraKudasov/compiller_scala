@@ -110,7 +110,7 @@ statement:
     | VAL IDENTIFIER ':' type_list_simple '=' expr { printf("explicit value declaration:\n"); }
     | VAR IDENTIFIER ':' type_list_car '=' expr { printf("explicit variable declaration:\n"); }
     | VAR IDENTIFIER ':' type_list_simple '=' expr { printf("explicit variable declaration:\n"); }
-    | method { printf("Method:\n"); }
+    | method_head { printf("Method:\n"); }
     ;
 
  
@@ -171,7 +171,7 @@ do_while_expr:
 /*..................................................... MATCH................................................... */
 match_expr:
           IDENTIFIER MATCH '{' case_list'}'
-        | num_const MATCH '{' case_list '}'
+        | const MATCH '{' case_list '}'
         ;
 
 
@@ -229,6 +229,7 @@ expr_list:
 expr:
       const {printf("PARSER found expr - const\n"); }
     | IDENTIFIER {printf("PARSER found expr - IDENTIFIER\n"); }
+    | CLASS_ID {printf("PARSER found expr - CLASS_ID\n"); }
     | IDENTIFIER '=' expr { printf("Assignment:\n"); }
     | '(' expr ')' {printf("PARSER found expr - ( expr )\n"); }
     | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
@@ -257,6 +258,8 @@ expr:
     | match_expr { printf("PARSER found expr - match_expr\n"); }
     | '{' statement_expr_list_e '}'
     | func { printf("Function:\n"); }
+    | method_call { printf("method_call:\n"); }
+    | func_call { printf("func_call:\n"); }
     ;
 
 
@@ -292,17 +295,17 @@ func_call:
     ;
 
 params:
-      IDENTIFIER ':' type
-    | params ',' IDENTIFIER ':' type
-    | params ',' IDENTIFIER ':' type '=' const
+      IDENTIFIER ':' type_list_car
+    | params ',' IDENTIFIER ':' type_list_car
+    | params ',' IDENTIFIER ':' type_list_car '=' const
     | /* nothing */
     ;
 
 func:
-      '(params)' RIGHT_ARROW_OPERATOR expr
-    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR expr
-    | '(params)' RIGHT_ARROW_OPERATOR NEWLINE expr
-    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
+      '('params')' RIGHT_ARROW_OPERATOR expr
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr
+    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr
+    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
     ;
 
 method_params:
@@ -311,13 +314,23 @@ method_params:
     | /* nothing */
     ;
 
-method:
+method_head:
       DEF IDENTIFIER method_params ':' type '=' expr
     | DEF IDENTIFIER method_params ':' type '=' '{' expr '}'
     | DEF IDENTIFIER method_params '=' '{' expr '}'
     | DEF IDENTIFIER method_params '=' expr 
     | DEF IDENTIFIER method_params '=' '{' method '}'
     | DEF IDENTIFIER method_params '=' method 
+    ;
+method_call_list:
+      IDENTIFIER'('expr')'
+    | IDENTIFIER'('')' 
+    | IDENTIFIER
+    ;
+
+method_call:
+      expr'.'method_call_list 
+    | method_call_list
     ;
 
 
