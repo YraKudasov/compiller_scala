@@ -102,8 +102,10 @@ statement_expr_list_e:
     ;
 
 statement:
-      VAL IDENTIFIER '=' expr  { printf("Value declaration:\n"); }
-    | VAR IDENTIFIER '=' expr  { printf("Variable declaration:\n"); }
+      VAL IDENTIFIER '=' expr  { printf("implicit value declaration:\n"); }
+    | VAR IDENTIFIER '=' expr  { printf("implicit variable declaration:\n"); }
+    | VAL IDENTIFIER ':' type '=' expr { printf("explicit value declaration:\n"); }
+    | VAR IDENTIFIER ':' type '=' expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
     | func { printf("Function:\n"); }
     ;
