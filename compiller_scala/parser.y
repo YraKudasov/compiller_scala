@@ -106,8 +106,10 @@ statement_expr_list_e:
 statement:
       VAL IDENTIFIER '=' expr  { printf("implicit value declaration:\n"); }
     | VAR IDENTIFIER '=' expr  { printf("implicit variable declaration:\n"); }
-    | VAL IDENTIFIER ':' type_list '=' expr { printf("explicit value declaration:\n"); }
-    | VAR IDENTIFIER ':' type_list '=' expr { printf("explicit variable declaration:\n"); }
+    | VAL IDENTIFIER ':' type_list_car '=' expr { printf("explicit value declaration:\n"); }
+    | VAL IDENTIFIER ':' type_list_simple '=' expr { printf("explicit value declaration:\n"); }
+    | VAR IDENTIFIER ':' type_list_car '=' expr { printf("explicit variable declaration:\n"); }
+    | VAR IDENTIFIER ':' type_list_simple '=' expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
     ;
 
@@ -331,10 +333,25 @@ type:
     | UNIT_KW
     ;
     
+type_list_car:
+      type
+    | type_list RIGHT_ARROW_OPERATOR type
+    ;
+
+type_list:
+      type
+    | type_list_simple ',' type
+    ;
+
+type_list_simple:
+     '(' type_list ')' RIGHT_ARROW_OPERATOR type
+    ;
+    
 type_list:
       type
     | type_list RIGHT_ARROW_OPERATOR type
     ;
+
 
 
 
