@@ -106,8 +106,8 @@ statement_expr_list_e:
 statement:
       VAL IDENTIFIER '=' expr  { printf("implicit value declaration:\n"); }
     | VAR IDENTIFIER '=' expr  { printf("implicit variable declaration:\n"); }
-    | VAL IDENTIFIER ':' type '=' expr { printf("explicit value declaration:\n"); }
-    | VAR IDENTIFIER ':' type '=' expr { printf("explicit variable declaration:\n"); }
+    | VAL IDENTIFIER ':' type_list '=' expr { printf("explicit value declaration:\n"); }
+    | VAR IDENTIFIER ':' type_list '=' expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
     ;
 
@@ -292,14 +292,15 @@ func_call:
 params:
       IDENTIFIER ':' type
     | params ',' IDENTIFIER ':' type
+    | params ',' IDENTIFIER ':' type '=' const
     | /* nothing */
     ;
 
 func:
-      '('params')' RIGHT_ARROW_OPERATOR expr
-    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr
-    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr
-    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
+      '(params)' RIGHT_ARROW_OPERATOR expr
+    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR expr
+    | '(params)' RIGHT_ARROW_OPERATOR NEWLINE expr
+    | '(params)' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr
     ;
 
 method_params:
@@ -311,6 +312,10 @@ method_params:
 method:
       DEF IDENTIFIER method_params ':' type '=' expr
     | DEF IDENTIFIER method_params ':' type '=' '{' expr '}'
+    | DEF IDENTIFIER method_params '=' '{' expr '}'
+    | DEF IDENTIFIER method_params '=' expr 
+    | DEF IDENTIFIER method_params '=' '{' method '}'
+    | DEF IDENTIFIER method_params '=' method 
     ;
 
 
@@ -326,6 +331,11 @@ type:
     | UNIT_KW
     ;
     
+type_list:
+      type
+    | type_list RIGHT_ARROW_OPERATOR type
+    ;
+
 
 
 /************************************************/
