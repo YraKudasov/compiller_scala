@@ -7,7 +7,7 @@
 %x MULTILINE_COMMENT
 %x ONELINE_COMMENT
 %x CONST_CHAR
-
+%x PARENS
 
 
 DIGIT [0-9]
@@ -37,6 +37,7 @@ REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 int64_t int_number;
 double real_number;
 int int_buffer;
+int brace_level;
 char buffer[1000];
 char buf_char[2];
 %}
@@ -144,6 +145,16 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
 }
 
+"("      { BEGIN(PARENS); brace_level = 1; buffer[0] = 0; }
+
+<PARENS>{
+    [^)\n]+     { strcat(buffer, yytext); }
+    "("         { brace_level++; strcat(buffer, "("); }
+    ")"         { brace_level--; strcat(buffer, ")"); }
+    "\n"        {}
+    ")"         { if (brace_level == 0) { printf("%s\n", buffer); BEGIN(INITIAL); } }
+}
+
 \/\* {buffer[0]=0; BEGIN(MULTILINE_COMMENT);}
 <MULTILINE_COMMENT>[^\*\/]+ {strcat(buffer,yytext);}
 <MULTILINE_COMMENT>\* {strcat(buffer, "*");}
@@ -155,6 +166,7 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 <ONELINE_COMMENT>[^\n] {strcat(buffer, yytext);}
 <ONELINE_COMMENT>\n {printf("(%s) - Found ONELINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 <ONELINE_COMMENT><<EOF>> {printf("(%s) - Found ONELINE_COMMENT\n", buffer); BEGIN(INITIAL);}
+
 
 
 \+ { printf("(%s) - Found PLUS_OPERATOR\n", yytext); return '+';}
