@@ -309,9 +309,6 @@ params:
 
 func:
       '('params')' RIGHT_ARROW_OPERATOR expr %prec LOWER_THAN_EXPR
-    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR expr %prec LOWER_THAN_EXPR
-    | '('params')' RIGHT_ARROW_OPERATOR NEWLINE expr %prec LOWER_THAN_EXPR
-    | '('params')' NEWLINE RIGHT_ARROW_OPERATOR NEWLINE expr %prec LOWER_THAN_EXPR
     ;
 
 
@@ -328,7 +325,6 @@ method_params_list:
 method:
       DEF IDENTIFIER method_params_list_e ':' type '=' expr
     | DEF IDENTIFIER method_params_list_e '=' expr 
-    | DEF IDENTIFIER method_params_list_e '=' method 
     ;
 
 

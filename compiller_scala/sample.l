@@ -145,15 +145,17 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
 }
 
-"("      { BEGIN(PARENS); brace_level = 1; buffer[0] = 0; }
-
-<PARENS>{
-    [^)\n]+     { strcat(buffer, yytext); }
-    "("         { brace_level++; strcat(buffer, "("); }
-    ")"         { brace_level--; strcat(buffer, ")"); }
-    "\n"        {}
-    ")"         { if (brace_level == 0) { printf("%s\n", buffer); BEGIN(INITIAL); } }
+"(" { BEGIN(PARENS); brace_level = 1; buffer[0] = 0; }
+<PARENS>[^)\n]+ { strcat(buffer, yytext); }
+<PARENS>"("  { brace_level++; strcat(buffer, "("); }
+<PARENS>")"  { brace_level--; strcat(buffer, ")"); }
+<PARENS>"\n" {}
+<PARENS>")" { 
+if (brace_level == 0) {
+printf("%s\n", buffer); BEGIN(INITIAL); 
+} 
 }
+
 
 \/\* {buffer[0]=0; BEGIN(MULTILINE_COMMENT);}
 <MULTILINE_COMMENT>[^\*\/]+ {strcat(buffer,yytext);}
