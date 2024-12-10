@@ -52,7 +52,7 @@ void yyerror(const char *s);
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
 %token DEF
-%token CLASS CLASS_ID 
+%token CLASS CLASS_ID EXTENDS
 
 %%
 
@@ -65,20 +65,16 @@ program:
 
 /*************************************************************/
 
-/*.....................................................CLASSES ДОДЕЛАТЬ................................................... */
+/*.....................................................CLASSES................................................... */
 class:
-      class_header '{' class_body '}'
-    ;
-
-class_body:
-      statement_expr_list_e
-    | expr 
-    | class_body
-    | /* nothing */ 
+      class_header '{' statement_expr_list_e '}'
     ;
 
 class_header:
       CLASS CLASS_ID '(' class_params ')'
+    | CLASS CLASS_ID '(' class_params ')' inheritance
+    | CLASS CLASS_ID
+    | CLASS CLASS_ID inheritance
     ;
 
 class_params:
@@ -92,6 +88,19 @@ class_params:
     | class_params ',' VAL IDENTIFIER ':' type '=' const
     | /* nothing */ 
     ;
+
+instance_class:
+      NEW CLASS_ID
+    | NEW CLASS_ID'(' expr_list_e ')'
+    ;
+
+/*...........................Наследование...........................*/
+
+inheritance:
+      EXTENDS CLASS_ID
+    | EXTENDS CLASS_ID'('expr_list')'
+    ;
+
 
     
 
@@ -267,6 +276,9 @@ expr:
     | '{' statement_expr_list_e '}'
     | func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
+    | instance_class { printf("instance_class:\n"); }
+    | readLine'('')' { printf("readLine:\n"); }
+    | print'(' expr ')' { printf("print:\n"); }
     ;
 
 
