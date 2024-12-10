@@ -72,6 +72,7 @@ print { printf("(%s) - Found KW_PRINT\n", yytext); }
 println { printf("(%s) - Found KW_PRINTLN\n", yytext); }
 printf { printf("(%s) - Found KW_PRINTF\n", yytext); }
 return { printf("(%s) - Found KW_RETURN\n", yytext); }
+readLine { printf("(%s) - Found KW_READLINE\n", yytext); }
 sealed { printf("(%s) - Found KW_SEALED\n", yytext); }
 super { printf("(%s) - Found KW_SUPER\n", yytext); }
 this { printf("(%s) - Found KW_THIS\n", yytext); }

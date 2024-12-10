@@ -41,7 +41,7 @@ void yyerror(const char *s);
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE  TRY CATCH FINALLY
+%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
@@ -67,7 +67,7 @@ program:
 
 /*.....................................................CLASSES................................................... */
 class:
-      class_header '{'visibility_modifier statement_expr_list_e '}'
+      class_header '{' statement_expr_list_e '}'
     ;
 
 class_header:
@@ -284,8 +284,8 @@ expr:
     | func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | instance_class { printf("instance_class:\n"); }
-    | readLine'('')' { printf("readLine:\n"); }
-    | print'(' expr ')' { printf("print:\n"); }
+    | READLINE'('')' { printf("readLine:\n"); }
+    | PRINT'(' expr ')' { printf("print:\n"); }
     ;
 
 
