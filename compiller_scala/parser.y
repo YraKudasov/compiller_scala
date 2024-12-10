@@ -67,7 +67,7 @@ program:
 
 /*.....................................................CLASSES................................................... */
 class:
-      class_header '{' statement_expr_list_e '}'
+      class_header '{'visibility_modifier statement_expr_list_e '}'
     ;
 
 class_header:
@@ -94,6 +94,12 @@ instance_class:
     | NEW CLASS_ID'(' expr_list_e ')'
     ;
 
+visibility_modifier:
+      private
+    | protected
+    | /* nothing */
+    ;
+
 /*...........................Наследование...........................*/
 
 inheritance:
@@ -107,6 +113,7 @@ inheritance:
 /* Statements */
 statement_expr_list:
       statement
+    | visibility_modifier statement
     | expr
     | statement_expr_list ';' statement
     | statement_expr_list NEWLINE statement
