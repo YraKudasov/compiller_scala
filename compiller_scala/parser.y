@@ -29,8 +29,8 @@ void yyerror(const char *s);
 %left EQ NEQ
 %left '>' '<' MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %left '+' '-' 
-%nonassoc UMINUS UPLUS
 %left '*' '/' '%'
+%nonassoc UMINUS UPLUS
 %left '(' ')' '[' ']'
 
 
@@ -52,6 +52,8 @@ void yyerror(const char *s);
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
 %token DEF
+%token NEW
+%token PROTECTED PRIVATE
 %token CLASS CLASS_ID EXTENDS
 
 %%
@@ -95,8 +97,8 @@ instance_class:
     ;
 
 visibility_modifier:
-      private
-    | protected
+      PRIVATE
+    | PROTECTED
     | /* nothing */
     ;
 
@@ -112,15 +114,13 @@ inheritance:
 
 /* Statements */
 statement_expr_list:
-      statement
+      statement { printf("Add statement :\n"); }
     | visibility_modifier statement
     | expr
-    | statement_expr_list ';' statement
-    | statement_expr_list NEWLINE statement
-    | statement_expr_list ';' expr
-    | statement_expr_list NEWLINE expr
-    | statement_expr_list ';'
-    | statement_expr_list NEWLINE
+    | statement_expr_list  statement { printf("Add new statement :\n"); }
+    | statement_expr_list  expr
+    | statement_expr_list ';'  { printf("Add ; :\n"); }
+    | statement_expr_list NEWLINE { printf("Add NEWLINE :\n"); }
     ;
 
 statement_expr_list_e:
@@ -271,8 +271,8 @@ expr:
     | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
     | expr KW_OR expr { printf("PARSER found expr - expr || expr\n"); }
     | expr KW_AND expr { printf("PARSER found expr - expr && expr\n"); }
-    | '-' expr  %prec UMINUS
-    | '+' expr  %prec UMINUS
+    | '-' expr  %prec UMINUS { printf("PARSER found expr - UMINUS\n"); }
+    | '+' expr  %prec UPLUS { printf("PARSER found expr - UPLUS\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_expr{ printf("PARSER found expr - if_else_expr\n"); }
     | for_expr { printf("PARSER found expr - for_expr\n"); }

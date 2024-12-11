@@ -1,1 +1,4 @@
-val a = xczc(5, a+10, dfgd);
+val a = 5
+
++6                   
+
