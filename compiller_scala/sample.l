@@ -32,23 +32,10 @@ REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 
 
 
-int last_token_can_terminate = 0;
 
 
-int next_token_can_start(const char* token) {
 
-    const char* forbidden_tokens[] = {
-        "catch", "else", "extends", "finally", "forSome", "match",
-        "with", "yield", ",", ".", ";", ":", "=", "=>", "<-", "<:",
-        "<%", ">:","#", "[", ")", "]", "}" 
-    };
-    for (int i = 0; i < sizeof(forbidden_tokens) / sizeof(forbidden_tokens[0]); i++) {
-        if (strcmp(token, forbidden_tokens[i]) == 0) {
-            return 0; 
-        }
-    }
-    return 1; 
-}
+
 
 
 %}
@@ -134,6 +121,8 @@ yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 <CONST_STRING>\\ {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\" {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
 
+
+
 \' {buffer[0]=0; BEGIN(CONST_CHAR);}
 <CONST_CHAR>\\u[0-9A-Fa-f]{4}\' {
     yytext[strlen(yytext)-1] = '\0'; // Удаляем одинарную кавычку в конце
@@ -167,6 +156,8 @@ printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL);
 printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
 }
+
+
 
 "(" { BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); }
 <PARENS>"("  { brace_level++; }
@@ -237,7 +228,7 @@ BEGIN(INITIAL);
 \] { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
 \{ { printf("(%s) - Found BRACE\n", yytext); }
 \} { printf("(%s) - Found BRACE\n", yytext); }
-\; { printf("(%s) - Found SEMICOLON\n", yytext); last_token_can_terminate = 0; return ';';}
+\; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
 \, { printf("(%s) - Found COMMA\n", yytext); return ',';}
 \: { printf("(%s) - Found COLON\n", yytext); }
 \. { printf("(%s) - Found DOT\n", yytext); }
@@ -247,7 +238,6 @@ BEGIN(INITIAL);
 [a-zA-Z_][a-zA-Z0-9_]* { 
     yylval.str_value = strdup(yytext);
     printf("(%s) - Found IDENTIFIER\n", yytext); 
-    last_token_can_terminate = 1;
     return IDENTIFIER;
 }
 
@@ -255,7 +245,6 @@ BEGIN(INITIAL);
     parse_integer(&int_number, yytext, 10);
     printf("Line %d: found decimal number: %d\n", yylineno, int_number);
     yylval.int_value = int_number;
-    last_token_can_terminate = 1;
     return NUM_10;
 }
 
@@ -263,43 +252,41 @@ BEGIN(INITIAL);
 {NUM_16} {
     parse_integer(&int_number, yytext, 16);
     printf("Line %d: found hex number: %d\n", yylineno, int_number);
-    last_token_can_terminate = 1;
+   
 }
 
 
 {REAL_NUMBER} {
     parse_real(&real_number, yytext);
     printf("Line %d: found real number: %f\n", yylineno, real_number);
-    last_token_can_terminate = 1;
+  
 }
 
 {REAL_NUMBER_EXPONENT} {
     parse_real(&real_number, yytext);
     printf("Line %d: found real exponent number: %f\n", yylineno, real_number);
-    last_token_can_terminate = 1;
+    
 }
 
 
 "this"|"null"|"true"|"false"|"return"|"type" {
     printf("Found keyword: %s\n", yytext);
-    last_token_can_terminate = 1;
+  
 }
 
 
 "_"|")"|"]"|"}" {
     printf("Found closing token: %s\n", yytext);
-    last_token_can_terminate = 1;
 }
 
 "{"|"("|"[" {
     printf("Found opening token: %s\n", yytext);
-    last_token_can_terminate = 0;
 }
 
 
-\n+ {
-    if (brace_level == 0 || last_token_can_terminate) {
-     printf("Found newline as a separator\n");
+\n {
+    if (brace_level == 0 ) {
+     printf("Found NEWLINE \n");
         return NEWLINE;
     }
 }
@@ -307,7 +294,7 @@ BEGIN(INITIAL);
 
 [0-9]*[a-zA-Z_][a-zA-Z0-9_]* { printf("(%s) - Error IDENTIFIER\n", yytext); }
 
-\s+  { last_token_can_terminate = 1; }
+\s+  {}
 .  {}
 %%
 
