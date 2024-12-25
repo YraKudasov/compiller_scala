@@ -114,13 +114,18 @@ inheritance:
 
 /* Statements */
 statement_expr_list:
-      statement { printf("Add statement :\n"); }
-    | visibility_modifier statement
-    | expr
-    | statement_expr_list  statement { printf("Add new statement :\n"); }
-    | statement_expr_list  expr
-    | statement_expr_list ';'  { printf("Add ; \n"); }
-    | statement_expr_list endlList { printf("Add NEWLINE :\n"); }
+      statement endlList { printf("Add first statement :\n"); }
+    | visibility_modifier statement endlList { printf("Add first visibility_modifier statement :\n"); }
+    | expr endlList { printf("Add first statement :\n"); }
+    | statement endlOpt semicolonList endlOpt{ printf("Add first statement :\n"); }
+    | visibility_modifier statement endlOpt semicolonList endlOpt { printf("Add first visibility_modifier statement :\n"); }
+    | expr endlOpt semicolonList endlOpt { printf("Add first statement :\n"); }
+    | statement_expr_list  statement endlOpt semicolonList endlOpt { printf("Add new statement to statement_expr_list :\n"); }
+    | statement_expr_list  expr endlOpt semicolonList endlOpt { printf("Add new expr to statement_expr_list :\n"); }
+    | statement_expr_list  visibility_modifier statement endlOpt semicolonList endlOpt { printf("Add new visibility_modifier to statement_expr_list :\n"); }
+    | statement_expr_list  statement endlOpt { printf("Add new statement to statement_expr_list :\n"); }
+    | statement_expr_list  expr endlOpt { printf("Add new expr to statement_expr_list :\n"); }
+    | statement_expr_list  visibility_modifier statement endlOpt { printf("Add new visibility_modifier to statement_expr_list :\n"); }
     ;
 
 statement_expr_list_e:
@@ -129,12 +134,12 @@ statement_expr_list_e:
     ;
 
 statement:
-      VAL IDENTIFIER '=' expr  { printf("implicit value declaration:\n"); }
-    | VAR IDENTIFIER '=' expr  { printf("implicit variable declaration:\n"); }
-    | VAL IDENTIFIER ':' type_list_car '=' expr { printf("explicit value declaration:\n"); }
-    | VAL IDENTIFIER ':' type_list_simple '=' expr { printf("explicit value declaration:\n"); }
-    | VAR IDENTIFIER ':' type_list_car '=' expr { printf("explicit variable declaration:\n"); }
-    | VAR IDENTIFIER ':' type_list_simple '=' expr { printf("explicit variable declaration:\n"); }
+      VAL endlOpt IDENTIFIER endlOpt '=' expr  { printf("implicit value declaration:\n"); }
+    | VAR endlOpt IDENTIFIER endlOpt '=' expr  { printf("implicit variable declaration:\n"); }
+    | VAL endlOpt IDENTIFIER ':' type_list_car '=' expr { printf("explicit value declaration:\n"); }
+    | VAL endlOpt IDENTIFIER ':' type_list_simple '=' expr { printf("explicit value declaration:\n"); }
+    | VAR endlOpt IDENTIFIER ':' type_list_car '=' expr { printf("explicit variable declaration:\n"); }
+    | VAR endlOpt IDENTIFIER ':' type_list_simple '=' expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
     ;
 
@@ -425,5 +430,10 @@ endlOpt:
     | /*empty*/ 
     ;
 
+    /* endlList */
+semicolonList:
+      ';'          { printf("PARSER found SEMICOLON\n"); }
+    | semicolonList ';' { printf("PARSER found semicolonList\n"); }
+    ;
 
 %%
