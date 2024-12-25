@@ -269,21 +269,6 @@ BEGIN(INITIAL);
 }
 
 
-"this"|"null"|"true"|"false"|"return"|"type" {
-    printf("Found keyword: %s\n", yytext);
-  
-}
-
-
-"_"|")"|"]"|"}" {
-    printf("Found closing token: %s\n", yytext);
-}
-
-"{"|"("|"[" {
-    printf("Found opening token: %s\n", yytext);
-}
-
-
 \n {
     if (brace_level == 0 ) {
      printf("Found NEWLINE \n");
