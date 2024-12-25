@@ -18,7 +18,7 @@ void yyerror(const char *s);
 
 %start program
 
-
+%nonassoc ENDL
 %nonassoc LOWER_THAN_EXPR
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -119,8 +119,8 @@ statement_expr_list:
     | expr
     | statement_expr_list  statement { printf("Add new statement :\n"); }
     | statement_expr_list  expr
-    | statement_expr_list ';'  { printf("Add ; :\n"); }
-    | statement_expr_list NEWLINE { printf("Add NEWLINE :\n"); }
+    | statement_expr_list ';'  { printf("Add ; \n"); }
+    | statement_expr_list endlList { printf("Add NEWLINE :\n"); }
     ;
 
 statement_expr_list_e:
@@ -410,6 +410,20 @@ set:
       SET '(' expr_list_e ')' { printf("PARSER found Set\n"); }
     ;
 
+
+/*............................Обработка ENDL.........................................*/
+
+/* endlList */
+endlList:
+      ENDL          { printf("PARSER found ENDL\n"); }
+    | endlList ENDL { printf("PARSER found endlList\n"); }
+    ;
+
+/* endlOpt */
+endlOpt:
+      endlList { printf("PARSER found endlOpt\n"); }
+    | /*empty*/ 
+    ;
 
 
 %%

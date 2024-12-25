@@ -21,6 +21,7 @@ NUM_16 0[xX]({HEXIT}(?:_+)?)*{HEXIT}[L]?
 REAL_NUMBER                {NUM_10}?\.{NUM_10}|{NUM_10}\.{NUM_10}+|{NUM_10}[FfDd]|{NUM_10}\.{NUM_10}[FfDd]
 REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -29,12 +30,7 @@ REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 #include "ParseNumbers.h"
 #include "parser.tab.h"
 #pragma warning(disable : 4996)
-
-
-
-
-
-
+#define return_token(t) return t
 
 
 
@@ -271,8 +267,8 @@ BEGIN(INITIAL);
 
 \n {
     if (brace_level == 0 ) {
-     printf("Found NEWLINE \n");
-        return NEWLINE;
+     printf("Found ENDL \n");
+        return ENDL;
     }
 }
 
