@@ -114,9 +114,9 @@ inheritance:
 
 /* Statements */
 statement_expr_list:
-      statement endlList { printf("Add first statement :\n"); }
-    | visibility_modifier statement endlList { printf("Add first visibility_modifier statement :\n"); }
-    | expr endlList { printf("Add first statement :\n"); }
+      statement endlOpt{ printf("Add first statement :\n"); }
+    | visibility_modifier statement endlOpt { printf("Add first visibility_modifier statement :\n"); }
+    | expr endlOpt { printf("Add first statement :\n"); }
     | statement endlOpt semicolonList endlOpt{ printf("Add first statement :\n"); }
     | visibility_modifier statement endlOpt semicolonList endlOpt { printf("Add first visibility_modifier statement :\n"); }
     | expr endlOpt semicolonList endlOpt { printf("Add first statement :\n"); }
@@ -134,33 +134,33 @@ statement_expr_list_e:
     ;
 
 statement:
-      VAL endlOpt IDENTIFIER endlOpt '=' expr  { printf("implicit value declaration:\n"); }
-    | VAR endlOpt IDENTIFIER endlOpt '=' expr  { printf("implicit variable declaration:\n"); }
-    | VAL endlOpt IDENTIFIER ':' type_list_car '=' expr { printf("explicit value declaration:\n"); }
-    | VAL endlOpt IDENTIFIER ':' type_list_simple '=' expr { printf("explicit value declaration:\n"); }
-    | VAR endlOpt IDENTIFIER ':' type_list_car '=' expr { printf("explicit variable declaration:\n"); }
-    | VAR endlOpt IDENTIFIER ':' type_list_simple '=' expr { printf("explicit variable declaration:\n"); }
+      VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit value declaration:\n"); }
+    | VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit variable declaration:\n"); }
+    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_car_bracked endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
+    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
+    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_car_bracked endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
+    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
     ;
-
+    
  
 
 /*..................................................... IF-ELSE................................................... */
 
 
 if_else_expr:
-      IF '(' expr ')' expr else_expr
+      IF endlOpt '(' expr ')' endlOpt expr endlOpt else_expr
     ;
 
 else_expr:
-      ELSE expr %prec LOWER_THAN_EXPR
+      ELSE endlOpt expr %prec LOWER_THAN_EXPR
     ;
 
 if_condition_list:
-      IF expr
-    | if_condition_list IF expr
+      IF endlOpt expr
+    | if_condition_list endlOpt IF endlOpt expr
     | if_condition_list ';' IF expr 
-    | if_condition_list NEWLINE
+    | if_condition_list endlList IF expr 
     ;
 
 
@@ -373,6 +373,11 @@ type:
 type_list_car:
       type
     | type_list_car RIGHT_ARROW_OPERATOR type
+    ;
+
+type_list_car_bracked:
+      type_list_car
+    | '(' type_list_car ')'
     ;
 
 type_list:
