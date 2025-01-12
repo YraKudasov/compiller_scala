@@ -99,7 +99,6 @@ instance_class:
 visibility_modifier:
       PRIVATE
     | PROTECTED
-    | /* nothing */
     ;
 
 /*...........................Наследование...........................*/
@@ -114,18 +113,15 @@ inheritance:
 
 /* Statements */
 statement_expr_list:
-      statement endlOpt{ printf("Add first statement :\n"); }
-    | visibility_modifier statement endlOpt { printf("Add first visibility_modifier statement :\n"); }
-    | expr endlOpt { printf("Add first statement :\n"); }
-    | statement endlOpt semicolonList endlOpt{ printf("Add first statement :\n"); }
-    | visibility_modifier statement endlOpt semicolonList endlOpt { printf("Add first visibility_modifier statement :\n"); }
-    | expr endlOpt semicolonList endlOpt { printf("Add first statement :\n"); }
-    | statement_expr_list  statement endlOpt semicolonList endlOpt { printf("Add new statement to statement_expr_list :\n"); }
-    | statement_expr_list  expr endlOpt semicolonList endlOpt { printf("Add new expr to statement_expr_list :\n"); }
-    | statement_expr_list  visibility_modifier statement endlOpt semicolonList endlOpt { printf("Add new visibility_modifier to statement_expr_list :\n"); }
-    | statement_expr_list  statement endlOpt { printf("Add new statement to statement_expr_list :\n"); }
-    | statement_expr_list  expr endlOpt { printf("Add new expr to statement_expr_list :\n"); }
-    | statement_expr_list  visibility_modifier statement endlOpt { printf("Add new visibility_modifier to statement_expr_list :\n"); }
+      statement { printf("Add first statement :\n"); }
+    | visibility_modifier statement { printf("Add first visibility_modifier statement :\n"); }
+    | expr { printf("Add first statement :\n"); }
+    | statement_expr_list  endlOpt semicolonList endlOpt statement { printf("Add new statement to statement_expr_list :\n"); }
+    | statement_expr_list  endlOpt semicolonList endlOpt expr { printf("Add new expr to statement_expr_list :\n"); }
+    | statement_expr_list  endlOpt semicolonList endlOpt visibility_modifier statement { printf("Add new visibility_modifier to statement_expr_list :\n"); }
+    | statement_expr_list  endlList statement { printf("Add new statement to statement_expr_list :\n"); }
+    | statement_expr_list  endlList expr { printf("Add new expr to statement_expr_list :\n"); }
+    | statement_expr_list  endlList visibility_modifier statement { printf("Add new visibility_modifier to statement_expr_list :\n"); }
     ;
 
 statement_expr_list_e:
@@ -136,9 +132,7 @@ statement_expr_list_e:
 statement:
       VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit value declaration:\n"); }
     | VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit variable declaration:\n"); }
-    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_car_bracked endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
     | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
-    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_car_bracked endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
     | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
     | method { printf("Method:\n"); }
     ;
@@ -159,8 +153,7 @@ else_expr:
 if_condition_list:
       IF endlOpt expr
     | if_condition_list endlOpt IF endlOpt expr
-    | if_condition_list ';' IF expr 
-    | if_condition_list endlList IF expr 
+    | if_condition_list endlOpt semicolonList endlOpt IF expr 
     ;
 
 
@@ -375,10 +368,7 @@ type_list_car:
     | type_list_car RIGHT_ARROW_OPERATOR type
     ;
 
-type_list_car_bracked:
-      type_list_car
-    | '(' type_list_car ')'
-    ;
+
 
 type_list:
       type
