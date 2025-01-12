@@ -18,6 +18,8 @@ int yylex() {
 }
 
 int main() {
+
+
     std::ifstream in("./code_examples/sample.scala");
     if (!in.is_open()) {
         std::cerr << "Error opening file!" << std::endl;

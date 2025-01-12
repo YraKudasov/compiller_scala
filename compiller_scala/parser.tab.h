@@ -39,7 +39,7 @@
 # define YY_YY_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -70,50 +70,49 @@ extern int yydebug;
     VAR = 271,                     /* VAR  */
     ELSE = 272,                    /* ELSE  */
     IF = 273,                      /* IF  */
-    ELSE_IF = 274,                 /* ELSE_IF  */
-    FOR = 275,                     /* FOR  */
-    DO = 276,                      /* DO  */
-    WHILE = 277,                   /* WHILE  */
-    MATCH = 278,                   /* MATCH  */
-    CASE = 279,                    /* CASE  */
-    TRY = 280,                     /* TRY  */
-    CATCH = 281,                   /* CATCH  */
-    FINALLY = 282,                 /* FINALLY  */
-    PRINT = 283,                   /* PRINT  */
-    READLINE = 284,                /* READLINE  */
-    KW_TRUE = 285,                 /* KW_TRUE  */
-    KW_FALSE = 286,                /* KW_FALSE  */
-    KW_NULL = 287,                 /* KW_NULL  */
-    EQ = 288,                      /* EQ  */
-    NEQ = 289,                     /* NEQ  */
-    KW_OR = 290,                   /* KW_OR  */
-    KW_AND = 291,                  /* KW_AND  */
-    MORE_OR_EQUAL_OPERATOR = 292,  /* MORE_OR_EQUAL_OPERATOR  */
-    LESS_OR_EQUAL_OPERATOR = 293,  /* LESS_OR_EQUAL_OPERATOR  */
-    INT_KW = 294,                  /* INT_KW  */
-    DOUBLE_KW = 295,               /* DOUBLE_KW  */
-    STRING_KW = 296,               /* STRING_KW  */
-    CHAR_KW = 297,                 /* CHAR_KW  */
-    BOOLEAN_KW = 298,              /* BOOLEAN_KW  */
-    ANY_KW = 299,                  /* ANY_KW  */
-    UNIT_KW = 300,                 /* UNIT_KW  */
-    TO = 301,                      /* TO  */
-    BY = 302,                      /* BY  */
-    YIELD = 303,                   /* YIELD  */
-    GENERATOR_OPERATOR = 304,      /* GENERATOR_OPERATOR  */
-    RIGHT_ARROW_OPERATOR = 305,    /* RIGHT_ARROW_OPERATOR  */
-    ID_COLLECTION = 306,           /* ID_COLLECTION  */
-    ARRAY = 307,                   /* ARRAY  */
-    LIST = 308,                    /* LIST  */
-    VECTOR = 309,                  /* VECTOR  */
-    SET = 310,                     /* SET  */
-    DEF = 311,                     /* DEF  */
-    NEW = 312,                     /* NEW  */
-    PROTECTED = 313,               /* PROTECTED  */
-    PRIVATE = 314,                 /* PRIVATE  */
-    CLASS = 315,                   /* CLASS  */
-    CLASS_ID = 316,                /* CLASS_ID  */
-    EXTENDS = 317                  /* EXTENDS  */
+    FOR = 274,                     /* FOR  */
+    DO = 275,                      /* DO  */
+    WHILE = 276,                   /* WHILE  */
+    MATCH = 277,                   /* MATCH  */
+    CASE = 278,                    /* CASE  */
+    TRY = 279,                     /* TRY  */
+    CATCH = 280,                   /* CATCH  */
+    FINALLY = 281,                 /* FINALLY  */
+    PRINT = 282,                   /* PRINT  */
+    READLINE = 283,                /* READLINE  */
+    KW_TRUE = 284,                 /* KW_TRUE  */
+    KW_FALSE = 285,                /* KW_FALSE  */
+    KW_NULL = 286,                 /* KW_NULL  */
+    EQ = 287,                      /* EQ  */
+    NEQ = 288,                     /* NEQ  */
+    KW_OR = 289,                   /* KW_OR  */
+    KW_AND = 290,                  /* KW_AND  */
+    MORE_OR_EQUAL_OPERATOR = 291,  /* MORE_OR_EQUAL_OPERATOR  */
+    LESS_OR_EQUAL_OPERATOR = 292,  /* LESS_OR_EQUAL_OPERATOR  */
+    INT_KW = 293,                  /* INT_KW  */
+    DOUBLE_KW = 294,               /* DOUBLE_KW  */
+    STRING_KW = 295,               /* STRING_KW  */
+    CHAR_KW = 296,                 /* CHAR_KW  */
+    BOOLEAN_KW = 297,              /* BOOLEAN_KW  */
+    ANY_KW = 298,                  /* ANY_KW  */
+    UNIT_KW = 299,                 /* UNIT_KW  */
+    TO = 300,                      /* TO  */
+    BY = 301,                      /* BY  */
+    YIELD = 302,                   /* YIELD  */
+    GENERATOR_OPERATOR = 303,      /* GENERATOR_OPERATOR  */
+    RIGHT_ARROW_OPERATOR = 304,    /* RIGHT_ARROW_OPERATOR  */
+    ID_COLLECTION = 305,           /* ID_COLLECTION  */
+    ARRAY = 306,                   /* ARRAY  */
+    LIST = 307,                    /* LIST  */
+    VECTOR = 308,                  /* VECTOR  */
+    SET = 309,                     /* SET  */
+    DEF = 310,                     /* DEF  */
+    NEW = 311,                     /* NEW  */
+    PROTECTED = 312,               /* PROTECTED  */
+    PRIVATE = 313,                 /* PRIVATE  */
+    CLASS = 314,                   /* CLASS  */
+    CLASS_ID = 315,                /* CLASS_ID  */
+    EXTENDS = 316                  /* EXTENDS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -122,13 +121,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "parser.y"
+#line 41 "parser.y"
 
     int64_t int_value;
     double real_value;
     char* str_value;
 
-#line 132 "parser.tab.h"
+#line 131 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -136,9 +135,12 @@ typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+typedef struct LOCATION YYLTYPE;
+
 
 extern YYSTYPE yylval;
-
+extern YYLTYPE yylloc;
 
 int yyparse (void);
 

@@ -1,3 +1,4 @@
+%locations
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,8 +7,36 @@
 #include "FlexLexer.h"
 extern int yylex();
 extern int yylineno;
-void yyerror(const char *s);
+void yyerror(const char *str);
+struct LOCATION
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+    struct LOCATION current_node_loc;
+    #define YYLLOC_DEFAULT(Current, Rhs, N)\
+        do {\
+            if (N) {\
+                (Current).first_line = YYRHSLOC (Rhs, 1).first_line;\
+                (Current).first_column = YYRHSLOC (Rhs, 1).first_column;\
+                (Current).last_line = YYRHSLOC (Rhs, N).last_line;\
+                (Current).last_column  = YYRHSLOC (Rhs, N).last_column;\
+            }\
+            else {\
+                (Current).first_line = (Current).last_line = YYRHSLOC (Rhs, 0).last_line;\
+                (Current).first_column = (Current).last_column = YYRHSLOC (Rhs, 0).last_column;\
+            }\
+            current_node_loc = (Current);\
+        } while (0)
+
+
 %}
+
+%define parse.error verbose
+%define parse.trace
+%define api.location.type {struct LOCATION}
 
 %union {
     int64_t int_value;
@@ -17,6 +46,7 @@ void yyerror(const char *s);
 
 
 %start program
+
 
 %nonassoc ENDL
 %nonassoc LOWER_THAN_EXPR
@@ -32,8 +62,8 @@ void yyerror(const char *s);
 %left '*' '/' '%'
 %nonassoc UMINUS UPLUS
 %left '(' ')' '[' ']'
-
-
+%nonassoc IF
+%right ELSE
 
 
 
@@ -41,7 +71,7 @@ void yyerror(const char *s);
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF ELSE_IF FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE
+%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
@@ -125,7 +155,7 @@ statement_expr_list:
     ;
 
 statement_expr_list_e:
-      statement_expr_list
+      endlOpt statement_expr_list endlOpt
     | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
@@ -143,12 +173,11 @@ statement:
 
 
 if_else_expr:
-      IF endlOpt '(' expr ')' endlOpt expr endlOpt else_expr
+      IF endlOpt '(' endlOpt expr endlOpt ')' endlOpt expr %prec IF { printf("IF-CONSTR\n"); }
+    | IF endlOpt '(' endlOpt expr endlOpt ')' endlOpt expr ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
+    | IF endlOpt '(' endlOpt expr endlOpt ')' endlOpt expr endlList ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
     ;
 
-else_expr:
-      ELSE endlOpt expr %prec LOWER_THAN_EXPR
-    ;
 
 if_condition_list:
       IF endlOpt expr
@@ -253,7 +282,7 @@ expr:
     | IDENTIFIER {printf("PARSER found expr - IDENTIFIER\n"); }
     | CLASS_ID {printf("PARSER found expr - CLASS_ID\n"); }
     | IDENTIFIER '=' expr { printf("Assignment:\n"); }
-    | '(' expr ')' {printf("PARSER found expr - ( expr )\n"); }
+    | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
     | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
     | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
     | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
@@ -272,20 +301,19 @@ expr:
     | '-' expr  %prec UMINUS { printf("PARSER found expr - UMINUS\n"); }
     | '+' expr  %prec UPLUS { printf("PARSER found expr - UPLUS\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
-    | if_else_expr{ printf("PARSER found expr - if_else_expr\n"); }
+    | if_else_expr %prec LOWER_THAN_EXPR{ printf("PARSER found expr - if_else_expr\n"); }
     | for_expr { printf("PARSER found expr - for_expr\n"); }
     | while_expr { printf("PARSER found expr - while_expr\n"); }
     | do_while_expr { printf("PARSER found expr - do_while_expr\n"); }
     | try_expr { printf("PARSER found expr - try_expr\n"); }
     | match_expr { printf("PARSER found expr - match_expr\n"); }
-    | '{' statement_expr_list_e '}'
+    | '{' statement_expr_list_e '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
     | func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
     | PRINT'(' expr ')' { printf("print:\n"); }
     ;
-
 
 /* Constants */
 num_const:

@@ -54,14 +54,14 @@ catch { printf("(%s) - Found KW_CATCH\n", yytext); }
 class { printf("(%s) - Found KW_CLASS\n", yytext); }
 def { printf("(%s) - Found KW_DEF\n", yytext); }
 do { printf("(%s) - Found KW_do\n", yytext); }
-else { printf("(%s) - Found KW_ELSE\n", yytext); }
+else { printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
 extends { printf("(%s) - Found KW_EXTENDS\n", yytext); }
 false { printf("(%s) - Found KW_FALSE\n", yytext); }
 for { printf("(%s) - Found KW_FOR\n", yytext); }
 final { printf("(%s) - Found KW_FINAL\n", yytext); }
 finally { printf("(%s) - Found KW_FINALLY\n", yytext); }
 forSome { printf("(%s) - Found KW_forSome\n", yytext); }
-if { printf("(%s) - Found KW_IF\n", yytext); }
+if { printf("(%s) - Found KW_IF\n", yytext); return IF; }
 implicit { printf("(%s) - Found KW_IMPLICIT\n", yytext); }
 import { printf("(%s) - Found KW_IMPORT\n", yytext); }
 lazy { printf("(%s) - Found KW_LAZY\n", yytext); }
@@ -155,12 +155,12 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 
 
 
-"(" { BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); }
+"(" { BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
 <PARENS>"("  { brace_level++; }
 <PARENS>"\n" {}
 <PARENS>")" { brace_level--; printf("(%s) - Found CIRCLE_BRACKET\n", yytext);
 if (brace_level == 0) {
-BEGIN(INITIAL); 
+BEGIN(INITIAL);  return ')';
 } 
 }
 
@@ -196,8 +196,8 @@ BEGIN(INITIAL);
 \<\<\= { printf("(%s) - Found LEFTSHIFT_ASSIGNMENT_OPERATOR\n", yytext); }
 \>\>\= { printf("(%s) - Found RIGHTSHIFT_ASSIGNMENT_OPERATOR\n", yytext); }
 \>= { printf("(%s) - Found MORE_OR_EQUAL_OPERATOR\n", yytext); return MORE_OR_EQUAL_OPERATOR;}
-\< { printf("(%s) - Found LESS_OPERATOR\n", yytext); }
-\> { printf("(%s) - Found MORE_OPERATOR\n", yytext); }
+\< { printf("(%s) - Found LESS_OPERATOR\n", yytext); return '<'; }
+\> { printf("(%s) - Found MORE_OPERATOR\n", yytext); return '>'; }
 \!= { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); }
 = { printf("(%s) - Found ASSIGNMENT_OPERATOR\n", yytext); return '=';}
 \^ { printf("(%s) - Found CIRCUMFLEX\n", yytext); }
@@ -222,8 +222,8 @@ BEGIN(INITIAL);
 
 \[ { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
 \] { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
-\{ { printf("(%s) - Found BRACE\n", yytext); }
-\} { printf("(%s) - Found BRACE\n", yytext); }
+\{ { printf("(%s) - Found BRACE\n", yytext); return '{'; }
+\} { printf("(%s) - Found BRACE\n", yytext); return '}'; }
 \; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
 \, { printf("(%s) - Found COMMA\n", yytext); return ',';}
 \: { printf("(%s) - Found COLON\n", yytext); }

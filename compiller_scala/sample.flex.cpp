@@ -927,7 +927,7 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 58 "sample.l"
-{ printf("(%s) - Found KW_ELSE\n", yytext); }
+{ printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
@@ -962,7 +962,7 @@ YY_RULE_SETUP
 case 15:
 YY_RULE_SETUP
 #line 65 "sample.l"
-{ printf("(%s) - Found KW_IF\n", yytext); }
+{ printf("(%s) - Found KW_IF\n", yytext); return IF; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
@@ -1277,7 +1277,7 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 case 70:
 YY_RULE_SETUP
 #line 159 "sample.l"
-{ BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); }
+{ BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
@@ -1295,7 +1295,7 @@ YY_RULE_SETUP
 #line 162 "sample.l"
 { brace_level--; printf("(%s) - Found CIRCLE_BRACKET\n", yytext);
 if (brace_level == 0) {
-BEGIN(INITIAL); 
+BEGIN(INITIAL);  return ')';
 } 
 }
 	YY_BREAK
@@ -1432,12 +1432,12 @@ YY_RULE_SETUP
 case 98:
 YY_RULE_SETUP
 #line 200 "sample.l"
-{ printf("(%s) - Found LESS_OPERATOR\n", yytext); }
+{ printf("(%s) - Found LESS_OPERATOR\n", yytext); return '<'; }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
 #line 201 "sample.l"
-{ printf("(%s) - Found MORE_OPERATOR\n", yytext); }
+{ printf("(%s) - Found MORE_OPERATOR\n", yytext); return '>'; }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
@@ -1532,12 +1532,12 @@ YY_RULE_SETUP
 case 118:
 YY_RULE_SETUP
 #line 226 "sample.l"
-{ printf("(%s) - Found BRACE\n", yytext); }
+{ printf("(%s) - Found BRACE\n", yytext); return '{'; }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
 #line 227 "sample.l"
-{ printf("(%s) - Found BRACE\n", yytext); }
+{ printf("(%s) - Found BRACE\n", yytext); return '}'; }
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
