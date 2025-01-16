@@ -173,9 +173,9 @@ statement:
 
 
 if_else_expr:
-      IF endlOpt '(' endlOpt expr endlOpt ')' endlOpt expr %prec IF { printf("IF-CONSTR\n"); }
-    | IF endlOpt '(' endlOpt expr endlOpt ')' endlOpt expr ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
-    | IF endlOpt '(' endlOpt expr endlOpt ')' endlOpt expr endlList ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
+      IF endlOpt '('  expr  ')' endlOpt expr %prec IF { printf("IF-CONSTR\n"); }
+    | IF endlOpt '('  expr  ')' endlOpt expr ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
+    | IF endlOpt '('  expr  ')' endlOpt expr endlList ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
     ;
 
 
