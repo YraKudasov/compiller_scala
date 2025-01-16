@@ -57,7 +57,7 @@ do { printf("(%s) - Found KW_do\n", yytext); }
 else { printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
 extends { printf("(%s) - Found KW_EXTENDS\n", yytext); }
 false { printf("(%s) - Found KW_FALSE\n", yytext); }
-for { printf("(%s) - Found KW_FOR\n", yytext); }
+for { printf("(%s) - Found KW_FOR\n", yytext); return FOR; }
 final { printf("(%s) - Found KW_FINAL\n", yytext); }
 finally { printf("(%s) - Found KW_FINALLY\n", yytext); }
 forSome { printf("(%s) - Found KW_forSome\n", yytext); }
@@ -90,6 +90,8 @@ var { printf("(%s) - Found KW_VAR\n", yytext); return VAR;}
 while { printf("(%s) - Found KW_WHILE\n", yytext); }
 with { printf("(%s) - Found KW_WITH\n", yytext); }
 yield { printf("(%s) - Found KW_YIELD\n", yytext); }
+to { printf("(%s) - Found KW_TO\n", yytext); return TO; }
+by { printf("(%s) - Found KW_BY\n", yytext); return BY; }
 
 
 \" {buffer[0]=0; BEGIN(CONST_STRING);}
@@ -218,6 +220,7 @@ BEGIN(INITIAL);  return ')';
 \>\>\> { printf("(%s) - Found BITWISE_RIGHTSHIF_ZERO_OPERATOR\n", yytext); }
 
 \-\> { printf("(%s) - Found TUPLE\n", yytext); }
+\<\- { printf("(%s) - Found TUPLE\n", yytext); return GENERATOR_OPERATOR; }
 
 
 \[ { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
