@@ -210,11 +210,11 @@ for_multy_list:
 
 /*..................................................... DO / WHILE................................................... */
 while_expr: 
-        WHILE '(' expr ')' expr
+          WHILE endlOpt '(' expr ')' endlOpt expr
         ;
 
 do_while_expr:
-        DO expr WHILE'(' expr ')'
+          DO endlOpt expr endlOpt WHILE'(' expr ')'
         ;
 /*..................................................... MATCH................................................... */
 match_expr:
