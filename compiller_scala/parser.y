@@ -214,7 +214,7 @@ while_expr:
         ;
 
 do_while_expr:
-          DO endlOpt expr endlOpt WHILE'(' expr ')'
+          DO endlOpt expr endlOpt WHILE '(' expr ')'
         ;
 /*..................................................... MATCH................................................... */
 match_expr:

@@ -53,7 +53,7 @@ case { printf("(%s) - Found KW_CASE\n", yytext); }
 catch { printf("(%s) - Found KW_CATCH\n", yytext); }
 class { printf("(%s) - Found KW_CLASS\n", yytext); }
 def { printf("(%s) - Found KW_DEF\n", yytext); }
-do { printf("(%s) - Found KW_do\n", yytext); }
+do { printf("(%s) - Found KW_do\n", yytext); return DO; }
 else { printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
 extends { printf("(%s) - Found KW_EXTENDS\n", yytext); }
 false { printf("(%s) - Found KW_FALSE\n", yytext); }
@@ -87,7 +87,7 @@ true { printf("(%s) - Found KW_TRUE\n", yytext); }
 try { printf("(%s) - Found KW_TRY\n", yytext); }
 type { printf("(%s) - Found KW_TYPE\n", yytext); }
 var { printf("(%s) - Found KW_VAR\n", yytext); return VAR;}
-while { printf("(%s) - Found KW_WHILE\n", yytext); }
+while { printf("(%s) - Found KW_WHILE\n", yytext); return WHILE;}
 with { printf("(%s) - Found KW_WITH\n", yytext); }
 yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 to { printf("(%s) - Found KW_TO\n", yytext); return TO; }

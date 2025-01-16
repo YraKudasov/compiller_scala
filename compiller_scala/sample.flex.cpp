@@ -319,7 +319,7 @@ typedef flex_uint8_t YY_CHAR;
 
 #define yytext_ptr yytext
 
-#include "FlexLexer.h"
+#include <FlexLexer.h>
 
 inline int yyFlexLexer::yywrap() { return 1; }
 
@@ -922,7 +922,7 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 57 "sample.l"
-{ printf("(%s) - Found KW_do\n", yytext); }
+{ printf("(%s) - Found KW_do\n", yytext); return DO; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
@@ -1092,7 +1092,7 @@ YY_RULE_SETUP
 case 41:
 YY_RULE_SETUP
 #line 91 "sample.l"
-{ printf("(%s) - Found KW_WHILE\n", yytext); }
+{ printf("(%s) - Found KW_WHILE\n", yytext); return WHILE;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
