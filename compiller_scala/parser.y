@@ -189,8 +189,8 @@ if_condition_list:
 /*..................................................... FOR................................................... */
 
 for_expr:
-          FOR endlOpt '(' for_multy_list ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR
-        | FOR endlOpt '(' for_params if_condition_list ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR
+          FOR endlOpt '(' for_multy_list ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR MULTY LOOP\n"); }
+        | FOR endlOpt '(' for_params if_condition_list ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR LOOP: multy with IF_STMT\n"); }
         | FOR endlOpt '(' for_multy_list ')' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR MULTY LOOP\n"); }
         | FOR endlOpt '(' for_params if_condition_list ')' endlOpt expr  %prec LOWER_THAN_EXPR { printf("FOR LOOP: multy with IF_STMT\n"); }
         ;
@@ -204,9 +204,7 @@ for_params:
 
 for_multy_list:
           for_params
-        | for_multy_list for_params 
-        | for_multy_list ';' for_params
-        | for_multy_list NEWLINE
+        | for_multy_list endlOpt semicolonList endlOpt for_params
         ;
 
 
