@@ -319,7 +319,7 @@ typedef flex_uint8_t YY_CHAR;
 
 #define yytext_ptr yytext
 
-#include <FlexLexer.h>
+#include "FlexLexer.h"
 
 inline int yyFlexLexer::yywrap() { return 1; }
 

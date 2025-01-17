@@ -269,31 +269,31 @@ expr_list_e:
 
 expr_list:
       expr            { printf("PARSER found expr_list - expr\n"); }
-    | expr_list ',' expr  { printf("PARSER found expr_list - expr_list\n"); }
+    | expr_list endlOpt ',' endlOpt expr  { printf("PARSER found expr_list - expr_list\n"); }
     ;
 
 
 expr:
       const {printf("PARSER found expr - const\n"); }
-    | IDENTIFIER {printf("PARSER found expr - IDENTIFIER\n"); }
+    | IDENTIFIER %prec LOWER_THAN_EXPR {printf("PARSER found expr - IDENTIFIER\n"); }
     | CLASS_ID {printf("PARSER found expr - CLASS_ID\n"); }
-    | IDENTIFIER '=' expr { printf("Assignment:\n"); }
+    | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
-    | expr '>' expr {printf("PARSER found expr - expr > expr\n"); }
-    | expr '<' expr {printf("PARSER found expr - expr < expr\n"); }
-    | expr MORE_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr >= expr\n"); }
-    | expr LESS_OR_EQUAL_OPERATOR expr {printf("PARSER found expr - expr <= expr\n"); }
-    | expr EQ expr {printf("PARSER found expr - expr == expr\n"); }
-    | expr NEQ expr {printf("PARSER found expr - expr != expr\n"); }
-    | expr '+' expr { printf("PARSER found expr - expr + expr\n"); }
-    | expr '-' expr { printf("PARSER found expr - expr - expr\n"); }
-    | expr '/' expr { printf("PARSER found expr - expr / expr\n"); }
-    | expr '*' expr { printf("PARSER found expr - expr * expr\n"); }
-    | expr '%' expr { printf("PARSER found expr - expr % expr\n"); }
-    | expr '&' expr { printf("PARSER found expr - expr && expr\n"); }
-    | expr '|' expr { printf("PARSER found expr - expr | expr\n"); }
-    | expr KW_OR expr { printf("PARSER found expr - expr || expr\n"); }
-    | expr KW_AND expr { printf("PARSER found expr - expr && expr\n"); }
+    | expr '>' endlOpt expr {printf("PARSER found expr - expr > expr\n"); }
+    | expr '<' endlOpt expr {printf("PARSER found expr - expr < expr\n"); }
+    | expr MORE_OR_EQUAL_OPERATOR endlOpt expr {printf("PARSER found expr - expr >= expr\n"); }
+    | expr LESS_OR_EQUAL_OPERATOR endlOpt expr {printf("PARSER found expr - expr <= expr\n"); }
+    | expr EQ endlOpt expr {printf("PARSER found expr - expr == expr\n"); }
+    | expr NEQ endlOpt expr {printf("PARSER found expr - expr != expr\n"); }
+    | expr '+' endlOpt expr { printf("PARSER found expr - expr + expr\n"); }
+    | expr '-' endlOpt expr { printf("PARSER found expr - expr - expr\n"); }
+    | expr '/' endlOpt expr { printf("PARSER found expr - expr / expr\n"); }
+    | expr '*' endlOpt expr { printf("PARSER found expr - expr * expr\n"); }
+    | expr '%' endlOpt expr { printf("PARSER found expr - expr % expr\n"); }
+    | expr '&' endlOpt expr { printf("PARSER found expr - expr && expr\n"); }
+    | expr '|' endlOpt expr { printf("PARSER found expr - expr | expr\n"); }
+    | expr KW_OR endlOpt expr { printf("PARSER found expr - expr || expr\n"); }
+    | expr KW_AND endlOpt expr { printf("PARSER found expr - expr && expr\n"); }
     | '-' expr  %prec UMINUS { printf("PARSER found expr - UMINUS\n"); }
     | '+' expr  %prec UPLUS { printf("PARSER found expr - UPLUS\n"); }
     | func_call { printf("PARSER found expr - func_call\n"); }
@@ -303,7 +303,7 @@ expr:
     | do_while_expr { printf("PARSER found expr - do_while_expr\n"); }
     | try_expr { printf("PARSER found expr - try_expr\n"); }
     | match_expr { printf("PARSER found expr - match_expr\n"); }
-    | '{' statement_expr_list_e '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
+    | '{' statement_expr_list_e  '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
     | func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | instance_class { printf("instance_class:\n"); }
