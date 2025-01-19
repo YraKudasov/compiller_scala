@@ -48,6 +48,7 @@ char buf_char[2];
 %}
 
 abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); }
+array {printf("(%s) - Found KW_ARRAY\n", yytext);}
 val { printf("(%s) - Found KW_VAL\n", yytext); return VAL; }
 case { printf("(%s) - Found KW_CASE\n", yytext); }
 catch { printf("(%s) - Found KW_CATCH\n", yytext); }

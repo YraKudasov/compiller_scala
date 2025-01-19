@@ -71,13 +71,13 @@ struct LOCATION
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE
+%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE ARRAY
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %token INT_KW DOUBLE_KW STRING_KW CHAR_KW BOOLEAN_KW ANY_KW UNIT_KW
-%token TO BY YIELD
+%token TO BY YIELD 
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
 %token ARRAY LIST VECTOR SET
@@ -221,6 +221,8 @@ while_expr:
 do_while_expr:
           DO endlOpt expr endlOpt WHILE '(' expr ')'
         ;
+
+
 /*..................................................... MATCH................................................... */
 match_expr:
           IDENTIFIER MATCH '{' case_list'}'
@@ -414,8 +416,18 @@ type_list_simple:
 
 /* Array */
 array:
+       array_literal
+     | initialized_array
+     ;
+      
+array_literal:
       ARRAY '(' expr_list_e ')' { printf("PARSER found Array\n"); }
-      ;
+     ;
+
+initialized_array:
+      NEW ARRAY '(' type ')' '[' expr ']'
+     ;
+
 
 
 /* List */
