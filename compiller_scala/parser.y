@@ -71,7 +71,7 @@ struct LOCATION
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE ARRAY
+%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE ARRAY OVERRIDE
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
@@ -134,6 +134,7 @@ visibility_modifier:
       PRIVATE
     | PROTECTED
     ;
+
 
 
 /*...........................Наследование...........................*/
@@ -369,6 +370,10 @@ method:
     | DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
     | DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
     | DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr 
+    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
+    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
+    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
+    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr 
     ;
 
 
