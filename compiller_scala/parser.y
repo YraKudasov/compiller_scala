@@ -357,19 +357,16 @@ func:
     ;
 
 
-method_params_list_e:
-      method_params_list
-    | /* nothing */
-    ;
-
 method_params_list:
       '('params')'
     | method_params_list '('params')'
     ;
 
 method:
-      DEF IDENTIFIER method_params_list_e ':' type '=' expr
-    | DEF IDENTIFIER method_params_list_e '=' expr 
+      DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
+    | DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
+    | DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
+    | DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr 
     ;
 
 
