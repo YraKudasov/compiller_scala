@@ -84,7 +84,7 @@ struct LOCATION
 %token DEF
 %token NEW
 %token PROTECTED PRIVATE
-%token CLASS CLASS_ID EXTENDS
+%token CLASS  EXTENDS
 
 %%
 
@@ -103,10 +103,10 @@ class:
     ;
 
 class_header:
-      CLASS CLASS_ID '(' class_params ')'
-    | CLASS CLASS_ID '(' class_params ')' inheritance
-    | CLASS CLASS_ID
-    | CLASS CLASS_ID inheritance
+      CLASS IDENTIFIER '(' class_params ')'
+    | CLASS IDENTIFIER '(' class_params ')' inheritance
+    | CLASS IDENTIFIER
+    | CLASS IDENTIFIER inheritance
     ;
 
 class_params:
@@ -122,8 +122,8 @@ class_params:
     ;
 
 instance_class:
-      NEW CLASS_ID
-    | NEW CLASS_ID'(' expr_list_e ')'
+      NEW IDENTIFIER
+    | NEW IDENTIFIER'(' expr_list_e ')'
     ;
 
 visibility_modifier:
@@ -134,8 +134,8 @@ visibility_modifier:
 /*...........................Наследование...........................*/
 
 inheritance:
-      EXTENDS CLASS_ID
-    | EXTENDS CLASS_ID'('expr_list')'
+      EXTENDS IDENTIFIER
+    | EXTENDS IDENTIFIER '('expr_list')'
     ;
 
 
@@ -276,7 +276,6 @@ expr_list:
 expr:
       const {printf("PARSER found expr - const\n"); }
     | IDENTIFIER %prec LOWER_THAN_EXPR {printf("PARSER found expr - IDENTIFIER\n"); }
-    | CLASS_ID {printf("PARSER found expr - CLASS_ID\n"); }
     | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
     | expr '>' endlOpt expr {printf("PARSER found expr - expr > expr\n"); }
