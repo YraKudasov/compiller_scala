@@ -103,10 +103,10 @@ class:
     ;
 
 class_header:
-      CLASS IDENTIFIER '(' class_params ')'
-    | CLASS IDENTIFIER '(' class_params ')' inheritance
-    | CLASS IDENTIFIER
-    | CLASS IDENTIFIER inheritance
+      CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')'
+    | CLASS endlOpt IDENTIFIER endlOpt'(' class_params_e ')' inheritance
+    | CLASS endlOpt IDENTIFIER
+    | CLASS endlOpt IDENTIFIER endlOpt inheritance
     ;
 
 class_params:
@@ -118,12 +118,16 @@ class_params:
     | class_params ',' VAL IDENTIFIER ':' type
     | class_params ',' VAR IDENTIFIER ':' type '=' const
     | class_params ',' VAL IDENTIFIER ':' type '=' const
-    | /* nothing */ 
+    ;
+
+class_params_e:
+      class_params
+    | /* nothing */
     ;
 
 instance_class:
-      NEW IDENTIFIER
-    | NEW IDENTIFIER'(' expr_list_e ')'
+      NEW endlOpt IDENTIFIER
+    | NEW endlOpt IDENTIFIER'(' expr_list_e ')'
     ;
 
 visibility_modifier:
@@ -131,15 +135,16 @@ visibility_modifier:
     | PROTECTED
     ;
 
+
 /*...........................Наследование...........................*/
 
 inheritance:
-      EXTENDS IDENTIFIER
-    | EXTENDS IDENTIFIER '('expr_list')'
+      EXTENDS endlOpt IDENTIFIER
+    | EXTENDS endlOpt IDENTIFIER '('expr_list')'
     ;
 
 
-    
+ /*...........................Statement_expr...........................*/   
 
 /* Statements */
 statement_expr_list:
