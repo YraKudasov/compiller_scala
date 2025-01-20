@@ -191,7 +191,7 @@ statement_expr_list:
     ;
 
 statement_expr_list_e:
-      endlOpt statement_expr_list endlOpt 
+      statement_expr_list endlOpt 
     | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
@@ -256,36 +256,32 @@ do_while_expr:
 
 /*..................................................... MATCH................................................... */
 match_expr:
-          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
-        | const endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+          IDENTIFIER MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+        | const MATCH endlOpt '{' endlOpt case_list endlOpt '}'
         ;
-
 
 case_condition:
           const endlOpt IF endlOpt expr
         | IDENTIFIER
-        | IDENTIFIER endlOpt IF endlOpt expr
+        | IDENTIFIER IF endlOpt expr
         | literal_list_case 
         | instance_case_class_in_case
-        | IDENTIFIER endlOpt ':' endlOpt const
+        | IDENTIFIER ':' const
         | '_'
         ;
 
+case_list:
+          CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt expr
+        | case_list CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt expr
+        | CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt semicolonList expr
+        | case_list CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt semicolonList expr
+        ;
 
 literal_list_case:
           const 
-        | literal_list_case endlOpt '|' endlOpt const 
+        | literal_list_case '|' const 
         ;
 
-case_list:
-          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
-        | CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
-        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
-        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
-        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
-        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
-        ;
-            
 /*..................................................... TRY/CATCH/FINALLY................................................... */
 
 try_expr:
