@@ -100,6 +100,8 @@ program:
 /*.....................................................CLASSES................................................... */
 class:
       class_header '{' statement_expr_list_e '}'
+    | abstract_class_header '{' statement_expr_list_e '}'
+    | case_class_header '{' statement_expr_list_e '}'
     ;
 
 class_header:
@@ -129,6 +131,14 @@ class_params:
     | class_params ',' VAL IDENTIFIER ':' type
     | class_params ',' VAR IDENTIFIER ':' type '=' const
     | class_params ',' VAL IDENTIFIER ':' type '=' const
+    | visibility_modifier VAR IDENTIFIER ':' type
+    | visibility_modifier VAL IDENTIFIER ':' type
+    | visibility_modifier VAR IDENTIFIER ':' type '=' const
+    | visibility_modifier VAL IDENTIFIER ':' type '=' const
+    | class_params ',' visibility_modifier VAR IDENTIFIER ':' type
+    | class_params ',' visibility_modifier VAL IDENTIFIER ':' type
+    | class_params ',' visibility_modifier VAR IDENTIFIER ':' type '=' const
+    | class_params ',' visibility_modifier VAL IDENTIFIER ':' type '=' const
     ;
 
 class_params_e:
@@ -136,9 +146,18 @@ class_params_e:
     | /* nothing */
     ;
 
-instance_class:
+create_instance_class:
       NEW endlOpt IDENTIFIER
     | NEW endlOpt IDENTIFIER'(' expr_list_e ')'
+    ;
+
+create_instance_case_class:
+      IDENTIFIER endlOpt '(' expr_list_e ')'
+    | NEW endlOpt IDENTIFIER'(' expr_list_e ')'
+    ;
+
+instance_case_class_in_case:
+      IDENTIFIER endlOpt '(' expr_list_e ')'
     ;
 
 visibility_modifier:
@@ -327,7 +346,7 @@ expr:
     | '{' statement_expr_list_e  '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
     | func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
-    | instance_class { printf("instance_class:\n"); }
+    | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
     | PRINT'(' expr ')' { printf("print:\n"); }
     ;

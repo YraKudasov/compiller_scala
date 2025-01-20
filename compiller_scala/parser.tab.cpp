@@ -216,7 +216,7 @@ enum yysymbol_kind_t
   YYSYMBOL_83_ = 83,                       /* ';'  */
   YYSYMBOL_YYACCEPT = 84,                  /* $accept  */
   YYSYMBOL_program = 85,                   /* program  */
-  YYSYMBOL_instance_class = 86,            /* instance_class  */
+  YYSYMBOL_create_instance_class = 86,     /* create_instance_class  */
   YYSYMBOL_visibility_modifier = 87,       /* visibility_modifier  */
   YYSYMBOL_statement_expr_list = 88,       /* statement_expr_list  */
   YYSYMBOL_statement_expr_list_e = 89,     /* statement_expr_list_e  */
@@ -653,22 +653,22 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    95,    95,   140,   141,   145,   146,   163,   164,   165,
-     166,   167,   168,   169,   170,   171,   175,   176,   180,   181,
-     182,   183,   184,   193,   194,   195,   200,   201,   202,   209,
-     210,   211,   212,   217,   218,   223,   224,   230,   234,   240,
-     241,   246,   247,   248,   249,   250,   254,   255,   259,   260,
-     261,   262,   263,   264,   270,   271,   272,   276,   280,   287,
-     288,   293,   294,   299,   300,   301,   302,   303,   304,   305,
-     306,   307,   308,   309,   310,   311,   312,   313,   314,   315,
-     316,   317,   318,   319,   320,   321,   322,   323,   324,   325,
-     326,   327,   328,   329,   330,   331,   332,   337,   338,   339,
-     340,   346,   347,   348,   349,   350,   351,   352,   353,   354,
-     355,   362,   366,   367,   368,   369,   373,   378,   379,   383,
-     384,   385,   386,   387,   388,   389,   390,   395,   396,   397,
-     403,   404,   405,   406,   407,   408,   409,   413,   414,   420,
-     421,   425,   438,   439,   443,   447,   454,   460,   466,   474,
-     475,   480,   481,   486,   487
+       0,    95,    95,   150,   151,   164,   165,   182,   183,   184,
+     185,   186,   187,   188,   189,   190,   194,   195,   199,   200,
+     201,   202,   203,   212,   213,   214,   219,   220,   221,   228,
+     229,   230,   231,   236,   237,   242,   243,   249,   253,   259,
+     260,   265,   266,   267,   268,   269,   273,   274,   278,   279,
+     280,   281,   282,   283,   289,   290,   291,   295,   299,   306,
+     307,   312,   313,   318,   319,   320,   321,   322,   323,   324,
+     325,   326,   327,   328,   329,   330,   331,   332,   333,   334,
+     335,   336,   337,   338,   339,   340,   341,   342,   343,   344,
+     345,   346,   347,   348,   349,   350,   351,   356,   357,   358,
+     359,   365,   366,   367,   368,   369,   370,   371,   372,   373,
+     374,   381,   385,   386,   387,   388,   392,   397,   398,   402,
+     403,   404,   405,   406,   407,   408,   409,   414,   415,   416,
+     422,   423,   424,   425,   426,   427,   428,   432,   433,   439,
+     440,   444,   457,   458,   462,   466,   473,   479,   485,   493,
+     494,   499,   500,   505,   506
 };
 #endif
 
@@ -697,7 +697,7 @@ static const char *const yytname[] =
   "TO", "BY", "YIELD", "GENERATOR_OPERATOR", "RIGHT_ARROW_OPERATOR",
   "ID_COLLECTION", "LIST", "VECTOR", "SET", "DEF", "NEW", "PROTECTED",
   "PRIVATE", "CLASS", "EXTENDS", "ABSTRACT", "'{'", "'}'", "':'", "'_'",
-  "'.'", "';'", "$accept", "program", "instance_class",
+  "'.'", "';'", "$accept", "program", "create_instance_class",
   "visibility_modifier", "statement_expr_list", "statement_expr_list_e",
   "statement", "if_else_expr", "if_condition_list", "for_expr",
   "for_params", "for_multy_list", "while_expr", "do_while_expr",
@@ -2058,445 +2058,445 @@ yyreduce:
   switch (yyn)
     {
   case 7: /* statement_expr_list: statement  */
-#line 163 "parser.y"
+#line 182 "parser.y"
                 { printf("Add first statement :\n"); }
 #line 2064 "parser.tab.cpp"
     break;
 
   case 8: /* statement_expr_list: visibility_modifier statement  */
-#line 164 "parser.y"
+#line 183 "parser.y"
                                     { printf("Add first visibility_modifier statement :\n"); }
 #line 2070 "parser.tab.cpp"
     break;
 
   case 9: /* statement_expr_list: expr  */
-#line 165 "parser.y"
+#line 184 "parser.y"
            { printf("Add first statement :\n"); }
 #line 2076 "parser.tab.cpp"
     break;
 
   case 10: /* statement_expr_list: statement_expr_list endlOpt semicolonList endlOpt statement  */
-#line 166 "parser.y"
+#line 185 "parser.y"
                                                                    { printf("Add new statement to statement_expr_list :\n"); }
 #line 2082 "parser.tab.cpp"
     break;
 
   case 11: /* statement_expr_list: statement_expr_list endlOpt semicolonList endlOpt expr  */
-#line 167 "parser.y"
+#line 186 "parser.y"
                                                               { printf("Add new expr to statement_expr_list :\n"); }
 #line 2088 "parser.tab.cpp"
     break;
 
   case 12: /* statement_expr_list: statement_expr_list endlOpt semicolonList endlOpt visibility_modifier statement  */
-#line 168 "parser.y"
+#line 187 "parser.y"
                                                                                        { printf("Add new visibility_modifier to statement_expr_list :\n"); }
 #line 2094 "parser.tab.cpp"
     break;
 
   case 13: /* statement_expr_list: statement_expr_list endlList statement  */
-#line 169 "parser.y"
+#line 188 "parser.y"
                                               { printf("Add new statement to statement_expr_list :\n"); }
 #line 2100 "parser.tab.cpp"
     break;
 
   case 14: /* statement_expr_list: statement_expr_list endlList expr  */
-#line 170 "parser.y"
+#line 189 "parser.y"
                                          { printf("Add new expr to statement_expr_list :\n"); }
 #line 2106 "parser.tab.cpp"
     break;
 
   case 15: /* statement_expr_list: statement_expr_list endlList visibility_modifier statement  */
-#line 171 "parser.y"
+#line 190 "parser.y"
                                                                   { printf("Add new visibility_modifier to statement_expr_list :\n"); }
 #line 2112 "parser.tab.cpp"
     break;
 
   case 17: /* statement_expr_list_e: %empty  */
-#line 176 "parser.y"
+#line 195 "parser.y"
                      { printf("PARSER found statement_list_e - nothing\n"); }
 #line 2118 "parser.tab.cpp"
     break;
 
   case 18: /* statement: VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 180 "parser.y"
+#line 199 "parser.y"
                                                        { printf("implicit value declaration:\n"); }
 #line 2124 "parser.tab.cpp"
     break;
 
   case 19: /* statement: VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 181 "parser.y"
+#line 200 "parser.y"
                                                        { printf("implicit variable declaration:\n"); }
 #line 2130 "parser.tab.cpp"
     break;
 
   case 20: /* statement: VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr  */
-#line 182 "parser.y"
+#line 201 "parser.y"
                                                                                            { printf("explicit value declaration:\n"); }
 #line 2136 "parser.tab.cpp"
     break;
 
   case 21: /* statement: VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr  */
-#line 183 "parser.y"
+#line 202 "parser.y"
                                                                                            { printf("explicit variable declaration:\n"); }
 #line 2142 "parser.tab.cpp"
     break;
 
   case 22: /* statement: method  */
-#line 184 "parser.y"
+#line 203 "parser.y"
              { printf("Method:\n"); }
 #line 2148 "parser.tab.cpp"
     break;
 
   case 23: /* if_else_expr: IF endlOpt '(' expr ')' endlOpt expr  */
-#line 193 "parser.y"
+#line 212 "parser.y"
                                                       { printf("IF-CONSTR\n"); }
 #line 2154 "parser.tab.cpp"
     break;
 
   case 24: /* if_else_expr: IF endlOpt '(' expr ')' endlOpt expr ELSE endlOpt expr  */
-#line 194 "parser.y"
+#line 213 "parser.y"
                                                                           { printf("IF_ELSE-CONSTR\n"); }
 #line 2160 "parser.tab.cpp"
     break;
 
   case 25: /* if_else_expr: IF endlOpt '(' expr ')' endlOpt expr endlList ELSE endlOpt expr  */
-#line 195 "parser.y"
+#line 214 "parser.y"
                                                                                    { printf("IF_ELSE-CONSTR\n"); }
 #line 2166 "parser.tab.cpp"
     break;
 
   case 29: /* for_expr: FOR endlOpt '(' for_multy_list ')' endlOpt YIELD endlOpt expr  */
-#line 209 "parser.y"
+#line 228 "parser.y"
                                                                                               { printf("FOR MULTY LOOP\n"); }
 #line 2172 "parser.tab.cpp"
     break;
 
   case 30: /* for_expr: FOR endlOpt '(' for_params if_condition_list ')' endlOpt YIELD endlOpt expr  */
-#line 210 "parser.y"
+#line 229 "parser.y"
                                                                                                             { printf("FOR LOOP: multy with IF_STMT\n"); }
 #line 2178 "parser.tab.cpp"
     break;
 
   case 31: /* for_expr: FOR endlOpt '(' for_multy_list ')' endlOpt expr  */
-#line 211 "parser.y"
+#line 230 "parser.y"
                                                                                 { printf("FOR MULTY LOOP\n"); }
 #line 2184 "parser.tab.cpp"
     break;
 
   case 32: /* for_expr: FOR endlOpt '(' for_params if_condition_list ')' endlOpt expr  */
-#line 212 "parser.y"
+#line 231 "parser.y"
                                                                                                { printf("FOR LOOP: multy with IF_STMT\n"); }
 #line 2190 "parser.tab.cpp"
     break;
 
   case 59: /* expr_list_e: expr_list  */
-#line 287 "parser.y"
+#line 306 "parser.y"
                    { printf("PARSER found expr_list - expr_list\n"); }
 #line 2196 "parser.tab.cpp"
     break;
 
   case 60: /* expr_list_e: %empty  */
-#line 288 "parser.y"
+#line 307 "parser.y"
                      { printf("PARSER found expr_list - nothing\n"); }
 #line 2202 "parser.tab.cpp"
     break;
 
   case 61: /* expr_list: expr  */
-#line 293 "parser.y"
+#line 312 "parser.y"
                       { printf("PARSER found expr_list - expr\n"); }
 #line 2208 "parser.tab.cpp"
     break;
 
   case 62: /* expr_list: expr_list endlOpt ',' endlOpt expr  */
-#line 294 "parser.y"
+#line 313 "parser.y"
                                           { printf("PARSER found expr_list - expr_list\n"); }
 #line 2214 "parser.tab.cpp"
     break;
 
   case 63: /* expr: const  */
-#line 299 "parser.y"
+#line 318 "parser.y"
             {printf("PARSER found expr - const\n"); }
 #line 2220 "parser.tab.cpp"
     break;
 
   case 64: /* expr: IDENTIFIER  */
-#line 300 "parser.y"
+#line 319 "parser.y"
                                        {printf("PARSER found expr - IDENTIFIER\n"); }
 #line 2226 "parser.tab.cpp"
     break;
 
   case 65: /* expr: IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 301 "parser.y"
+#line 320 "parser.y"
                                           { printf("Assignment:\n"); }
 #line 2232 "parser.tab.cpp"
     break;
 
   case 66: /* expr: '(' expr ')'  */
-#line 302 "parser.y"
+#line 321 "parser.y"
                    { printf("PARSER found expr - ( expr ) \n"); }
 #line 2238 "parser.tab.cpp"
     break;
 
   case 67: /* expr: expr '>' endlOpt expr  */
-#line 303 "parser.y"
+#line 322 "parser.y"
                             {printf("PARSER found expr - expr > expr\n"); }
 #line 2244 "parser.tab.cpp"
     break;
 
   case 68: /* expr: expr '<' endlOpt expr  */
-#line 304 "parser.y"
+#line 323 "parser.y"
                             {printf("PARSER found expr - expr < expr\n"); }
 #line 2250 "parser.tab.cpp"
     break;
 
   case 69: /* expr: expr MORE_OR_EQUAL_OPERATOR endlOpt expr  */
-#line 305 "parser.y"
+#line 324 "parser.y"
                                                {printf("PARSER found expr - expr >= expr\n"); }
 #line 2256 "parser.tab.cpp"
     break;
 
   case 70: /* expr: expr LESS_OR_EQUAL_OPERATOR endlOpt expr  */
-#line 306 "parser.y"
+#line 325 "parser.y"
                                                {printf("PARSER found expr - expr <= expr\n"); }
 #line 2262 "parser.tab.cpp"
     break;
 
   case 71: /* expr: expr EQ endlOpt expr  */
-#line 307 "parser.y"
+#line 326 "parser.y"
                            {printf("PARSER found expr - expr == expr\n"); }
 #line 2268 "parser.tab.cpp"
     break;
 
   case 72: /* expr: expr NEQ endlOpt expr  */
-#line 308 "parser.y"
+#line 327 "parser.y"
                             {printf("PARSER found expr - expr != expr\n"); }
 #line 2274 "parser.tab.cpp"
     break;
 
   case 73: /* expr: expr '+' endlOpt expr  */
-#line 309 "parser.y"
+#line 328 "parser.y"
                             { printf("PARSER found expr - expr + expr\n"); }
 #line 2280 "parser.tab.cpp"
     break;
 
   case 74: /* expr: expr '-' endlOpt expr  */
-#line 310 "parser.y"
+#line 329 "parser.y"
                             { printf("PARSER found expr - expr - expr\n"); }
 #line 2286 "parser.tab.cpp"
     break;
 
   case 75: /* expr: expr '/' endlOpt expr  */
-#line 311 "parser.y"
+#line 330 "parser.y"
                             { printf("PARSER found expr - expr / expr\n"); }
 #line 2292 "parser.tab.cpp"
     break;
 
   case 76: /* expr: expr '*' endlOpt expr  */
-#line 312 "parser.y"
+#line 331 "parser.y"
                             { printf("PARSER found expr - expr * expr\n"); }
 #line 2298 "parser.tab.cpp"
     break;
 
   case 77: /* expr: expr '%' endlOpt expr  */
-#line 313 "parser.y"
+#line 332 "parser.y"
                             { printf("PARSER found expr - expr % expr\n"); }
 #line 2304 "parser.tab.cpp"
     break;
 
   case 78: /* expr: expr '&' endlOpt expr  */
-#line 314 "parser.y"
+#line 333 "parser.y"
                             { printf("PARSER found expr - expr && expr\n"); }
 #line 2310 "parser.tab.cpp"
     break;
 
   case 79: /* expr: expr '|' endlOpt expr  */
-#line 315 "parser.y"
+#line 334 "parser.y"
                             { printf("PARSER found expr - expr | expr\n"); }
 #line 2316 "parser.tab.cpp"
     break;
 
   case 80: /* expr: expr KW_OR endlOpt expr  */
-#line 316 "parser.y"
+#line 335 "parser.y"
                               { printf("PARSER found expr - expr || expr\n"); }
 #line 2322 "parser.tab.cpp"
     break;
 
   case 81: /* expr: expr KW_AND endlOpt expr  */
-#line 317 "parser.y"
+#line 336 "parser.y"
                                { printf("PARSER found expr - expr && expr\n"); }
 #line 2328 "parser.tab.cpp"
     break;
 
   case 82: /* expr: '-' expr  */
-#line 318 "parser.y"
+#line 337 "parser.y"
                              { printf("PARSER found expr - UMINUS\n"); }
 #line 2334 "parser.tab.cpp"
     break;
 
   case 83: /* expr: '+' expr  */
-#line 319 "parser.y"
+#line 338 "parser.y"
                             { printf("PARSER found expr - UPLUS\n"); }
 #line 2340 "parser.tab.cpp"
     break;
 
   case 84: /* expr: func_call  */
-#line 320 "parser.y"
+#line 339 "parser.y"
                 { printf("PARSER found expr - func_call\n"); }
 #line 2346 "parser.tab.cpp"
     break;
 
   case 85: /* expr: if_else_expr  */
-#line 321 "parser.y"
+#line 340 "parser.y"
                                         { printf("PARSER found expr - if_else_expr\n"); }
 #line 2352 "parser.tab.cpp"
     break;
 
   case 86: /* expr: for_expr  */
-#line 322 "parser.y"
+#line 341 "parser.y"
                { printf("PARSER found expr - for_expr\n"); }
 #line 2358 "parser.tab.cpp"
     break;
 
   case 87: /* expr: while_expr  */
-#line 323 "parser.y"
+#line 342 "parser.y"
                  { printf("PARSER found expr - while_expr\n"); }
 #line 2364 "parser.tab.cpp"
     break;
 
   case 88: /* expr: do_while_expr  */
-#line 324 "parser.y"
+#line 343 "parser.y"
                     { printf("PARSER found expr - do_while_expr\n"); }
 #line 2370 "parser.tab.cpp"
     break;
 
   case 89: /* expr: try_expr  */
-#line 325 "parser.y"
+#line 344 "parser.y"
                { printf("PARSER found expr - try_expr\n"); }
 #line 2376 "parser.tab.cpp"
     break;
 
   case 90: /* expr: match_expr  */
-#line 326 "parser.y"
+#line 345 "parser.y"
                  { printf("PARSER found expr - match_expr\n"); }
 #line 2382 "parser.tab.cpp"
     break;
 
   case 91: /* expr: '{' statement_expr_list_e '}'  */
-#line 327 "parser.y"
+#line 346 "parser.y"
                                      { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
 #line 2388 "parser.tab.cpp"
     break;
 
   case 92: /* expr: func  */
-#line 328 "parser.y"
+#line 347 "parser.y"
            { printf("Function:\n"); }
 #line 2394 "parser.tab.cpp"
     break;
 
   case 93: /* expr: method_call  */
-#line 329 "parser.y"
+#line 348 "parser.y"
                   { printf("method_call:\n"); }
 #line 2400 "parser.tab.cpp"
     break;
 
-  case 94: /* expr: instance_class  */
-#line 330 "parser.y"
-                     { printf("instance_class:\n"); }
+  case 94: /* expr: create_instance_class  */
+#line 349 "parser.y"
+                            { printf("instance_class:\n"); }
 #line 2406 "parser.tab.cpp"
     break;
 
   case 95: /* expr: READLINE '(' ')'  */
-#line 331 "parser.y"
+#line 350 "parser.y"
                      { printf("readLine:\n"); }
 #line 2412 "parser.tab.cpp"
     break;
 
   case 96: /* expr: PRINT '(' expr ')'  */
-#line 332 "parser.y"
+#line 351 "parser.y"
                         { printf("print:\n"); }
 #line 2418 "parser.tab.cpp"
     break;
 
   case 97: /* num_const: NUM_10  */
-#line 337 "parser.y"
+#line 356 "parser.y"
              { printf("PARSER found - INT\n"); }
 #line 2424 "parser.tab.cpp"
     break;
 
   case 98: /* num_const: NUM_16  */
-#line 338 "parser.y"
+#line 357 "parser.y"
              { printf("PARSER found - INT\n"); }
 #line 2430 "parser.tab.cpp"
     break;
 
   case 99: /* num_const: REAL_NUMBER  */
-#line 339 "parser.y"
+#line 358 "parser.y"
                   { printf("PARSER found - REAL\n"); }
 #line 2436 "parser.tab.cpp"
     break;
 
   case 100: /* num_const: REAL_NUMBER_EXPONENT  */
-#line 340 "parser.y"
+#line 359 "parser.y"
                            { printf("PARSER found - REAL_EXP\n"); }
 #line 2442 "parser.tab.cpp"
     break;
 
   case 111: /* func_call: IDENTIFIER '(' expr_list_e ')'  */
-#line 362 "parser.y"
+#line 381 "parser.y"
                                      { printf("Function call: WITH PARAMS\n"); }
 #line 2448 "parser.tab.cpp"
     break;
 
   case 144: /* array_literal: ARRAY '(' expr_list_e ')'  */
-#line 443 "parser.y"
+#line 462 "parser.y"
                                 { printf("PARSER found Array\n"); }
 #line 2454 "parser.tab.cpp"
     break;
 
   case 146: /* list: LIST '(' expr_list_e ')'  */
-#line 454 "parser.y"
+#line 473 "parser.y"
                                { printf("PARSER found List\n"); }
 #line 2460 "parser.tab.cpp"
     break;
 
   case 147: /* vector: VECTOR '(' expr_list_e ')'  */
-#line 460 "parser.y"
+#line 479 "parser.y"
                                  { printf("PARSER found Vector\n"); }
 #line 2466 "parser.tab.cpp"
     break;
 
   case 148: /* set: SET '(' expr_list_e ')'  */
-#line 466 "parser.y"
+#line 485 "parser.y"
                               { printf("PARSER found Set\n"); }
 #line 2472 "parser.tab.cpp"
     break;
 
   case 149: /* endlList: ENDL  */
-#line 474 "parser.y"
+#line 493 "parser.y"
                     { printf("PARSER found ENDL\n"); }
 #line 2478 "parser.tab.cpp"
     break;
 
   case 150: /* endlList: endlList ENDL  */
-#line 475 "parser.y"
+#line 494 "parser.y"
                     { printf("PARSER found endlList\n"); }
 #line 2484 "parser.tab.cpp"
     break;
 
   case 151: /* endlOpt: endlList  */
-#line 480 "parser.y"
+#line 499 "parser.y"
                { printf("PARSER found endlOpt\n"); }
 #line 2490 "parser.tab.cpp"
     break;
 
   case 153: /* semicolonList: ';'  */
-#line 486 "parser.y"
+#line 505 "parser.y"
                    { printf("PARSER found SEMICOLON\n"); }
 #line 2496 "parser.tab.cpp"
     break;
 
   case 154: /* semicolonList: semicolonList ';'  */
-#line 487 "parser.y"
+#line 506 "parser.y"
                         { printf("PARSER found semicolonList\n"); }
 #line 2502 "parser.tab.cpp"
     break;
@@ -2731,5 +2731,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 496 "parser.y"
+#line 515 "parser.y"
 
