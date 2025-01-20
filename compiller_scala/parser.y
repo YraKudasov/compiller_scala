@@ -226,28 +226,26 @@ do_while_expr:
 
 /*..................................................... MATCH................................................... */
 match_expr:
-          IDENTIFIER MATCH '{' case_list'}'
-        | const MATCH '{' case_list '}'
+          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list '}' endlOpt semicolonList_e
+        | const endlOpt MATCH endlOpt '{' endlOpt case_list '}' endlOpt semicolonList_e
         ;
 
 
 case_condition:
-          const IF expr
+          const endlOpt IF endlOpt expr
         | IDENTIFIER
-        | IDENTIFIER IF expr
-        | int_literal_list_case
+        | IDENTIFIER endlOpt IF endlOpt expr
+        | literal_list_case
         ;
 
-int_literal_list_case:
+literal_list_case:
           const 
-        | int_literal_list_case '|' const 
+        | literal_list_case endlOpt '|' endlOpt const 
         ;
 
 case_list:
-          CASE case_condition RIGHT_ARROW_OPERATOR expr
-        | case_list CASE case_condition RIGHT_ARROW_OPERATOR expr
-        | case_list NEWLINE
-        | case_list ';'
+          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList_e expr endlOpt semicolonList_e
+        | case_list CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList_e expr endlOpt semicolonList_e
         ;
             
 /*..................................................... TRY/CATCH/FINALLY................................................... */
@@ -471,6 +469,12 @@ endlOpt:
 semicolonList:
       ';'          { printf("PARSER found SEMICOLON\n"); }
     | semicolonList ';' { printf("PARSER found semicolonList\n"); }
+    ;
+
+semicolonList_e:
+      ';'          { printf("PARSER found SEMICOLON\n"); }
+    | semicolonList ';' { printf("PARSER found semicolonList\n"); }
+    | /* nothing */ 
     ;
 
 %%
