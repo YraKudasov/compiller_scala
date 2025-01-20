@@ -115,7 +115,8 @@ abstract_class_header:
 
 
 case_class_header:
-      CASE endlOpt class_header
+      CASE endlOpt CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')'
+    | CASE endlOpt CLASS endlOpt IDENTIFIER endlOpt'(' class_params_e ')' inheritance
     ;
 
 
@@ -246,6 +247,7 @@ case_condition:
         | IDENTIFIER
         | IDENTIFIER endlOpt IF endlOpt expr
         | literal_list_case
+        | '_'
         ;
 
 literal_list_case:
