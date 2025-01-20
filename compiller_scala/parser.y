@@ -226,8 +226,8 @@ do_while_expr:
 
 /*..................................................... MATCH................................................... */
 match_expr:
-          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list '}' endlOpt semicolonList_e
-        | const endlOpt MATCH endlOpt '{' endlOpt case_list '}' endlOpt semicolonList_e
+          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+        | const endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
         ;
 
 
@@ -244,8 +244,12 @@ literal_list_case:
         ;
 
 case_list:
-          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList_e expr endlOpt semicolonList_e
-        | case_list CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList_e expr endlOpt semicolonList_e
+          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
+        | CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
+        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
+        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
+        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
+        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
         ;
             
 /*..................................................... TRY/CATCH/FINALLY................................................... */

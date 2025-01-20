@@ -80,38 +80,39 @@ extern int yydebug;
     FINALLY = 281,                 /* FINALLY  */
     PRINT = 282,                   /* PRINT  */
     READLINE = 283,                /* READLINE  */
-    KW_TRUE = 284,                 /* KW_TRUE  */
-    KW_FALSE = 285,                /* KW_FALSE  */
-    KW_NULL = 286,                 /* KW_NULL  */
-    EQ = 287,                      /* EQ  */
-    NEQ = 288,                     /* NEQ  */
-    KW_OR = 289,                   /* KW_OR  */
-    KW_AND = 290,                  /* KW_AND  */
-    MORE_OR_EQUAL_OPERATOR = 291,  /* MORE_OR_EQUAL_OPERATOR  */
-    LESS_OR_EQUAL_OPERATOR = 292,  /* LESS_OR_EQUAL_OPERATOR  */
-    INT_KW = 293,                  /* INT_KW  */
-    DOUBLE_KW = 294,               /* DOUBLE_KW  */
-    STRING_KW = 295,               /* STRING_KW  */
-    CHAR_KW = 296,                 /* CHAR_KW  */
-    BOOLEAN_KW = 297,              /* BOOLEAN_KW  */
-    ANY_KW = 298,                  /* ANY_KW  */
-    UNIT_KW = 299,                 /* UNIT_KW  */
-    TO = 300,                      /* TO  */
-    BY = 301,                      /* BY  */
-    YIELD = 302,                   /* YIELD  */
-    GENERATOR_OPERATOR = 303,      /* GENERATOR_OPERATOR  */
-    RIGHT_ARROW_OPERATOR = 304,    /* RIGHT_ARROW_OPERATOR  */
-    ID_COLLECTION = 305,           /* ID_COLLECTION  */
-    ARRAY = 306,                   /* ARRAY  */
-    LIST = 307,                    /* LIST  */
-    VECTOR = 308,                  /* VECTOR  */
-    SET = 309,                     /* SET  */
-    DEF = 310,                     /* DEF  */
-    NEW = 311,                     /* NEW  */
-    PROTECTED = 312,               /* PROTECTED  */
-    PRIVATE = 313,                 /* PRIVATE  */
-    CLASS = 314,                   /* CLASS  */
-    EXTENDS = 315                  /* EXTENDS  */
+    ARRAY = 284,                   /* ARRAY  */
+    OVERRIDE = 285,                /* OVERRIDE  */
+    KW_TRUE = 286,                 /* KW_TRUE  */
+    KW_FALSE = 287,                /* KW_FALSE  */
+    KW_NULL = 288,                 /* KW_NULL  */
+    EQ = 289,                      /* EQ  */
+    NEQ = 290,                     /* NEQ  */
+    KW_OR = 291,                   /* KW_OR  */
+    KW_AND = 292,                  /* KW_AND  */
+    MORE_OR_EQUAL_OPERATOR = 293,  /* MORE_OR_EQUAL_OPERATOR  */
+    LESS_OR_EQUAL_OPERATOR = 294,  /* LESS_OR_EQUAL_OPERATOR  */
+    INT_KW = 295,                  /* INT_KW  */
+    DOUBLE_KW = 296,               /* DOUBLE_KW  */
+    STRING_KW = 297,               /* STRING_KW  */
+    CHAR_KW = 298,                 /* CHAR_KW  */
+    BOOLEAN_KW = 299,              /* BOOLEAN_KW  */
+    ANY_KW = 300,                  /* ANY_KW  */
+    UNIT_KW = 301,                 /* UNIT_KW  */
+    TO = 302,                      /* TO  */
+    BY = 303,                      /* BY  */
+    YIELD = 304,                   /* YIELD  */
+    GENERATOR_OPERATOR = 305,      /* GENERATOR_OPERATOR  */
+    RIGHT_ARROW_OPERATOR = 306,    /* RIGHT_ARROW_OPERATOR  */
+    ID_COLLECTION = 307,           /* ID_COLLECTION  */
+    LIST = 308,                    /* LIST  */
+    VECTOR = 309,                  /* VECTOR  */
+    SET = 310,                     /* SET  */
+    DEF = 311,                     /* DEF  */
+    NEW = 312,                     /* NEW  */
+    PROTECTED = 313,               /* PROTECTED  */
+    PRIVATE = 314,                 /* PRIVATE  */
+    CLASS = 315,                   /* CLASS  */
+    EXTENDS = 316                  /* EXTENDS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -126,7 +127,7 @@ union YYSTYPE
     double real_value;
     char* str_value;
 
-#line 130 "parser.tab.h"
+#line 131 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
