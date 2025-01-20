@@ -191,7 +191,7 @@ statement_expr_list:
     ;
 
 statement_expr_list_e:
-      endlOpt statement_expr_list endlOpt
+      endlOpt statement_expr_list endlOpt 
     | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
@@ -265,9 +265,12 @@ case_condition:
           const endlOpt IF endlOpt expr
         | IDENTIFIER
         | IDENTIFIER endlOpt IF endlOpt expr
-        | literal_list_case
+        | literal_list_case 
+        | instance_case_class_in_case
+        | IDENTIFIER endlOpt ':' endlOpt const
         | '_'
         ;
+
 
 literal_list_case:
           const 
@@ -360,7 +363,6 @@ num_const:
     ;
 
 
-
 const:
       num_const
     | CONST_STRING
@@ -447,8 +449,6 @@ type_list_simple:
 
 
 
-
-
 /************************************************/
 
 
@@ -506,10 +506,5 @@ semicolonList:
     | semicolonList ';' { printf("PARSER found semicolonList\n"); }
     ;
 
-semicolonList_e:
-      ';'          { printf("PARSER found SEMICOLON\n"); }
-    | semicolonList ';' { printf("PARSER found semicolonList\n"); }
-    | /* nothing */ 
-    ;
 
 %%
