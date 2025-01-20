@@ -112,7 +112,8 @@ extern int yydebug;
     PROTECTED = 313,               /* PROTECTED  */
     PRIVATE = 314,                 /* PRIVATE  */
     CLASS = 315,                   /* CLASS  */
-    EXTENDS = 316                  /* EXTENDS  */
+    EXTENDS = 316,                 /* EXTENDS  */
+    ABSTRACT = 317                 /* ABSTRACT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -127,7 +128,7 @@ union YYSTYPE
     double real_value;
     char* str_value;
 
-#line 131 "parser.tab.h"
+#line 132 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -84,7 +84,7 @@ struct LOCATION
 %token DEF
 %token NEW
 %token PROTECTED PRIVATE
-%token CLASS  EXTENDS
+%token CLASS EXTENDS ABSTRACT
 
 %%
 
@@ -108,6 +108,16 @@ class_header:
     | CLASS endlOpt IDENTIFIER
     | CLASS endlOpt IDENTIFIER endlOpt inheritance
     ;
+
+abstract_class_header:
+      ABSTRACT endlOpt class_header
+    ;
+
+
+case_class_header:
+      CASE endlOpt class_header
+    ;
+
 
 class_params:
       VAR IDENTIFIER ':' type
