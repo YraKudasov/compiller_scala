@@ -144,7 +144,9 @@
     </Flex>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ast.h" />
     <ClInclude Include="FlexLexer.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="ParseNumbers.h" />
     <ClInclude Include="parser.tab.h" />
   </ItemGroup>

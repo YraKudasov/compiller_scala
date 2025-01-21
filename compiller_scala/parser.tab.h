@@ -122,13 +122,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 41 "parser.y"
+#line 44 "parser.y"
 
     int64_t int_value;
     double real_value;
     char* str_value;
+     struct Json *tree;
 
-#line 132 "parser.tab.h"
+#line 133 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

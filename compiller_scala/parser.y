@@ -4,9 +4,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "./ast.h"
+
 #include "FlexLexer.h"
 extern int yylex();
 extern int yylineno;
+Json *found_classes = NULL;
 void yyerror(const char *str);
 struct LOCATION
 {
@@ -42,10 +45,11 @@ struct LOCATION
     int64_t int_value;
     double real_value;
     char* str_value;
+    struct Json *tree;
 }
 
 
-%start case_list
+%start program
 
 
 %nonassoc ENDL
