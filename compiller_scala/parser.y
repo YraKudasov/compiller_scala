@@ -45,10 +45,10 @@ struct LOCATION
 }
 
 
-%start program
+%start case_list
 
 
-%nonassoc ENDL
+%left ENDL
 %nonassoc LOWER_THAN_EXPR
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -264,33 +264,33 @@ do_while_expr:
 
 /*..................................................... MATCH................................................... */
 match_expr:
-          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}' 
         | const endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
         ;
 
+
 case_condition:
           const endlOpt IF endlOpt expr
-        | IDENTIFIER
+        | IDENTIFIER %prec LOWER_THAN_EXPR
         | IDENTIFIER endlOpt IF endlOpt expr
-        | literal_list_case 
+        | literal_list_case %prec LOWER_THAN_EXPR
         | instance_case_class_in_case
         | IDENTIFIER endlOpt ':' endlOpt const
         | '_'
         ;
 
 case_list:
-          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
-        | CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
-        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
-        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
-        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
-        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
+          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr
+        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
+        | case_list endlOpt  CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
         ;
 
+
 literal_list_case:
-          const 
-        | literal_list_case endlOpt '|' endlOpt const 
+          const %prec LOWER_THAN_EXPR
+        | literal_list_case  endlOpt '|' endlOpt const 
         ;
+
 
 /*..................................................... TRY/CATCH/FINALLY................................................... */
 
