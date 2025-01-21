@@ -182,16 +182,13 @@ statement_expr_list:
       statement { printf("Add first statement :\n"); }
     | visibility_modifier statement { printf("Add first visibility_modifier statement :\n"); }
     | expr { printf("Add first statement :\n"); }
-    | statement_expr_list  endlOpt semicolonList endlOpt statement { printf("Add new statement to statement_expr_list :\n"); }
-    | statement_expr_list  endlOpt semicolonList endlOpt expr { printf("Add new expr to statement_expr_list :\n"); }
-    | statement_expr_list  endlOpt semicolonList endlOpt visibility_modifier statement { printf("Add new visibility_modifier to statement_expr_list :\n"); }
-    | statement_expr_list  endlList statement { printf("Add new statement to statement_expr_list :\n"); }
-    | statement_expr_list  endlList expr { printf("Add new expr to statement_expr_list :\n"); }
-    | statement_expr_list  endlList visibility_modifier statement { printf("Add new visibility_modifier to statement_expr_list :\n"); }
+    | statement_expr_list  separator_List statement { printf("Add new statement to statement_expr_list :\n"); }
+    | statement_expr_list  separator_List expr { printf("Add new expr to statement_expr_list :\n"); }
+    | statement_expr_list  separator_List visibility_modifier statement { printf("Add new visibility_modifier to statement_expr_list :\n"); }
     ;
 
 statement_expr_list_e:
-      endlOpt statement_expr_list endlOpt 
+      separator_List_e statement_expr_list separator_List_e 
     | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
@@ -215,20 +212,14 @@ if_else_expr:
     ;
 
 
-if_condition_list:
-      IF endlOpt expr
-    | if_condition_list endlOpt IF endlOpt expr
-    | if_condition_list endlOpt semicolonList endlOpt IF expr 
-    ;
-
 
 /*..................................................... FOR................................................... */
 
 for_expr:
-          FOR endlOpt '(' for_multy_list ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR MULTY LOOP\n"); }
-        | FOR endlOpt '(' for_params if_condition_list ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR LOOP: multy with IF_STMT\n"); }
-        | FOR endlOpt '(' for_multy_list ')' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR MULTY LOOP\n"); }
-        | FOR endlOpt '(' for_params if_condition_list ')' endlOpt expr  %prec LOWER_THAN_EXPR { printf("FOR LOOP: multy with IF_STMT\n"); }
+          FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in parentheses\n"); }
+        | FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in parentheses\n"); }
+        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in curly_braces\n"); }
+        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in curly_braces\n"); }
         ;
 
 /*standart*/
@@ -238,9 +229,26 @@ for_params:
         ;
 
 
-for_multy_list:
-          for_params
-        | for_multy_list endlOpt semicolonList endlOpt for_params
+generators_and_conditions_parentheses_List:
+          IF expr
+        | IDENTIFIER GENERATOR_OPERATOR const TO const
+        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
+        | generators_and_conditions_parentheses_List IF expr 
+        | generators_and_conditions_parentheses_List ';' IF expr 
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const
+        ;
+
+generators_and_conditions_curly_braces_List:
+          IF endlOpt expr
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
+        | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr 
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr 
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
         ;
 
 
@@ -507,8 +515,12 @@ semicolonList:
 separator_List:
       ENDL  { printf("PARSER found ENDL\n"); }
     | ';'   { printf("PARSER found SEMICOLON\n"); }
-    | semicolonList  ENDL  { printf("PARSER add ENDL to semicolonList\n"); }
-    | semicolonList  ';'  { printf("PARSER add ; to semicolonList\n"); }
+    | separator_List  ENDL  { printf("PARSER add ENDL to separator_List\n"); }
+    | separator_List  ';'  { printf("PARSER add ; to separator_List\n"); }
     ;
 
+separator_List_e:
+      separator_List
+    | /* nothing */
+    ;
 %%
