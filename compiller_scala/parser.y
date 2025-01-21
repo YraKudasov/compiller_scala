@@ -191,7 +191,7 @@ statement_expr_list:
     ;
 
 statement_expr_list_e:
-      statement_expr_list endlOpt 
+      endlOpt statement_expr_list endlOpt 
     | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
     ;
 
@@ -256,30 +256,32 @@ do_while_expr:
 
 /*..................................................... MATCH................................................... */
 match_expr:
-          IDENTIFIER MATCH endlOpt '{' endlOpt case_list endlOpt '}'
-        | const MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+        | const endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
         ;
 
 case_condition:
           const endlOpt IF endlOpt expr
         | IDENTIFIER
-        | IDENTIFIER IF endlOpt expr
+        | IDENTIFIER endlOpt IF endlOpt expr
         | literal_list_case 
         | instance_case_class_in_case
-        | IDENTIFIER ':' const
+        | IDENTIFIER endlOpt ':' endlOpt const
         | '_'
         ;
 
 case_list:
-          CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt expr
-        | case_list CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt expr
-        | CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt semicolonList expr
-        | case_list CASE endlOpt case_condition RIGHT_ARROW_OPERATOR endlOpt semicolonList expr
+          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
+        | CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
+        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
+        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt semicolonList endlOpt expr
+        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
+        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR endlOpt expr
         ;
 
 literal_list_case:
           const 
-        | literal_list_case '|' const 
+        | literal_list_case endlOpt '|' endlOpt const 
         ;
 
 /*..................................................... TRY/CATCH/FINALLY................................................... */
@@ -314,7 +316,7 @@ expr_list:
 
 
 expr:
-      const {printf("PARSER found expr - const\n"); }
+      const %prec LOWER_THAN_EXPR {printf("PARSER found expr - const\n"); }
     | IDENTIFIER %prec LOWER_THAN_EXPR {printf("PARSER found expr - IDENTIFIER\n"); }
     | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
@@ -502,5 +504,11 @@ semicolonList:
     | semicolonList ';' { printf("PARSER found semicolonList\n"); }
     ;
 
+separator_List:
+      ENDL  { printf("PARSER found ENDL\n"); }
+    | ';'   { printf("PARSER found SEMICOLON\n"); }
+    | semicolonList  ENDL  { printf("PARSER add ENDL to semicolonList\n"); }
+    | semicolonList  ';'  { printf("PARSER add ; to semicolonList\n"); }
+    ;
 
 %%
