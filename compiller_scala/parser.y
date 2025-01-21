@@ -48,7 +48,7 @@ struct LOCATION
 %start case_list
 
 
-%left ENDL
+%nonassoc ENDL
 %nonassoc LOWER_THAN_EXPR
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -345,7 +345,6 @@ expr:
     | expr KW_AND endlOpt expr { printf("PARSER found expr - expr && expr\n"); }
     | '-' expr  %prec UMINUS { printf("PARSER found expr - UMINUS\n"); }
     | '+' expr  %prec UPLUS { printf("PARSER found expr - UPLUS\n"); }
-    | func_call { printf("PARSER found expr - func_call\n"); }
     | if_else_expr %prec LOWER_THAN_EXPR{ printf("PARSER found expr - if_else_expr\n"); }
     | for_expr { printf("PARSER found expr - for_expr\n"); }
     | while_expr { printf("PARSER found expr - while_expr\n"); }
@@ -353,7 +352,7 @@ expr:
     | try_expr { printf("PARSER found expr - try_expr\n"); }
     | match_expr { printf("PARSER found expr - match_expr\n"); }
     | '{' statement_expr_list_e  '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
-    | func { printf("Function:\n"); }
+    | anonymous_func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
@@ -384,11 +383,6 @@ const:
 
     /*.....................................................FUNCTIONS/METHODS................................................... */
 
-/* Function call */
-func_call:
-      IDENTIFIER '(' expr_list_e ')' { printf("Function call: WITH PARAMS\n"); }
-    ;
-
 params:
       IDENTIFIER ':' type_list_car
     | params ',' IDENTIFIER ':' type_list_car
@@ -396,14 +390,15 @@ params:
     | /* nothing */
     ;
 
-func:
-      '('params')' RIGHT_ARROW_OPERATOR expr %prec LOWER_THAN_EXPR
+
+anonymous_func:
+      '('params')' endlOpt RIGHT_ARROW_OPERATOR endlOpt expr %prec LOWER_THAN_EXPR
     ;
 
 
 method_params_list:
       '('params')'
-    | method_params_list '('params')'
+    | method_params_list endlOpt '('params')'
     ;
 
 method:
@@ -417,11 +412,14 @@ method:
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr 
     ;
 
+method_arguments_list:
+      '('expr_list_e')'
+    | method_arguments_list '('expr_list_e')'
+    ;
 
 method_call:
-     '('expr')' '.' IDENTIFIER'('expr_list_e')' 
-    |'('expr')' '.' IDENTIFIER
-    | const '.' IDENTIFIER
+      IDENTIFIER method_arguments_list
+    | IDENTIFIER '.' IDENTIFIER method_arguments_list
     ;
 
 
