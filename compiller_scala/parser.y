@@ -50,7 +50,7 @@ struct LOCATION
 }
 
 
-%start expr
+%start program
 
 
 %nonassoc ENDL
@@ -76,7 +76,7 @@ struct LOCATION
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINTLN READLINE ARRAY OVERRIDE
+%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE PRINTLN READLINE ARRAY OVERRIDE
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
@@ -85,7 +85,7 @@ struct LOCATION
 %token TO BY YIELD 
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
-%token ARRAY LIST VECTOR SET
+%token ARRAY 
 %token DEF
 %token NEW
 %token PROTECTED PRIVATE
@@ -204,6 +204,9 @@ statement:
     | VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit variable declaration:\n"); }
     | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
     | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
+    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array { printf("explicit array declaration:\n"); }
+    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array { printf("explicit array declaration:\n"); }
+    | class { printf("Class:\n"); }
     | method { printf("Method:\n"); }
     ;
     
@@ -299,21 +302,8 @@ literal_list_case:
         ;
 
 
-/*..................................................... TRY/CATCH/FINALLY................................................... */
+/*..................................................... EXPR................................................... */
 
-try_expr:
-          TRY'{' expr '}' catch
-        | TRY'{' expr '}' finally
-        | TRY'{' expr '}' catch finally
-        ;
-
-catch:
-          CATCH '{' case_list '}'
-        ;
-
-finally:
-          FINALLY '{' expr '}'
-        ;
 
 
 
@@ -356,7 +346,6 @@ expr:
     | for_expr { printf("PARSER found expr - for_expr\n"); }
     | while_expr { printf("PARSER found expr - while_expr\n"); }
     | do_while_expr { printf("PARSER found expr - do_while_expr\n"); }
-    | try_expr { printf("PARSER found expr - try_expr\n"); }
     | match_expr { printf("PARSER found expr - match_expr\n"); }
     | '{' statement_expr_list_e  '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
     | anonymous_func { printf("Function:\n"); }
@@ -383,9 +372,6 @@ const:
     | KW_FALSE
     | KW_NULL
     | array
-    | list
-    | vector
-    | set
     ;
 
     /*.....................................................FUNCTIONS/METHODS................................................... */
@@ -446,8 +432,6 @@ type_list_car:
     | type_list_car RIGHT_ARROW_OPERATOR type
     ;
 
-
-
 type_list:
       type
     | type_list_simple ',' type
@@ -470,32 +454,14 @@ array:
      ;
       
 array_literal:
-       ARRAY '(' expr_list_e ')' { printf("PARSER found Array\n"); }
+       ARRAY endlOpt'(' expr_list_e ')' { printf("PARSER found Array\n"); }
+     | ARRAY %prec LOWER_THAN_EXPR { printf("PARSER found Array\n"); }
      ;
 
 initialized_array:
-       NEW ARRAY '(' type ')' '[' expr ']'
+       NEW endlOpt ARRAY endlOpt '[' type ']' '(' expr ')'
      ;
 
-massive_type:
-       ARRAY '[' type ']'
-
-/* List */
-list:
-      LIST '(' expr_list_e ')' { printf("PARSER found List\n"); }
-    ;
-
-
- /* Vector */
-vector:
-      VECTOR '(' expr_list_e ')' { printf("PARSER found Vector\n"); }
-    ;
-
-
-/* Set */
-set:
-      SET '(' expr_list_e ')' { printf("PARSER found Set\n"); }
-    ;
 
 
 /*............................Обработка ENDL.........................................*/

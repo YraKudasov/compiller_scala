@@ -75,45 +75,39 @@ extern int yydebug;
     WHILE = 276,                   /* WHILE  */
     MATCH = 277,                   /* MATCH  */
     CASE = 278,                    /* CASE  */
-    TRY = 279,                     /* TRY  */
-    CATCH = 280,                   /* CATCH  */
-    FINALLY = 281,                 /* FINALLY  */
-    PRINTLN = 282,                 /* PRINTLN  */
-    READLINE = 283,                /* READLINE  */
-    ARRAY = 284,                   /* ARRAY  */
-    OVERRIDE = 285,                /* OVERRIDE  */
-    KW_TRUE = 286,                 /* KW_TRUE  */
-    KW_FALSE = 287,                /* KW_FALSE  */
-    KW_NULL = 288,                 /* KW_NULL  */
-    EQ = 289,                      /* EQ  */
-    NEQ = 290,                     /* NEQ  */
-    KW_OR = 291,                   /* KW_OR  */
-    KW_AND = 292,                  /* KW_AND  */
-    MORE_OR_EQUAL_OPERATOR = 293,  /* MORE_OR_EQUAL_OPERATOR  */
-    LESS_OR_EQUAL_OPERATOR = 294,  /* LESS_OR_EQUAL_OPERATOR  */
-    INT_KW = 295,                  /* INT_KW  */
-    DOUBLE_KW = 296,               /* DOUBLE_KW  */
-    STRING_KW = 297,               /* STRING_KW  */
-    CHAR_KW = 298,                 /* CHAR_KW  */
-    BOOLEAN_KW = 299,              /* BOOLEAN_KW  */
-    ANY_KW = 300,                  /* ANY_KW  */
-    UNIT_KW = 301,                 /* UNIT_KW  */
-    TO = 302,                      /* TO  */
-    BY = 303,                      /* BY  */
-    YIELD = 304,                   /* YIELD  */
-    GENERATOR_OPERATOR = 305,      /* GENERATOR_OPERATOR  */
-    RIGHT_ARROW_OPERATOR = 306,    /* RIGHT_ARROW_OPERATOR  */
-    ID_COLLECTION = 307,           /* ID_COLLECTION  */
-    LIST = 308,                    /* LIST  */
-    VECTOR = 309,                  /* VECTOR  */
-    SET = 310,                     /* SET  */
-    DEF = 311,                     /* DEF  */
-    NEW = 312,                     /* NEW  */
-    PROTECTED = 313,               /* PROTECTED  */
-    PRIVATE = 314,                 /* PRIVATE  */
-    CLASS = 315,                   /* CLASS  */
-    EXTENDS = 316,                 /* EXTENDS  */
-    ABSTRACT = 317                 /* ABSTRACT  */
+    PRINTLN = 279,                 /* PRINTLN  */
+    READLINE = 280,                /* READLINE  */
+    ARRAY = 281,                   /* ARRAY  */
+    OVERRIDE = 282,                /* OVERRIDE  */
+    KW_TRUE = 283,                 /* KW_TRUE  */
+    KW_FALSE = 284,                /* KW_FALSE  */
+    KW_NULL = 285,                 /* KW_NULL  */
+    EQ = 286,                      /* EQ  */
+    NEQ = 287,                     /* NEQ  */
+    KW_OR = 288,                   /* KW_OR  */
+    KW_AND = 289,                  /* KW_AND  */
+    MORE_OR_EQUAL_OPERATOR = 290,  /* MORE_OR_EQUAL_OPERATOR  */
+    LESS_OR_EQUAL_OPERATOR = 291,  /* LESS_OR_EQUAL_OPERATOR  */
+    INT_KW = 292,                  /* INT_KW  */
+    DOUBLE_KW = 293,               /* DOUBLE_KW  */
+    STRING_KW = 294,               /* STRING_KW  */
+    CHAR_KW = 295,                 /* CHAR_KW  */
+    BOOLEAN_KW = 296,              /* BOOLEAN_KW  */
+    ANY_KW = 297,                  /* ANY_KW  */
+    UNIT_KW = 298,                 /* UNIT_KW  */
+    TO = 299,                      /* TO  */
+    BY = 300,                      /* BY  */
+    YIELD = 301,                   /* YIELD  */
+    GENERATOR_OPERATOR = 302,      /* GENERATOR_OPERATOR  */
+    RIGHT_ARROW_OPERATOR = 303,    /* RIGHT_ARROW_OPERATOR  */
+    ID_COLLECTION = 304,           /* ID_COLLECTION  */
+    DEF = 305,                     /* DEF  */
+    NEW = 306,                     /* NEW  */
+    PROTECTED = 307,               /* PROTECTED  */
+    PRIVATE = 308,                 /* PRIVATE  */
+    CLASS = 309,                   /* CLASS  */
+    EXTENDS = 310,                 /* EXTENDS  */
+    ABSTRACT = 311                 /* ABSTRACT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -129,7 +123,7 @@ union YYSTYPE
     char* str_value;
     struct Json *tree;
 
-#line 133 "parser.tab.h"
+#line 127 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
