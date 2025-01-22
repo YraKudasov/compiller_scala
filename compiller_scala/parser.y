@@ -55,6 +55,8 @@ struct LOCATION
 
 %nonassoc ENDL
 %nonassoc LOWER_THAN_EXPR
+%nonassoc IF
+%right ELSE
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
 %left KW_OR
@@ -67,8 +69,7 @@ struct LOCATION
 %left '*' '/' '%'
 %nonassoc UMINUS UPLUS
 %left '(' ')' '[' ']'
-%nonassoc IF
-%right ELSE
+
 
 
 
@@ -227,11 +228,11 @@ statement:
 
 
 if_else_expr:
-      IF endlOpt '('  expr  ')' endlOpt expr %prec IF { printf("IF-CONSTR\n"); }
-    | IF endlOpt '('  expr  ')' endlOpt expr ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
-    | IF endlOpt '('  expr  ')' endlOpt expr endlList ELSE endlOpt expr %prec ELSE { printf("IF_ELSE-CONSTR\n"); }
+      IF endlOpt '('  expr  ')' endlOpt expr ELSE endlOpt expr %prec ELSE  { $$ = mk_if_else_expr($4, $7, $10); }
+    | IF endlOpt '('  expr  ')' endlOpt expr endlList ELSE endlOpt expr %prec ELSE  { $$ = mk_if_else_expr($4, $7, $11); }
+    | IF endlOpt '('  expr  ')' endlOpt expr %prec IF { $$ = mk_if_expr($4, $7);}
     ;
-
+    
 
 
 /*..................................................... FOR................................................... */
@@ -351,9 +352,9 @@ expr:
     | expr '|' endlOpt expr { $$ = mk_bin_op((char*) "|", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | expr KW_OR endlOpt expr { $$ = mk_bin_op((char*) "||", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | expr KW_AND endlOpt expr { $$ = mk_bin_op((char*) "&&", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
-    | '-' expr  %prec UMINUS { $$ = mk_unary_op("unary_minus_op", $2); }
-    | '+' expr  %prec UPLUS { $$ = mk_unary_op("unary_plus_op", $2); }
-    | if_else_expr %prec LOWER_THAN_EXPR{ printf("PARSER found expr - if_else_expr\n"); }
+    | '-' expr  %prec UMINUS { $$ = mk_unary_op("unary_minus_op", $2);found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | '+' expr  %prec UPLUS { $$ = mk_unary_op("unary_plus_op", $2);found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | if_else_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | for_expr { printf("PARSER found expr - for_expr\n"); }
     | while_expr { printf("PARSER found expr - while_expr\n"); }
     | do_while_expr { printf("PARSER found expr - do_while_expr\n"); }

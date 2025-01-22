@@ -1,7 +1,1 @@
-b+
-a>=
-ff
-true + false
-
-true + NULL
-
+if (10>2) a  else a+b
