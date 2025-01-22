@@ -948,7 +948,7 @@ YY_RULE_SETUP
 case 11:
 YY_RULE_SETUP
 #line 61 "sample.l"
-{ printf("(%s) - Found KW_FALSE\n", yytext); }
+{ printf("(%s) - Found KW_FALSE\n", yytext); return KW_FALSE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
@@ -1003,7 +1003,7 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 72 "sample.l"
-{ printf("(%s) - Found KW_NULL\n", yytext); }
+{ printf("(%s) - Found KW_NULL\n", yytext); return NULL; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
@@ -1083,7 +1083,7 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 88 "sample.l"
-{ printf("(%s) - Found KW_TRUE\n", yytext); }
+{ printf("(%s) - Found KW_TRUE\n", yytext); return KW_TRUE;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
@@ -1127,58 +1127,58 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 99 "sample.l"
+#line 100 "sample.l"
 {buffer[0]=0; BEGIN(CONST_STRING);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 100 "sample.l"
+#line 101 "sample.l"
 {strcat(buffer,yytext);}
 	YY_BREAK
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 101 "sample.l"
+#line 102 "sample.l"
 
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 102 "sample.l"
+#line 103 "sample.l"
 {strcat(buffer, "\\");}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 103 "sample.l"
+#line 104 "sample.l"
 {strcat(buffer, "\b");}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 104 "sample.l"
+#line 105 "sample.l"
 {strcat(buffer, "\n");}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 105 "sample.l"
+#line 106 "sample.l"
 {strcat(buffer, "\t");}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 106 "sample.l"
+#line 107 "sample.l"
 {strcat(buffer, "\r");}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 107 "sample.l"
+#line 108 "sample.l"
 {strcat(buffer, "\"");}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 108 "sample.l"
+#line 109 "sample.l"
 {strcat(buffer, "\'");}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 109 "sample.l"
+#line 110 "sample.l"
 { 
     unsigned int unicode_value = strtol(yytext + 2, NULL, 16); // Преобразуем шестнадцатеричное значение в целое число
     if (unicode_value >= 0 && unicode_value <= 255) { // Проверяем диапазон
@@ -1193,31 +1193,31 @@ YY_RULE_SETUP
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 119 "sample.l"
+#line 120 "sample.l"
 {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case YY_STATE_EOF(CONST_STRING):
-#line 120 "sample.l"
+#line 121 "sample.l"
 {printf("(%s) - Found ERROR_STRING\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 121 "sample.l"
+#line 122 "sample.l"
 {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 122 "sample.l"
+#line 123 "sample.l"
 {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 126 "sample.l"
+#line 127 "sample.l"
 {buffer[0]=0; BEGIN(CONST_CHAR);}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 127 "sample.l"
+#line 128 "sample.l"
 {
     yytext[strlen(yytext)-1] = '\0'; // Удаляем одинарную кавычку в конце
     wchar_t buf_char[1]; // Буфер для хранения символа Unicode
@@ -1236,57 +1236,57 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 142 "sample.l"
+#line 143 "sample.l"
 {strcat(buffer,yytext);}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 143 "sample.l"
+#line 144 "sample.l"
 {strcat(buffer, "\\");}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 144 "sample.l"
+#line 145 "sample.l"
 {strcat(buffer, "\b");}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 145 "sample.l"
+#line 146 "sample.l"
 {strcat(buffer, "\n");}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 146 "sample.l"
+#line 147 "sample.l"
 {strcat(buffer, "\t");}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 147 "sample.l"
+#line 148 "sample.l"
 {strcat(buffer, "\r");}
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 148 "sample.l"
+#line 149 "sample.l"
 {strcat(buffer, "\"");}
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 149 "sample.l"
+#line 150 "sample.l"
 {strcat(buffer, "\'");}
 	YY_BREAK
 case 71:
 /* rule 71 can match eol */
 YY_RULE_SETUP
-#line 150 "sample.l"
+#line 151 "sample.l"
 {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case YY_STATE_EOF(CONST_CHAR):
-#line 151 "sample.l"
+#line 152 "sample.l"
 {printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 152 "sample.l"
+#line 153 "sample.l"
 {
 if(strlen(buffer)==1){
 printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL);
@@ -1297,23 +1297,23 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 162 "sample.l"
+#line 163 "sample.l"
 { BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 163 "sample.l"
+#line 164 "sample.l"
 { brace_level++; }
 	YY_BREAK
 case 75:
 /* rule 75 can match eol */
 YY_RULE_SETUP
-#line 164 "sample.l"
+#line 165 "sample.l"
 {}
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 165 "sample.l"
+#line 166 "sample.l"
 { brace_level--; printf("(%s) - Found CIRCLE_BRACKET\n", yytext);
 if (brace_level == 0) {
 BEGIN(INITIAL);  return ')';
@@ -1322,292 +1322,292 @@ BEGIN(INITIAL);  return ')';
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 173 "sample.l"
+#line 174 "sample.l"
 {buffer[0]=0; BEGIN(MULTILINE_COMMENT);}
 	YY_BREAK
 case 78:
 /* rule 78 can match eol */
 YY_RULE_SETUP
-#line 174 "sample.l"
+#line 175 "sample.l"
 {strcat(buffer,yytext);}
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 175 "sample.l"
+#line 176 "sample.l"
 {strcat(buffer, "*");}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 176 "sample.l"
+#line 177 "sample.l"
 {strcat(buffer, "/");}
 	YY_BREAK
 case YY_STATE_EOF(MULTILINE_COMMENT):
-#line 177 "sample.l"
+#line 178 "sample.l"
 { printf("(%s) - Error MULTILINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 178 "sample.l"
+#line 179 "sample.l"
 {printf("(%s) - Found MULTILINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 180 "sample.l"
+#line 181 "sample.l"
 {buffer[0]=0; BEGIN(ONELINE_COMMENT);}
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 181 "sample.l"
+#line 182 "sample.l"
 {strcat(buffer, yytext);}
 	YY_BREAK
 case 84:
 /* rule 84 can match eol */
 YY_RULE_SETUP
-#line 182 "sample.l"
+#line 183 "sample.l"
 {printf("(%s) - Found ONELINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case YY_STATE_EOF(ONELINE_COMMENT):
-#line 183 "sample.l"
+#line 184 "sample.l"
 {printf("(%s) - Found ONELINE_COMMENT\n", buffer); BEGIN(INITIAL);}
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 187 "sample.l"
+#line 188 "sample.l"
 { printf("(%s) - Found PLUS_OPERATOR\n", yytext); return '+';}
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 188 "sample.l"
+#line 189 "sample.l"
 { printf("(%s) - Found MINUS_OPERATOR\n", yytext); return '-';}
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 189 "sample.l"
+#line 190 "sample.l"
 { printf("(%s) - Found MUL_OPERATOR\n", yytext); return '*';}
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 190 "sample.l"
+#line 191 "sample.l"
 { printf("(%s) - Found MOD_OPERATOR\n", yytext); return '%';}
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 191 "sample.l"
+#line 192 "sample.l"
 { printf("(%s) - Found DIV_OPERATOR\n", yytext); return '/';}
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 192 "sample.l"
+#line 193 "sample.l"
 { printf("(%s) - Found MOD_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 193 "sample.l"
+#line 194 "sample.l"
 { printf("(%s) - Found EXP_OPERATOR\n", yytext); }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 194 "sample.l"
+#line 195 "sample.l"
 { printf("(%s) - Found EXP_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 195 "sample.l"
+#line 196 "sample.l"
 { printf("(%s) - Found DIV_OPERATOR\n", yytext); }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 196 "sample.l"
+#line 197 "sample.l"
 { printf("(%s) - Found PLUS_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 197 "sample.l"
+#line 198 "sample.l"
 { printf("(%s) - Found MINUS_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 198 "sample.l"
+#line 199 "sample.l"
 { printf("(%s) - Found MUL_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 199 "sample.l"
+#line 200 "sample.l"
 { printf("(%s) - Found DIV_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 200 "sample.l"
+#line 201 "sample.l"
 { printf("(%s) - Found LESS_OR_EQUAL_OPERATOR\n", yytext); return LESS_OR_EQUAL_OPERATOR;}
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 201 "sample.l"
+#line 202 "sample.l"
 { printf("(%s) - Found LEFTSHIFT_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 202 "sample.l"
+#line 203 "sample.l"
 { printf("(%s) - Found RIGHTSHIFT_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 203 "sample.l"
+#line 204 "sample.l"
 { printf("(%s) - Found MORE_OR_EQUAL_OPERATOR\n", yytext); return MORE_OR_EQUAL_OPERATOR;}
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 204 "sample.l"
+#line 205 "sample.l"
 { printf("(%s) - Found LESS_OPERATOR\n", yytext); return '<'; }
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 205 "sample.l"
+#line 206 "sample.l"
 { printf("(%s) - Found MORE_OPERATOR\n", yytext); return '>'; }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 206 "sample.l"
+#line 207 "sample.l"
 { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); return 'NEQ'; }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 207 "sample.l"
+#line 208 "sample.l"
 { printf("(%s) - Found ASSIGNMENT_OPERATOR\n", yytext); return '=';}
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 208 "sample.l"
+#line 209 "sample.l"
 { printf("(%s) - Found CIRCUMFLEX\n", yytext); }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 211 "sample.l"
+#line 212 "sample.l"
 { printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return 'EQ'; }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 212 "sample.l"
-{ printf("(%s) - Found NOT_OPERATOR\n", yytext); }
+#line 213 "sample.l"
+{ printf("(%s) - Found NOT_OPERATOR\n", yytext); return 'NOT'; }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 213 "sample.l"
+#line 214 "sample.l"
 { printf("(%s) - Found OR_OPERATOR\n", yytext); return KW_OR;}
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 214 "sample.l"
+#line 215 "sample.l"
 { printf("(%s) - Found AND_OPERATOR\n", yytext); return KW_AND;}
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 216 "sample.l"
+#line 217 "sample.l"
 { printf("(%s) - Found BITWISE_AND_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 217 "sample.l"
+#line 218 "sample.l"
 { printf("(%s) - Found BITWISE_EX_OR_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 218 "sample.l"
+#line 219 "sample.l"
 { printf("(%s) - Found BITWISE_IN_OR_ASSIGNMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 219 "sample.l"
+#line 220 "sample.l"
 { printf("(%s) - Found BITWISE_OR_OPERATOR\n", yytext); return '|';}
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 220 "sample.l"
+#line 221 "sample.l"
 { printf("(%s) - Found BITWISE_LEFTSHIFT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 221 "sample.l"
+#line 222 "sample.l"
 { printf("(%s) - Found BITWISE_RIGHTSHIFT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 222 "sample.l"
+#line 223 "sample.l"
 { printf("(%s) - Found BITWISE_onesCOMPLEMENT_OPERATOR\n", yytext); }
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 223 "sample.l"
+#line 224 "sample.l"
 { printf("(%s) - Found BITWISE_RIGHTSHIF_ZERO_OPERATOR\n", yytext); }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 225 "sample.l"
+#line 226 "sample.l"
 { printf("(%s) - Found TUPLE\n", yytext); }
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 226 "sample.l"
+#line 227 "sample.l"
 { printf("(%s) - Found TUPLE\n", yytext); return GENERATOR_OPERATOR; }
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 227 "sample.l"
+#line 228 "sample.l"
 { printf("(%s) - Found RIGHT_ARROW_OPERATOR\n", yytext); return RIGHT_ARROW_OPERATOR; }
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 230 "sample.l"
+#line 231 "sample.l"
 { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 231 "sample.l"
+#line 232 "sample.l"
 { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 232 "sample.l"
+#line 233 "sample.l"
 { printf("(%s) - Found BRACE\n", yytext); return '{'; }
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 233 "sample.l"
+#line 234 "sample.l"
 { printf("(%s) - Found BRACE\n", yytext); return '}'; }
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 234 "sample.l"
+#line 235 "sample.l"
 { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 235 "sample.l"
+#line 236 "sample.l"
 { printf("(%s) - Found COMMA\n", yytext); return ',';}
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 236 "sample.l"
+#line 237 "sample.l"
 { printf("(%s) - Found COLON\n", yytext); }
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 237 "sample.l"
+#line 238 "sample.l"
 { printf("(%s) - Found DOT\n", yytext); }
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 238 "sample.l"
+#line 239 "sample.l"
 { printf("(%s) - Found AMPERSAND\n", yytext); }
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 239 "sample.l"
+#line 240 "sample.l"
 {printf("(%s) - Found UNDERLINE\n", yytext); return '_';}
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 242 "sample.l"
+#line 243 "sample.l"
 { 
     yylval.str_value = strdup(yytext);
     printf("(%s) - Found IDENTIFIER\n", yytext); 
@@ -1616,7 +1616,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 248 "sample.l"
+#line 249 "sample.l"
 {
     parse_integer(&int_number, yytext, 10);
     printf("Line %d: found decimal number: %d\n", yylineno, int_number);
@@ -1626,7 +1626,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 256 "sample.l"
+#line 257 "sample.l"
 {
     parse_integer(&int_number, yytext, 16);
     printf("Line %d: found hex number: %d\n", yylineno, int_number);
@@ -1635,7 +1635,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 263 "sample.l"
+#line 264 "sample.l"
 {
     parse_real(&real_number, yytext);
     printf("Line %d: found real number: %f\n", yylineno, real_number);
@@ -1644,7 +1644,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 269 "sample.l"
+#line 270 "sample.l"
 {
     parse_real(&real_number, yytext);
     printf("Line %d: found real exponent number: %f\n", yylineno, real_number);
@@ -1654,7 +1654,7 @@ YY_RULE_SETUP
 case 137:
 /* rule 137 can match eol */
 YY_RULE_SETUP
-#line 276 "sample.l"
+#line 277 "sample.l"
 {
     if (brace_level == 0 ) {
      printf("Found ENDL \n");
@@ -1664,22 +1664,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 284 "sample.l"
+#line 285 "sample.l"
 { printf("(%s) - Error IDENTIFIER\n", yytext); }
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 286 "sample.l"
+#line 287 "sample.l"
 {}
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 287 "sample.l"
+#line 288 "sample.l"
 {}
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 288 "sample.l"
+#line 289 "sample.l"
 ECHO;
 	YY_BREAK
 #line 1685 "sample.flex.cpp"
@@ -2656,7 +2656,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 288 "sample.l"
+#line 289 "sample.l"
 
 
 

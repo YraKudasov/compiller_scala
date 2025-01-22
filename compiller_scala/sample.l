@@ -57,7 +57,7 @@ def { printf("(%s) - Found KW_DEF\n", yytext); }
 do { printf("(%s) - Found KW_do\n", yytext); return DO; }
 else { printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
 extends { printf("(%s) - Found KW_EXTENDS\n", yytext); }
-false { printf("(%s) - Found KW_FALSE\n", yytext); }
+false { printf("(%s) - Found KW_FALSE\n", yytext); return KW_FALSE;}
 for { printf("(%s) - Found KW_FOR\n", yytext); return FOR; }
 final { printf("(%s) - Found KW_FINAL\n", yytext); }
 finally { printf("(%s) - Found KW_FINALLY\n", yytext); }
@@ -68,7 +68,7 @@ import { printf("(%s) - Found KW_IMPORT\n", yytext); }
 lazy { printf("(%s) - Found KW_LAZY\n", yytext); }
 match { printf("(%s) - Found KW_MATCH\n", yytext); return MATCH; }
 new { printf("(%s) - Found KW_NEW\n", yytext); }
-null { printf("(%s) - Found KW_NULL\n", yytext); }
+null { printf("(%s) - Found KW_NULL\n", yytext); return NULL; }
 object { printf("(%s) - Found KW_OBJECT\n", yytext); }
 override { printf("(%s) - Found KW_OVERRIDE\n", yytext); }
 package { printf("(%s) - Found KW_PACKAGE\n", yytext); }
@@ -84,7 +84,7 @@ super { printf("(%s) - Found KW_SUPER\n", yytext); }
 this { printf("(%s) - Found KW_THIS\n", yytext); }
 throw { printf("(%s) - Found KW_THROW\n", yytext); }
 trait { printf("(%s) - Found KW_TRAIT\n", yytext); }
-true { printf("(%s) - Found KW_TRUE\n", yytext); }
+true { printf("(%s) - Found KW_TRUE\n", yytext); return KW_TRUE;}
 try { printf("(%s) - Found KW_TRY\n", yytext); }
 type { printf("(%s) - Found KW_TYPE\n", yytext); }
 var { printf("(%s) - Found KW_VAR\n", yytext); return VAR;}
@@ -93,6 +93,7 @@ with { printf("(%s) - Found KW_WITH\n", yytext); }
 yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 to { printf("(%s) - Found KW_TO\n", yytext); return TO; }
 by { printf("(%s) - Found KW_BY\n", yytext); return BY; }
+
 
 
 \" {buffer[0]=0; BEGIN(CONST_STRING);}
@@ -208,7 +209,7 @@ BEGIN(INITIAL);  return ')';
 
 
 == { printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return 'EQ'; }
-\! { printf("(%s) - Found NOT_OPERATOR\n", yytext); }
+\! { printf("(%s) - Found NOT_OPERATOR\n", yytext); return 'NOT'; }
 \|\| { printf("(%s) - Found OR_OPERATOR\n", yytext); return KW_OR;}
 \&\& { printf("(%s) - Found AND_OPERATOR\n", yytext); return KW_AND;}
 

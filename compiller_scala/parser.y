@@ -77,7 +77,8 @@ struct LOCATION
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
 %token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE PRINTLN READLINE ARRAY OVERRIDE
-%token KW_TRUE KW_FALSE KW_NULL
+%token KW_TRUE KW_FALSE 
+%token<jsonvalue> KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
@@ -90,8 +91,18 @@ struct LOCATION
 %token NEW
 %token PROTECTED PRIVATE
 %token CLASS EXTENDS ABSTRACT
+%token NOT
+
+%type num_const
 
 %type <tree> expr
+%type <tree> const
+%type <tree> num_const
+%type <tree> type
+%type <tree> if_else_expr
+%type <tree> method_call
+%type <tree> array
+
 
 %%
 
@@ -340,8 +351,8 @@ expr:
     | expr '|' endlOpt expr { $$ = mk_bin_op((char*) "|", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | expr KW_OR endlOpt expr { $$ = mk_bin_op((char*) "||", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | expr KW_AND endlOpt expr { $$ = mk_bin_op((char*) "&&", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
-    | '-' expr  %prec UMINUS { printf("PARSER found expr - UMINUS\n"); }
-    | '+' expr  %prec UPLUS { printf("PARSER found expr - UPLUS\n"); }
+    | '-' expr  %prec UMINUS { $$ = mk_unary_op("unary_minus_op", $2); }
+    | '+' expr  %prec UPLUS { $$ = mk_unary_op("unary_plus_op", $2); }
     | if_else_expr %prec LOWER_THAN_EXPR{ printf("PARSER found expr - if_else_expr\n"); }
     | for_expr { printf("PARSER found expr - for_expr\n"); }
     | while_expr { printf("PARSER found expr - while_expr\n"); }
@@ -353,24 +364,25 @@ expr:
     | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
     | PRINTLN'(' expr ')' { printf("print:\n"); }
+    | IDENTIFIER '.' '(' NUM_10 ')' { printf("array_call:\n"); }
     ;
 
 /* Constants */
 num_const:
-      NUM_10 { printf("PARSER found - INT\n"); }
+      NUM_10 { $$ = mk_int_const($1); }
     | NUM_16 { printf("PARSER found - INT\n"); }
-    | REAL_NUMBER { printf("PARSER found - REAL\n"); }
-    | REAL_NUMBER_EXPONENT { printf("PARSER found - REAL_EXP\n"); }
+    | REAL_NUMBER { $$ = mk_real_const($1); }
+    | REAL_NUMBER_EXPONENT { $$ = mk_real_const($1); }
     ;
 
 
 const:
       num_const
-    | CONST_STRING
-    | CONST_CHAR
-    | KW_TRUE
-    | KW_FALSE
-    | KW_NULL
+    | CONST_STRING { $$ = mk_string_const($1); }
+    | CONST_CHAR { $$ = mk_char_const($1); }
+    | KW_TRUE { $$ = mk_boolean_const(true); }
+    | KW_FALSE { $$ = mk_boolean_const(false); }
+    | KW_NULL { $$ = mk_null_const(); }
     | array
     ;
 
@@ -406,25 +418,25 @@ method:
     ;
 
 method_arguments_list:
-      '('expr_list_e')'
+      '('expr_list_e')' 
     | method_arguments_list '('expr_list_e')'
     ;
 
 method_call:
-      IDENTIFIER method_arguments_list
-    | IDENTIFIER '.' IDENTIFIER method_arguments_list
+      IDENTIFIER method_arguments_list 
+    | IDENTIFIER '.' IDENTIFIER method_arguments_list 
     ;
 
 
 /* Types */
 type:
-      INT_KW
-    | DOUBLE_KW
-    | STRING_KW
-    | CHAR_KW
-    | BOOLEAN_KW
-    | ANY_KW
-    | UNIT_KW
+      INT_KW { $$ = mk_integer_type(); }
+    | DOUBLE_KW { $$ = mk_real_type(); }
+    | STRING_KW { $$ = mk_string_type(); }
+    | CHAR_KW { $$ = mk_char_type(); }
+    | BOOLEAN_KW { $$ = mk_boolean_type(); }
+    | ANY_KW { $$ = mk_any_type(); }
+    | UNIT_KW { $$ = mk_unit_type(); }
     ;
     
 type_list_car:
