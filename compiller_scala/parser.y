@@ -95,13 +95,14 @@ struct LOCATION
 
 %type num_const
 
-%type <tree> expr
+%type <tree> expr expr_list expr_list_e
 %type <tree> const
 %type <tree> num_const
 %type <tree> type type_list type_list_car type_list_simple
 %type <tree> if_else_expr
 %type <tree> method_call
-%type <tree> array
+%type <tree> array array_literal initialized_array 
+
 
 
 %%
@@ -383,7 +384,7 @@ const:
     | KW_TRUE { $$ = mk_boolean_const(true); }
     | KW_FALSE { $$ = mk_boolean_const(false); }
     | KW_NULL { $$ = mk_null_const(); }
-    | array
+    | array { $$ = mk_array_const($1); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
     /*.....................................................FUNCTIONS/METHODS................................................... */
@@ -461,17 +462,17 @@ type_list_simple:
 
 /* Array */
 array:
-       array_literal
-     | initialized_array
+       array_literal {$$ = mk_array_literal($1); }
+     | initialized_array {$$ = mk_initialized_array($1);}
      ;
       
 array_literal:
-       ARRAY endlOpt'(' expr_list_e ')' { printf("PARSER found Array\n"); }
-     | ARRAY %prec LOWER_THAN_EXPR { printf("PARSER found Array\n"); }
+       ARRAY endlOpt'(' expr_list_e ')' {  $$ = mk_array_with_expr_list($4); }
+     | ARRAY %prec LOWER_THAN_EXPR { $$ = mk_empty_array(); }
      ;
 
 initialized_array:
-       NEW endlOpt ARRAY endlOpt '[' type ']' '(' expr ')'
+       NEW endlOpt ARRAY endlOpt '[' type ']' '(' expr ')' { $$ = mk_initialized_array_with_type_and_expr($6, $9);}
      ;
 
 

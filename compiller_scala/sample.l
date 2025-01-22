@@ -67,7 +67,7 @@ implicit { printf("(%s) - Found KW_IMPLICIT\n", yytext); }
 import { printf("(%s) - Found KW_IMPORT\n", yytext); }
 lazy { printf("(%s) - Found KW_LAZY\n", yytext); }
 match { printf("(%s) - Found KW_MATCH\n", yytext); return MATCH; }
-new { printf("(%s) - Found KW_NEW\n", yytext); }
+new { printf("(%s) - Found KW_NEW\n", yytext); return NEW; }
 null { printf("(%s) - Found KW_NULL\n", yytext); return NULL; }
 object { printf("(%s) - Found KW_OBJECT\n", yytext); }
 override { printf("(%s) - Found KW_OVERRIDE\n", yytext); }
@@ -93,6 +93,7 @@ with { printf("(%s) - Found KW_WITH\n", yytext); }
 yield { printf("(%s) - Found KW_YIELD\n", yytext); }
 to { printf("(%s) - Found KW_TO\n", yytext); return TO; }
 by { printf("(%s) - Found KW_BY\n", yytext); return BY; }
+int {printf("(%s) - Found KW_INT\n", yytext); return INT_KW;}
 
 
 
@@ -227,8 +228,8 @@ BEGIN(INITIAL);  return ')';
 \=\> { printf("(%s) - Found RIGHT_ARROW_OPERATOR\n", yytext); return RIGHT_ARROW_OPERATOR; }
 
 
-\[ { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
-\] { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
+\[ { printf("(%s) - Found SQUARE_BRACKET\n", yytext); return '[';}
+\] { printf("(%s) - Found SQUARE_BRACKET\n", yytext); return ']';}
 \{ { printf("(%s) - Found BRACE\n", yytext); return '{'; }
 \} { printf("(%s) - Found BRACE\n", yytext); return '}'; }
 \; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}

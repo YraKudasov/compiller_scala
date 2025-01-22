@@ -68,6 +68,55 @@ mk_type(const char* type_name) {
     return user_type;
 }
 
+
+Json* 
+mk_array_const(Json* elements) {
+    Json* node = Json_new();
+    add_type_to_node(node, "array_const");
+    Json_add_object_to_object(node, "elements", elements);
+    return node;
+}
+
+Json* 
+mk_array_literal(Json* expr_list) {
+    Json* node = Json_new();
+    add_type_to_node(node, "array_literal");
+    Json_add_object_to_object(node, "expr_list", expr_list);
+    return node;
+}
+
+Json* 
+mk_empty_array() {
+    Json* node = Json_new();
+    add_type_to_node(node, "empty_array");
+    return node;
+}
+
+Json* 
+mk_initialized_array(Json* array_node) {
+    Json* node = Json_new();
+    add_type_to_node(node, "initialized_array");
+    Json_add_object_to_object(node, "array_node", array_node);
+    return node;
+}
+
+Json*
+mk_initialized_array_with_type_and_expr(Json* type, Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "initialized_array_with_type");
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "expression", expr);
+    return node;
+}
+
+Json* 
+mk_array_with_expr_list(Json* expr_list) {
+    Json* node = Json_new();
+    add_type_to_node(node, "array_with_expr_list");
+    Json_add_object_to_object(node, "expr_list", expr_list);
+    return node;
+}
+
 Json*
 mk_real_type() {
     return (mk_type("REAL"));
@@ -79,8 +128,6 @@ mk_integer_type() {
     return (mk_type("INTEGER"));
 
 }
-
-
 
 Json*
 mk_string_type() {
@@ -128,7 +175,7 @@ Json*
 mk_unary_op(const char* op_name, Json* arg) {
     Json* node = Json_new();
     add_type_to_node(node,(char*) op_name);
-    Json_add_object_to_object(node, "arg", arg); \
+    Json_add_object_to_object(node, "arg", arg); 
         return node;
 }
 
@@ -161,3 +208,4 @@ add_to_list(Json* list, Json* element) {
     Json_add_object_to_array(list, element);
     return list;
 }
+
