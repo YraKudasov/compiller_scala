@@ -1,1 +1,1 @@
-new array[int](a+b)
+if (10>2) a  else a+b
