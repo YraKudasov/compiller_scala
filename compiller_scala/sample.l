@@ -50,7 +50,7 @@ char buf_char[2];
 abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); }
 array {printf("(%s) - Found KW_ARRAY\n", yytext);}
 val { printf("(%s) - Found KW_VAL\n", yytext); return VAL; }
-case { printf("(%s) - Found KW_CASE\n", yytext); }
+case { printf("(%s) - Found KW_CASE\n", yytext); return CASE; }
 catch { printf("(%s) - Found KW_CATCH\n", yytext); }
 class { printf("(%s) - Found KW_CLASS\n", yytext); }
 def { printf("(%s) - Found KW_DEF\n", yytext); }
@@ -66,7 +66,7 @@ if { printf("(%s) - Found KW_IF\n", yytext); return IF; }
 implicit { printf("(%s) - Found KW_IMPLICIT\n", yytext); }
 import { printf("(%s) - Found KW_IMPORT\n", yytext); }
 lazy { printf("(%s) - Found KW_LAZY\n", yytext); }
-match { printf("(%s) - Found KW_MATCH\n", yytext); }
+match { printf("(%s) - Found KW_MATCH\n", yytext); return MATCH; }
 new { printf("(%s) - Found KW_NEW\n", yytext); }
 null { printf("(%s) - Found KW_NULL\n", yytext); }
 object { printf("(%s) - Found KW_OBJECT\n", yytext); }
@@ -75,7 +75,7 @@ package { printf("(%s) - Found KW_PACKAGE\n", yytext); }
 private { printf("(%s) - Found KW_PRIVATE\n", yytext); }
 protected { printf("(%s) - Found KW_PROTECTED\n", yytext); }
 print { printf("(%s) - Found KW_PRINT\n", yytext); }
-println { printf("(%s) - Found KW_PRINTLN\n", yytext); }
+println { printf("(%s) - Found KW_PRINTLN\n", yytext); return PRINTLN; }
 printf { printf("(%s) - Found KW_PRINTF\n", yytext); }
 return { printf("(%s) - Found KW_RETURN\n", yytext); }
 readLine { printf("(%s) - Found KW_READLINE\n", yytext); }
@@ -214,7 +214,7 @@ BEGIN(INITIAL);  return ')';
 \&\= { printf("(%s) - Found BITWISE_AND_ASSIGNMENT_OPERATOR\n", yytext); }
 \^\= { printf("(%s) - Found BITWISE_EX_OR_ASSIGNMENT_OPERATOR\n", yytext); }
 \|\= { printf("(%s) - Found BITWISE_IN_OR_ASSIGNMENT_OPERATOR\n", yytext); }
-\| { printf("(%s) - Found BITWISE_OR_OPERATOR\n", yytext); }
+\| { printf("(%s) - Found BITWISE_OR_OPERATOR\n", yytext); return '|';}
 \<\< { printf("(%s) - Found BITWISE_LEFTSHIFT_OPERATOR\n", yytext); }
 \>\> { printf("(%s) - Found BITWISE_RIGHTSHIFT_OPERATOR\n", yytext); }
 \~ { printf("(%s) - Found BITWISE_onesCOMPLEMENT_OPERATOR\n", yytext); }
@@ -222,6 +222,7 @@ BEGIN(INITIAL);  return ')';
 
 \-\> { printf("(%s) - Found TUPLE\n", yytext); }
 \<\- { printf("(%s) - Found TUPLE\n", yytext); return GENERATOR_OPERATOR; }
+\=\> { printf("(%s) - Found RIGHT_ARROW_OPERATOR\n", yytext); return RIGHT_ARROW_OPERATOR; }
 
 
 \[ { printf("(%s) - Found SQUARE_BRACKET\n", yytext); }
@@ -233,6 +234,7 @@ BEGIN(INITIAL);  return ')';
 \: { printf("(%s) - Found COLON\n", yytext); }
 \. { printf("(%s) - Found DOT\n", yytext); }
 \& { printf("(%s) - Found AMPERSAND\n", yytext); }
+\_ {printf("(%s) - Found UNDERLINE\n", yytext); return '_';}
 
 
 [a-zA-Z_][a-zA-Z0-9_]* { 

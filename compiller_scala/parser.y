@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include "./ast.h"
+#include "./strbuf.h"
 
 #include "FlexLexer.h"
 extern int yylex();
@@ -42,14 +43,14 @@ struct LOCATION
 %define api.location.type {struct LOCATION}
 
 %union {
-    int64_t int_value;
+    int int_value;
     double real_value;
     char* str_value;
     struct Json *tree;
 }
 
 
-%start program
+%start expr
 
 
 %nonassoc ENDL
@@ -75,7 +76,7 @@ struct LOCATION
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
 %token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
 %token NEWLINE
-%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINT READLINE ARRAY OVERRIDE
+%token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE  TRY CATCH FINALLY PRINTLN READLINE ARRAY OVERRIDE
 %token KW_TRUE KW_FALSE KW_NULL
 %token EQ NEQ
 %token KW_OR KW_AND
@@ -89,6 +90,8 @@ struct LOCATION
 %token NEW
 %token PROTECTED PRIVATE
 %token CLASS EXTENDS ABSTRACT
+
+%type <tree> expr
 
 %%
 
@@ -286,7 +289,7 @@ case_condition:
 case_list:
           CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr
         | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
-        | case_list endlOpt  CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
+        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
         ;
 
 
@@ -329,7 +332,7 @@ expr_list:
 
 expr:
       const %prec LOWER_THAN_EXPR {printf("PARSER found expr - const\n"); }
-    | IDENTIFIER %prec LOWER_THAN_EXPR {printf("PARSER found expr - IDENTIFIER\n"); }
+    | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
     | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
     | expr '>' endlOpt expr {printf("PARSER found expr - expr > expr\n"); }
@@ -338,7 +341,7 @@ expr:
     | expr LESS_OR_EQUAL_OPERATOR endlOpt expr {printf("PARSER found expr - expr <= expr\n"); }
     | expr EQ endlOpt expr {printf("PARSER found expr - expr == expr\n"); }
     | expr NEQ endlOpt expr {printf("PARSER found expr - expr != expr\n"); }
-    | expr '+' endlOpt expr { printf("PARSER found expr - expr + expr\n"); }
+    | expr '+' endlOpt expr { $$ = mk_bin_op((char*) "+", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | expr '-' endlOpt expr { printf("PARSER found expr - expr - expr\n"); }
     | expr '/' endlOpt expr { printf("PARSER found expr - expr / expr\n"); }
     | expr '*' endlOpt expr { printf("PARSER found expr - expr * expr\n"); }
@@ -360,7 +363,7 @@ expr:
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
-    | PRINT'(' expr ')' { printf("print:\n"); }
+    | PRINTLN'(' expr ')' { printf("print:\n"); }
     ;
 
 /* Constants */
@@ -467,14 +470,15 @@ array:
      ;
       
 array_literal:
-      ARRAY '(' expr_list_e ')' { printf("PARSER found Array\n"); }
+       ARRAY '(' expr_list_e ')' { printf("PARSER found Array\n"); }
      ;
 
 initialized_array:
-      NEW ARRAY '(' type ')' '[' expr ']'
+       NEW ARRAY '(' type ')' '[' expr ']'
      ;
 
-
+massive_type:
+       ARRAY '[' type ']'
 
 /* List */
 list:

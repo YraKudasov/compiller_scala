@@ -78,7 +78,7 @@ extern int yydebug;
     TRY = 279,                     /* TRY  */
     CATCH = 280,                   /* CATCH  */
     FINALLY = 281,                 /* FINALLY  */
-    PRINT = 282,                   /* PRINT  */
+    PRINTLN = 282,                 /* PRINTLN  */
     READLINE = 283,                /* READLINE  */
     ARRAY = 284,                   /* ARRAY  */
     OVERRIDE = 285,                /* OVERRIDE  */
@@ -122,12 +122,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 44 "parser.y"
+#line 45 "parser.y"
 
-    int64_t int_value;
+    int int_value;
     double real_value;
     char* str_value;
-     struct Json *tree;
+    struct Json *tree;
 
 #line 133 "parser.tab.h"
 
