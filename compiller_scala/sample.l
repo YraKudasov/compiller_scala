@@ -48,12 +48,12 @@ char buf_char[2];
 %}
 
 abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); }
-array {printf("(%s) - Found KW_ARRAY\n", yytext);}
+array {printf("(%s) - Found KW_ARRAY\n", yytext); return ARRAY;}
 val { printf("(%s) - Found KW_VAL\n", yytext); return VAL; }
 case { printf("(%s) - Found KW_CASE\n", yytext); return CASE; }
 catch { printf("(%s) - Found KW_CATCH\n", yytext); }
-class { printf("(%s) - Found KW_CLASS\n", yytext); }
-def { printf("(%s) - Found KW_DEF\n", yytext); }
+class { printf("(%s) - Found KW_CLASS\n", yytext); return CLASS; }
+def { printf("(%s) - Found KW_DEF\n", yytext); return DEF;}
 do { printf("(%s) - Found KW_do\n", yytext); return DO; }
 else { printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
 extends { printf("(%s) - Found KW_EXTENDS\n", yytext); }
@@ -72,9 +72,9 @@ null { printf("(%s) - Found KW_NULL\n", yytext); return NULL; }
 object { printf("(%s) - Found KW_OBJECT\n", yytext); }
 override { printf("(%s) - Found KW_OVERRIDE\n", yytext); }
 package { printf("(%s) - Found KW_PACKAGE\n", yytext); }
-private { printf("(%s) - Found KW_PRIVATE\n", yytext); }
-protected { printf("(%s) - Found KW_PROTECTED\n", yytext); }
-print { printf("(%s) - Found KW_PRINT\n", yytext); }
+private { printf("(%s) - Found KW_PRIVATE\n", yytext); return PRIVATE; }
+protected { printf("(%s) - Found KW_PROTECTED\n", yytext); return PROTECTED;}
+print { printf("(%s) - Found KW_PRINT\n", yytext);}
 println { printf("(%s) - Found KW_PRINTLN\n", yytext); return PRINTLN; }
 printf { printf("(%s) - Found KW_PRINTF\n", yytext); }
 return { printf("(%s) - Found KW_RETURN\n", yytext); }
@@ -86,7 +86,7 @@ throw { printf("(%s) - Found KW_THROW\n", yytext); }
 trait { printf("(%s) - Found KW_TRAIT\n", yytext); }
 true { printf("(%s) - Found KW_TRUE\n", yytext); return KW_TRUE;}
 try { printf("(%s) - Found KW_TRY\n", yytext); }
-type { printf("(%s) - Found KW_TYPE\n", yytext); }
+type { printf("(%s) - Found KW_TYPE\n", yytext);}
 var { printf("(%s) - Found KW_VAR\n", yytext); return VAR;}
 while { printf("(%s) - Found KW_WHILE\n", yytext); return WHILE;}
 with { printf("(%s) - Found KW_WITH\n", yytext); }

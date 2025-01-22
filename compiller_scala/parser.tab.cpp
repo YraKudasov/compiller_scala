@@ -2539,74 +2539,104 @@ yyreduce:
 #line 2540 "parser.tab.cpp"
     break;
 
+  case 167: /* type_list_car: type  */
+#line 443 "parser.y"
+           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); }
+#line 2546 "parser.tab.cpp"
+    break;
+
+  case 168: /* type_list_car: type_list_car RIGHT_ARROW_OPERATOR type  */
+#line 444 "parser.y"
+                                              { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
+#line 2552 "parser.tab.cpp"
+    break;
+
+  case 169: /* type_list: type  */
+#line 448 "parser.y"
+           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); }
+#line 2558 "parser.tab.cpp"
+    break;
+
+  case 170: /* type_list: type_list_simple ',' type  */
+#line 449 "parser.y"
+                                { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
+#line 2564 "parser.tab.cpp"
+    break;
+
+  case 171: /* type_list_simple: '(' type_list ')' RIGHT_ARROW_OPERATOR type  */
+#line 453 "parser.y"
+                                                 { (yyval.tree) = add_to_list((yyvsp[-3].tree), (yyvsp[0].tree)); }
+#line 2570 "parser.tab.cpp"
+    break;
+
   case 174: /* array_literal: ARRAY endlOpt '(' expr_list_e ')'  */
 #line 469 "parser.y"
                                         { printf("PARSER found Array\n"); }
-#line 2546 "parser.tab.cpp"
+#line 2576 "parser.tab.cpp"
     break;
 
   case 175: /* array_literal: ARRAY  */
 #line 470 "parser.y"
                                    { printf("PARSER found Array\n"); }
-#line 2552 "parser.tab.cpp"
+#line 2582 "parser.tab.cpp"
     break;
 
   case 177: /* endlList: ENDL  */
 #line 483 "parser.y"
                     { printf("PARSER found ENDL\n"); }
-#line 2558 "parser.tab.cpp"
+#line 2588 "parser.tab.cpp"
     break;
 
   case 178: /* endlList: endlList ENDL  */
 #line 484 "parser.y"
                     { printf("PARSER found endlList\n"); }
-#line 2564 "parser.tab.cpp"
+#line 2594 "parser.tab.cpp"
     break;
 
   case 179: /* endlOpt: endlList  */
 #line 489 "parser.y"
                { printf("PARSER found endlOpt\n"); }
-#line 2570 "parser.tab.cpp"
+#line 2600 "parser.tab.cpp"
     break;
 
   case 181: /* semicolonList: ';'  */
 #line 495 "parser.y"
                    { printf("PARSER found SEMICOLON\n"); }
-#line 2576 "parser.tab.cpp"
+#line 2606 "parser.tab.cpp"
     break;
 
   case 182: /* semicolonList: semicolonList ';'  */
 #line 496 "parser.y"
                         { printf("PARSER found semicolonList\n"); }
-#line 2582 "parser.tab.cpp"
+#line 2612 "parser.tab.cpp"
     break;
 
   case 183: /* separator_List: ENDL  */
 #line 500 "parser.y"
             { printf("PARSER found ENDL\n"); }
-#line 2588 "parser.tab.cpp"
+#line 2618 "parser.tab.cpp"
     break;
 
   case 184: /* separator_List: ';'  */
 #line 501 "parser.y"
             { printf("PARSER found SEMICOLON\n"); }
-#line 2594 "parser.tab.cpp"
+#line 2624 "parser.tab.cpp"
     break;
 
   case 185: /* separator_List: separator_List ENDL  */
 #line 502 "parser.y"
                             { printf("PARSER add ENDL to separator_List\n"); }
-#line 2600 "parser.tab.cpp"
+#line 2630 "parser.tab.cpp"
     break;
 
   case 186: /* separator_List: separator_List ';'  */
 #line 503 "parser.y"
                            { printf("PARSER add ; to separator_List\n"); }
-#line 2606 "parser.tab.cpp"
+#line 2636 "parser.tab.cpp"
     break;
 
 
-#line 2610 "parser.tab.cpp"
+#line 2640 "parser.tab.cpp"
 
       default: break;
     }

@@ -903,7 +903,7 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 52 "sample.l"
-{printf("(%s) - Found KW_ARRAY\n", yytext);}
+{printf("(%s) - Found KW_ARRAY\n", yytext); return ARRAY;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -923,12 +923,12 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 56 "sample.l"
-{ printf("(%s) - Found KW_CLASS\n", yytext); }
+{ printf("(%s) - Found KW_CLASS\n", yytext); return CLASS; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 57 "sample.l"
-{ printf("(%s) - Found KW_DEF\n", yytext); }
+{ printf("(%s) - Found KW_DEF\n", yytext); return DEF;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
@@ -1023,17 +1023,17 @@ YY_RULE_SETUP
 case 26:
 YY_RULE_SETUP
 #line 76 "sample.l"
-{ printf("(%s) - Found KW_PRIVATE\n", yytext); }
+{ printf("(%s) - Found KW_PRIVATE\n", yytext); return PRIVATE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 77 "sample.l"
-{ printf("(%s) - Found KW_PROTECTED\n", yytext); }
+{ printf("(%s) - Found KW_PROTECTED\n", yytext); return PROTECTED;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 78 "sample.l"
-{ printf("(%s) - Found KW_PRINT\n", yytext); }
+{ printf("(%s) - Found KW_PRINT\n", yytext);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
@@ -1093,7 +1093,7 @@ YY_RULE_SETUP
 case 40:
 YY_RULE_SETUP
 #line 90 "sample.l"
-{ printf("(%s) - Found KW_TYPE\n", yytext); }
+{ printf("(%s) - Found KW_TYPE\n", yytext);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP

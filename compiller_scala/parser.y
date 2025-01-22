@@ -98,7 +98,7 @@ struct LOCATION
 %type <tree> expr
 %type <tree> const
 %type <tree> num_const
-%type <tree> type
+%type <tree> type type_list type_list_car type_list_simple
 %type <tree> if_else_expr
 %type <tree> method_call
 %type <tree> array
@@ -440,17 +440,17 @@ type:
     ;
     
 type_list_car:
-      type
-    | type_list_car RIGHT_ARROW_OPERATOR type
+      type { $$ = mk_list(); $$ = add_to_list($$, $1); }
+    | type_list_car RIGHT_ARROW_OPERATOR type { $$ = add_to_list($1, $3); }
     ;
 
 type_list:
-      type
-    | type_list_simple ',' type
+      type { $$ = mk_list(); $$ = add_to_list($$, $1); }
+    | type_list_simple ',' type { $$ = add_to_list($1, $3); }
     ;
 
 type_list_simple:
-     '(' type_list ')' RIGHT_ARROW_OPERATOR type
+     '(' type_list ')' RIGHT_ARROW_OPERATOR type { $$ = add_to_list($2, $5); }
     ;
     
 
