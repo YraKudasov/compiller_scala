@@ -184,9 +184,10 @@ BEGIN(INITIAL);  return ')';
 
 
 \+ { printf("(%s) - Found PLUS_OPERATOR\n", yytext); return '+';}
-\- { printf("(%s) - Found MINUS_OPERATOR\n", yytext); return '-'; }
-\* { printf("(%s) - Found MUL_OPERATOR\n", yytext); }
-\% { printf("(%s) - Found MOD_OPERATOR\n", yytext); }
+\- { printf("(%s) - Found MINUS_OPERATOR\n", yytext); return '-';}
+\* { printf("(%s) - Found MUL_OPERATOR\n", yytext); return '*';}
+\% { printf("(%s) - Found MOD_OPERATOR\n", yytext); return '%';}
+\/ { printf("(%s) - Found DIV_OPERATOR\n", yytext); return '/';}
 \%\= { printf("(%s) - Found MOD_ASSIGNMENT_OPERATOR\n", yytext); }
 \*\* { printf("(%s) - Found EXP_OPERATOR\n", yytext); }
 \*\*\= { printf("(%s) - Found EXP_ASSIGNMENT_OPERATOR\n", yytext); }
@@ -201,15 +202,15 @@ BEGIN(INITIAL);  return ')';
 \>= { printf("(%s) - Found MORE_OR_EQUAL_OPERATOR\n", yytext); return MORE_OR_EQUAL_OPERATOR;}
 \< { printf("(%s) - Found LESS_OPERATOR\n", yytext); return '<'; }
 \> { printf("(%s) - Found MORE_OPERATOR\n", yytext); return '>'; }
-\!= { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); }
+\!= { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); return 'NEQ'; }
 = { printf("(%s) - Found ASSIGNMENT_OPERATOR\n", yytext); return '=';}
 \^ { printf("(%s) - Found CIRCUMFLEX\n", yytext); }
 
 
-== { printf("(%s) - Found EQUAL_OPERATOR\n", yytext); }
+== { printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return 'EQ'; }
 \! { printf("(%s) - Found NOT_OPERATOR\n", yytext); }
-\|\| { printf("(%s) - Found OR_OPERATOR\n", yytext); }
-\&\& { printf("(%s) - Found AND_OPERATOR\n", yytext); }
+\|\| { printf("(%s) - Found OR_OPERATOR\n", yytext); return KW_OR;}
+\&\& { printf("(%s) - Found AND_OPERATOR\n", yytext); return KW_AND;}
 
 \&\= { printf("(%s) - Found BITWISE_AND_ASSIGNMENT_OPERATOR\n", yytext); }
 \^\= { printf("(%s) - Found BITWISE_EX_OR_ASSIGNMENT_OPERATOR\n", yytext); }

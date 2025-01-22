@@ -2274,91 +2274,91 @@ yyreduce:
 
   case 101: /* expr: expr '>' endlOpt expr  */
 #line 328 "parser.y"
-                            {printf("PARSER found expr - expr > expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) ">", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2279 "parser.tab.cpp"
     break;
 
   case 102: /* expr: expr '<' endlOpt expr  */
 #line 329 "parser.y"
-                            {printf("PARSER found expr - expr < expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "<", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2285 "parser.tab.cpp"
     break;
 
   case 103: /* expr: expr MORE_OR_EQUAL_OPERATOR endlOpt expr  */
 #line 330 "parser.y"
-                                               {printf("PARSER found expr - expr >= expr\n"); }
+                                               { (yyval.tree) = mk_bin_op((char*) ">=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2291 "parser.tab.cpp"
     break;
 
   case 104: /* expr: expr LESS_OR_EQUAL_OPERATOR endlOpt expr  */
 #line 331 "parser.y"
-                                               {printf("PARSER found expr - expr <= expr\n"); }
+                                               { (yyval.tree) = mk_bin_op((char*) "<=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2297 "parser.tab.cpp"
     break;
 
   case 105: /* expr: expr EQ endlOpt expr  */
 #line 332 "parser.y"
-                           {printf("PARSER found expr - expr == expr\n"); }
+                           { (yyval.tree) = mk_bin_op((char*) "==", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2303 "parser.tab.cpp"
     break;
 
   case 106: /* expr: expr NEQ endlOpt expr  */
 #line 333 "parser.y"
-                            {printf("PARSER found expr - expr != expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "!=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2309 "parser.tab.cpp"
     break;
 
   case 107: /* expr: expr '+' endlOpt expr  */
 #line 334 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "+", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                            { (yyval.tree) = mk_bin_op((char*) "+", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2315 "parser.tab.cpp"
     break;
 
   case 108: /* expr: expr '-' endlOpt expr  */
 #line 335 "parser.y"
-                            { printf("PARSER found expr - expr - expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "-", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2321 "parser.tab.cpp"
     break;
 
   case 109: /* expr: expr '/' endlOpt expr  */
 #line 336 "parser.y"
-                            { printf("PARSER found expr - expr / expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "/", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2327 "parser.tab.cpp"
     break;
 
   case 110: /* expr: expr '*' endlOpt expr  */
 #line 337 "parser.y"
-                            { printf("PARSER found expr - expr * expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "*", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2333 "parser.tab.cpp"
     break;
 
   case 111: /* expr: expr '%' endlOpt expr  */
 #line 338 "parser.y"
-                            { printf("PARSER found expr - expr % expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "%", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2339 "parser.tab.cpp"
     break;
 
   case 112: /* expr: expr '&' endlOpt expr  */
 #line 339 "parser.y"
-                            { printf("PARSER found expr - expr && expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "&", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2345 "parser.tab.cpp"
     break;
 
   case 113: /* expr: expr '|' endlOpt expr  */
 #line 340 "parser.y"
-                            { printf("PARSER found expr - expr | expr\n"); }
+                            { (yyval.tree) = mk_bin_op((char*) "|", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2351 "parser.tab.cpp"
     break;
 
   case 114: /* expr: expr KW_OR endlOpt expr  */
 #line 341 "parser.y"
-                              { printf("PARSER found expr - expr || expr\n"); }
+                              { (yyval.tree) = mk_bin_op((char*) "||", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2357 "parser.tab.cpp"
     break;
 
   case 115: /* expr: expr KW_AND endlOpt expr  */
 #line 342 "parser.y"
-                               { printf("PARSER found expr - expr && expr\n"); }
+                               { (yyval.tree) = mk_bin_op((char*) "&&", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
 #line 2363 "parser.tab.cpp"
     break;
 

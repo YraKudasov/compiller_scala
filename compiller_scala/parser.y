@@ -325,21 +325,21 @@ expr:
     | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
     | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
-    | expr '>' endlOpt expr {printf("PARSER found expr - expr > expr\n"); }
-    | expr '<' endlOpt expr {printf("PARSER found expr - expr < expr\n"); }
-    | expr MORE_OR_EQUAL_OPERATOR endlOpt expr {printf("PARSER found expr - expr >= expr\n"); }
-    | expr LESS_OR_EQUAL_OPERATOR endlOpt expr {printf("PARSER found expr - expr <= expr\n"); }
-    | expr EQ endlOpt expr {printf("PARSER found expr - expr == expr\n"); }
-    | expr NEQ endlOpt expr {printf("PARSER found expr - expr != expr\n"); }
-    | expr '+' endlOpt expr { $$ = mk_bin_op((char*) "+", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    | expr '-' endlOpt expr { printf("PARSER found expr - expr - expr\n"); }
-    | expr '/' endlOpt expr { printf("PARSER found expr - expr / expr\n"); }
-    | expr '*' endlOpt expr { printf("PARSER found expr - expr * expr\n"); }
-    | expr '%' endlOpt expr { printf("PARSER found expr - expr % expr\n"); }
-    | expr '&' endlOpt expr { printf("PARSER found expr - expr && expr\n"); }
-    | expr '|' endlOpt expr { printf("PARSER found expr - expr | expr\n"); }
-    | expr KW_OR endlOpt expr { printf("PARSER found expr - expr || expr\n"); }
-    | expr KW_AND endlOpt expr { printf("PARSER found expr - expr && expr\n"); }
+    | expr '>' endlOpt expr { $$ = mk_bin_op((char*) ">", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '<' endlOpt expr { $$ = mk_bin_op((char*) "<", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr MORE_OR_EQUAL_OPERATOR endlOpt expr { $$ = mk_bin_op((char*) ">=", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr LESS_OR_EQUAL_OPERATOR endlOpt expr { $$ = mk_bin_op((char*) "<=", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr EQ endlOpt expr { $$ = mk_bin_op((char*) "==", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr NEQ endlOpt expr { $$ = mk_bin_op((char*) "!=", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '+' endlOpt expr { $$ = mk_bin_op((char*) "+", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '-' endlOpt expr { $$ = mk_bin_op((char*) "-", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '/' endlOpt expr { $$ = mk_bin_op((char*) "/", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '*' endlOpt expr { $$ = mk_bin_op((char*) "*", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '%' endlOpt expr { $$ = mk_bin_op((char*) "%", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '&' endlOpt expr { $$ = mk_bin_op((char*) "&", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr '|' endlOpt expr { $$ = mk_bin_op((char*) "|", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr KW_OR endlOpt expr { $$ = mk_bin_op((char*) "||", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | expr KW_AND endlOpt expr { $$ = mk_bin_op((char*) "&&", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | '-' expr  %prec UMINUS { printf("PARSER found expr - UMINUS\n"); }
     | '+' expr  %prec UPLUS { printf("PARSER found expr - UPLUS\n"); }
     | if_else_expr %prec LOWER_THAN_EXPR{ printf("PARSER found expr - if_else_expr\n"); }
