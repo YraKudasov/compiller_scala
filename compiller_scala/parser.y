@@ -69,7 +69,8 @@ struct LOCATION
 %left '*' '/' '%'
 %nonassoc UMINUS UPLUS
 %left '(' ')' '[' ']'
-
+%left GENERATOR_OPERATOR
+%left '.'
 
 
 
@@ -245,33 +246,32 @@ for_expr:
         | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in curly_braces\n"); }
         ;
 
-/*standart*/
-for_params:
-          IDENTIFIER GENERATOR_OPERATOR const TO const
-        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
-        ;
-
 
 generators_and_conditions_parentheses_List:
           IF expr
         | IDENTIFIER GENERATOR_OPERATOR const TO const
         | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
+        | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER
         | generators_and_conditions_parentheses_List IF expr 
         | generators_and_conditions_parentheses_List ';' IF expr 
         | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const
         | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER
         ;
 
 generators_and_conditions_curly_braces_List:
           IF endlOpt expr
         | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
         | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
         | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr 
         | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr 
         | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
         | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
         | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
         | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
         ;
 
 
@@ -372,7 +372,7 @@ expr:
 /* Constants */
 num_const:
       NUM_10 { $$ = mk_int_const($1); }
-    | NUM_16 { printf("PARSER found - INT\n"); }
+    | NUM_16 { $$ = mk_int_const($1); }
     | REAL_NUMBER { $$ = mk_real_const($1); }
     | REAL_NUMBER_EXPONENT { $$ = mk_real_const($1); }
     ;

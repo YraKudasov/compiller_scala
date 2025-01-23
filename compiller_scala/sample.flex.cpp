@@ -1473,7 +1473,7 @@ YY_RULE_SETUP
 case 105:
 YY_RULE_SETUP
 #line 208 "sample.l"
-{ printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); return 'NEQ'; }
+{ printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); return NEQ; }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
@@ -1488,12 +1488,12 @@ YY_RULE_SETUP
 case 108:
 YY_RULE_SETUP
 #line 213 "sample.l"
-{ printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return 'EQ'; }
+{ printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return EQ; }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
 #line 214 "sample.l"
-{ printf("(%s) - Found NOT_OPERATOR\n", yytext); return 'NOT'; }
+{ printf("(%s) - Found NOT_OPERATOR\n", yytext); return NOT; }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP

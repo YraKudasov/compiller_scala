@@ -204,13 +204,13 @@ BEGIN(INITIAL);  return ')';
 \>= { printf("(%s) - Found MORE_OR_EQUAL_OPERATOR\n", yytext); return MORE_OR_EQUAL_OPERATOR;}
 \< { printf("(%s) - Found LESS_OPERATOR\n", yytext); return '<'; }
 \> { printf("(%s) - Found MORE_OPERATOR\n", yytext); return '>'; }
-\!= { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); return 'NEQ'; }
+\!\= { printf("(%s) - Found NOT_EQUAL_OPERATOR\n", yytext); return NEQ; }
 = { printf("(%s) - Found ASSIGNMENT_OPERATOR\n", yytext); return '=';}
 \^ { printf("(%s) - Found CIRCUMFLEX\n", yytext); }
 
 
-== { printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return 'EQ'; }
-\! { printf("(%s) - Found NOT_OPERATOR\n", yytext); return 'NOT'; }
+\=\= { printf("(%s) - Found EQUAL_OPERATOR\n", yytext); return EQ; }
+\! { printf("(%s) - Found NOT_OPERATOR\n", yytext); return NOT; }
 \|\| { printf("(%s) - Found OR_OPERATOR\n", yytext); return KW_OR;}
 \&\& { printf("(%s) - Found AND_OPERATOR\n", yytext); return KW_AND;}
 
