@@ -112,6 +112,7 @@ struct LOCATION
 %type <tree> array array_literal initialized_array 
 %type <tree> while_expr do_while_expr
 %type <tree> match_expr case_condition case_list CASE_PATTERN case
+%type <tree> generators_and_conditions_parentheses_List
 
 
 
@@ -256,20 +257,18 @@ for_expr:
 
 
 generators_and_conditions_parentheses_List:
-          IF expr
-        | IDENTIFIER GENERATOR_OPERATOR const TO const
-        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const
-        | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER
-        | generators_and_conditions_parentheses_List IF expr 
-        | generators_and_conditions_parentheses_List ';' IF expr 
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER
+          IDENTIFIER GENERATOR_OPERATOR const TO const  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $3, $5)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($3))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_parentheses_List IF expr { $$ = add_to_list($1, mk_if_cond($3)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_parentheses_List ';' IF expr { $$ = add_to_list($1, mk_if_cond($4)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($3), $5, $7)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($3), mk_ident_lit($5))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
         ;
 
 generators_and_conditions_curly_braces_List:
-          IF endlOpt expr
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
+          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
         | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
         | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
         | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr 
@@ -357,6 +356,7 @@ expr:
     | while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | do_while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | match_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | '{' statement_expr_list_e '}' { printf("  { statement_expr_list_e }\n"); }
     | anonymous_func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }
@@ -400,7 +400,7 @@ anonymous_func:
 
 
 method_params_list:
-      '('params')'
+      '('params')' { printf("PARSER found method params list\n"); }
     | method_params_list endlOpt '('params')'
     ;
 

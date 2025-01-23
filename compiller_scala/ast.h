@@ -283,3 +283,47 @@ mk_declaration_expr(Json* identifier, Json* expr) {
     Json_add_object_to_object(node, "expression", expr);
     return node;
 }
+
+
+Json*
+mk_generator_without_to_and_by(Json* identifier, Json* from) {
+    Json* node = Json_new();
+    add_type_to_node(node, "generator_without_to_and_by");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "from", from);
+    return node;
+}
+
+
+Json*
+mk_generator_without_by(Json* identifier, Json* from, Json* to) {
+    Json* node = Json_new();
+    add_type_to_node(node, "generator_without_by");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "from", from);
+    Json_add_object_to_object(node, "to", to);
+    return node;
+}
+
+
+Json*
+mk_generator_with_by(Json* identifier, Json* from, Json* to, Json* by) {
+    Json* node = Json_new();
+    add_type_to_node(node, "generator_with_by");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "from", from);
+    Json_add_object_to_object(node, "to", to);
+    Json_add_object_to_object(node, "by", by);
+    return node;
+}
+
+
+
+Json* mk_if_cond(Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "if_condition");
+    Json_add_object_to_object(node, "expression", expr);
+    return node;
+}
+
+
