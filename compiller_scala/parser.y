@@ -102,6 +102,7 @@ struct LOCATION
 
 %type num_const
 
+%type <tree> statement
 %type <tree> expr expr_list expr_list_e
 %type <tree> const
 %type <tree> num_const
@@ -221,7 +222,7 @@ statement_expr_list_e:
     ;
 
 statement:
-      VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit value declaration:\n"); }
+      VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { $$ = mk_declaration_expr(mk_ident_lit($3), $7); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit variable declaration:\n"); }
     | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
     | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
@@ -332,7 +333,7 @@ expr_list:
 expr:
       const %prec LOWER_THAN_EXPR {printf("PARSER found expr - const\n"); }
     | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
-    | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
+    | IDENTIFIER endlOpt '=' endlOpt expr { $$ = mk_bin_op((char*) "=", mk_ident_lit($1), $5); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
     | expr '>' endlOpt expr { $$ = mk_bin_op((char*) ">", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | expr '<' endlOpt expr { $$ = mk_bin_op((char*) "<", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }

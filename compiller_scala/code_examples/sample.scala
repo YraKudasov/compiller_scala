@@ -1,1 +1,2 @@
-new SSS (aaa)
+val a = 
+17

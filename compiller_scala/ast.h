@@ -255,7 +255,8 @@ add_case_condition(Json* condition) {
     return node; 
 }
 
-Json* mk_case_expr(Json* cond, Json* body) {
+Json* 
+mk_case_expr(Json* cond, Json* body) {
     Json* node = Json_new();
     add_type_to_node(node, "case");
     Json_add_array_to_object(node, "expr", cond);
@@ -264,11 +265,21 @@ Json* mk_case_expr(Json* cond, Json* body) {
     return node;
 }
 
-Json* mk_match_expr(Json* expr, Json* cases) {
+Json* 
+mk_match_expr(Json* expr, Json* cases) {
     Json* node = Json_new(); 
     add_type_to_node(node, "match_expr");
     Json_add_object_to_object(node, "expr", expr);
     Json_add_array_to_object(node, "cases", cases);
 
+    return node;
+}
+
+Json* 
+mk_declaration_expr(Json* identifier, Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "declaration_val");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "expression", expr);
     return node;
 }
