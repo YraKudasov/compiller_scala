@@ -298,13 +298,11 @@ match_expr:
 
 
 case_condition:
-          expr_list {$$ = add_case_condition($1);}
+          expr_list %prec LOWER_THAN_EXPR {$$ = add_case_condition($1);}
         | CASE_PATTERN {$$ = add_case_condition($1);}
         ;
 
-case:
-          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr {$$ = mk_case_expr($3,$7);}
-        ;
+
     
 case_list:
           CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr {$$ = mk_list();$$ = add_alt_case($$,$3,$7);}
@@ -357,7 +355,6 @@ expr:
     | while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | do_while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | match_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    | case {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | anonymous_func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }
