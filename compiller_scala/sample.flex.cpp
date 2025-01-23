@@ -1593,7 +1593,7 @@ YY_RULE_SETUP
 case 129:
 YY_RULE_SETUP
 #line 238 "sample.l"
-{ printf("(%s) - Found COLON\n", yytext); }
+{ printf("(%s) - Found COLON\n", yytext); return ':'; }
 	YY_BREAK
 case 130:
 YY_RULE_SETUP

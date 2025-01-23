@@ -68,6 +68,7 @@ struct LOCATION
 %left '&'
 %left EQ NEQ
 %left '>' '<' MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
+%right ':'
 %left '+' '-' 
 %left '*' '/' '%'
 %nonassoc UMINUS UPLUS

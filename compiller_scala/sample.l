@@ -234,7 +234,7 @@ BEGIN(INITIAL);  return ')';
 \} { printf("(%s) - Found BRACE\n", yytext); return '}'; }
 \; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
 \, { printf("(%s) - Found COMMA\n", yytext); return ',';}
-\: { printf("(%s) - Found COLON\n", yytext); }
+\: { printf("(%s) - Found COLON\n", yytext); return ':'; }
 \. { printf("(%s) - Found DOT\n", yytext); }
 \& { printf("(%s) - Found AMPERSAND\n", yytext); }
 \_ {printf("(%s) - Found UNDERLINE\n", yytext); return CASE_PATTERN;}
