@@ -320,13 +320,13 @@ case_list:
 /* Expr */
 expr_list_e:
       expr_list    { printf("PARSER found expr_list - expr_list\n"); }
-    | /* nothing */  { printf("PARSER found expr_list - nothing\n"); }
+    | /* nothing */  {  $$ = mk_list(); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
 
 expr_list:
-      expr            { printf("PARSER found expr_list - expr\n"); }
-    | expr_list endlOpt ',' endlOpt expr  { printf("PARSER found expr_list - expr_list\n"); }
+      expr            { $$ = add_to_list(mk_list(), $1); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | expr_list endlOpt ',' endlOpt expr  { $$ = add_to_list($1, $5); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
 

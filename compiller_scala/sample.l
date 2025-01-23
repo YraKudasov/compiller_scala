@@ -56,7 +56,7 @@ class { printf("(%s) - Found KW_CLASS\n", yytext); return CLASS; }
 def { printf("(%s) - Found KW_DEF\n", yytext); return DEF;}
 do { printf("(%s) - Found KW_do\n", yytext); return DO; }
 else { printf("(%s) - Found KW_ELSE\n", yytext); return ELSE; }
-extends { printf("(%s) - Found KW_EXTENDS\n", yytext); }
+extends { printf("(%s) - Found KW_EXTENDS\n", yytext); return EXTENDS; }
 false { printf("(%s) - Found KW_FALSE\n", yytext); return KW_FALSE;}
 for { printf("(%s) - Found KW_FOR\n", yytext); return FOR; }
 final { printf("(%s) - Found KW_FINAL\n", yytext); }

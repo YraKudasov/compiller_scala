@@ -2308,19 +2308,19 @@ yyreduce:
 
   case 91: /* expr_list_e: %empty  */
 #line 323 "parser.y"
-                     { printf("PARSER found expr_list - nothing\n"); }
+                     {  (yyval.tree) = mk_list(); }
 #line 2313 "parser.tab.cpp"
     break;
 
   case 92: /* expr_list: expr  */
 #line 328 "parser.y"
-                      { printf("PARSER found expr_list - expr\n"); }
+                      { (yyval.tree) = add_to_list(mk_list(), (yyvsp[0].tree)); }
 #line 2319 "parser.tab.cpp"
     break;
 
   case 93: /* expr_list: expr_list endlOpt ',' endlOpt expr  */
 #line 329 "parser.y"
-                                          { printf("PARSER found expr_list - expr_list\n"); }
+                                          { (yyval.tree) = add_to_list((yyvsp[-4].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
 #line 2325 "parser.tab.cpp"
     break;
 

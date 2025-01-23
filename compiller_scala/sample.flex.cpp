@@ -943,7 +943,7 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 60 "sample.l"
-{ printf("(%s) - Found KW_EXTENDS\n", yytext); }
+{ printf("(%s) - Found KW_EXTENDS\n", yytext); return EXTENDS; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
