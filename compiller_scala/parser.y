@@ -56,6 +56,8 @@ struct LOCATION
 %nonassoc ENDL
 %nonassoc LOWER_THAN_EXPR
 %nonassoc IF
+%nonassoc DO
+%nonassoc WHILE
 %right ELSE
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -104,6 +106,7 @@ struct LOCATION
 %type <tree> if_else_expr
 %type <tree> method_call
 %type <tree> array array_literal initialized_array 
+%type <tree> while_expr do_while_expr
 
 
 
@@ -277,11 +280,11 @@ generators_and_conditions_curly_braces_List:
 
 /*..................................................... DO / WHILE................................................... */
 while_expr: 
-          WHILE endlOpt '(' expr ')' endlOpt expr
+          WHILE endlOpt '(' expr ')' endlOpt expr %prec WHILE { $$ = mk_while_expr($4,$7); }
         ;
 
 do_while_expr:
-          DO endlOpt expr endlOpt WHILE '(' expr ')'
+          DO endlOpt expr endlOpt WHILE '(' expr ')' %prec WHILE { $$ = mk_do_while_expr($3,$7); }
         ;
 
 
@@ -357,8 +360,8 @@ expr:
     | '+' expr  %prec UPLUS { $$ = mk_unary_op("unary_plus_op", $2);found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | if_else_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | for_expr { printf("PARSER found expr - for_expr\n"); }
-    | while_expr { printf("PARSER found expr - while_expr\n"); }
-    | do_while_expr { printf("PARSER found expr - do_while_expr\n"); }
+    | while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | do_while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | match_expr { printf("PARSER found expr - match_expr\n"); }
     | '{' statement_expr_list_e  '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
     | anonymous_func { printf("Function:\n"); }

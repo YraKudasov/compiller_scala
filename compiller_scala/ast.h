@@ -218,11 +218,19 @@ add_to_list(Json* list, Json* element) {
 }
 
 Json*
-mk_loop_stmt(Json* init_stmt_list, Json* cond, Json* body_stmt_list) {
+mk_while_expr(Json* cond, Json* body_list) {
     Json* node = Json_new();
-    add_type_to_node(node, "for-loop");
-    Json_add_array_to_object(node, "init", init_stmt_list);
+    add_type_to_node(node, "while-loop");
     Json_add_object_to_object(node, "cond", cond);
-    Json_add_array_to_object(node, "body", body_stmt_list);
+    Json_add_array_to_object(node, "body", body_list);
+    return node;
+}
+
+Json*
+mk_do_while_expr(Json* body_list, Json* cond) {
+    Json* node = Json_new();
+    add_type_to_node(node, "do-while-loop");
+    Json_add_array_to_object(node, "body", body_list);
+    Json_add_object_to_object(node, "cond", cond);
     return node;
 }
