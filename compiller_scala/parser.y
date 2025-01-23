@@ -102,7 +102,7 @@ struct LOCATION
 
 %type num_const
 
-%type <tree> statement
+
 %type <tree> expr expr_list expr_list_e
 %type <tree> const
 %type <tree> num_const
@@ -357,7 +357,6 @@ expr:
     | do_while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | match_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | '{' statement_expr_list_e '}' { printf("  { statement_expr_list_e }\n"); }
-    | anonymous_func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
