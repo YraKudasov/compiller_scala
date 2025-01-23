@@ -102,16 +102,16 @@ struct LOCATION
 
 %type num_const
 
-
 %type <tree> expr expr_list expr_list_e
 %type <tree> const
 %type <tree> num_const
 %type <tree> type type_list type_list_car type_list_simple
 %type <tree> if_else_expr
-%type <tree> method_call
 %type <tree> array array_literal initialized_array 
 %type <tree> while_expr do_while_expr
 %type <tree> match_expr case_condition case_list CASE_PATTERN case
+%type <tree> statement 
+%type <tree> method params anonymous_func method_params_list method_arguments_list method_call
 %type <tree> generators_and_conditions_parentheses_List
 
 
@@ -223,14 +223,14 @@ statement_expr_list_e:
     ;
 
 statement:
-      VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { $$ = mk_declaration_expr(mk_ident_lit($3), $7); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    | VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  { printf("implicit variable declaration:\n"); }
-    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit value declaration:\n"); }
-    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr { printf("explicit variable declaration:\n"); }
-    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array { printf("explicit array declaration:\n"); }
-    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array { printf("explicit array declaration:\n"); }
+      VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  {$$ = mk_declaration_val(mk_ident_lit($3),$7);found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  {$$ = mk_declaration_var(mk_ident_lit($3),$7);found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr {$$ = mk_declaration_val_type(mk_ident_lit($3),$7,$11);found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr {$$ = mk_declaration_var_type(mk_ident_lit($3),$7,$11);found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array {$$ = mk_declaration_var_array(mk_ident_lit($3),$9,$14);found_classes=$$; puts(Json_to_pretty_string(found_classes));} 
+    | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array {$$ = mk_declaration_val_array(mk_ident_lit($3),$9,$14);found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | class { printf("Class:\n"); }
-    | method { printf("Method:\n"); }
+    | method {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
     
  
@@ -332,7 +332,7 @@ expr_list:
 expr:
       const %prec LOWER_THAN_EXPR {printf("PARSER found expr - const\n"); }
     | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
-    | IDENTIFIER endlOpt '=' endlOpt expr { $$ = mk_bin_op((char*) "=", mk_ident_lit($1), $5); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
     | expr '>' endlOpt expr { $$ = mk_bin_op((char*) ">", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | expr '<' endlOpt expr { $$ = mk_bin_op((char*) "<", $1, $4); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
@@ -357,6 +357,7 @@ expr:
     | do_while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | match_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | '{' statement_expr_list_e '}' { printf("  { statement_expr_list_e }\n"); }
+    | anonymous_func { $$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
@@ -386,28 +387,29 @@ const:
     /*.....................................................FUNCTIONS/METHODS................................................... */
 
 params:
-      IDENTIFIER ':' type_list_car
-    | params ',' IDENTIFIER ':' type_list_car
-    | params ',' IDENTIFIER ':' type_list_car '=' const
-    | /* nothing */
+       IDENTIFIER ':' type_list_car { $$ = mk_method_params(mk_ident_lit($1),$3); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  IDENTIFIER ':' type_list_car '=' const { $$ = mk_method_params_value(mk_ident_lit($1),$3,$5); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  params ',' IDENTIFIER ':' type_list_car { $$ = mk_list(), $$ = mk_method_params(mk_ident_lit($3),$5); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  params ',' IDENTIFIER ':' type_list_car '=' const { $$ = mk_list(),  $$ = mk_method_params_value(mk_ident_lit($3),$5,$7); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  /* nothing */
     ;
 
 
 anonymous_func:
-      '('params')' endlOpt RIGHT_ARROW_OPERATOR endlOpt expr %prec LOWER_THAN_EXPR
+      '('params')' endlOpt RIGHT_ARROW_OPERATOR endlOpt expr %prec LOWER_THAN_EXPR { $$ = mk_anonym_func($2,$7);}
     ;
 
 
 method_params_list:
-      '('params')' { printf("PARSER found method params list\n"); }
-    | method_params_list endlOpt '('params')'
+      '('params')' { $$ = $2; }
+    | method_params_list endlOpt '('params')' { $$ = mk_list(); $$ = add_to_list($1,$4);}
     ;
 
 method:
-      DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
-    | DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
-    | DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
-    | DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr 
+      DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr { $$ = mk_method_declaration(mk_ident_lit($3),$5,$9,$13);}
+    | DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr { $$ = mk_method_declaration_typeOnly(mk_ident_lit($3),$7,$11);}
+    | DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr { $$ = mk_method_declaration_paramsOnly(mk_ident_lit($3),$5,$9);}
+    | DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr { $$ = mk_method_declaration_bodyOnly(mk_ident_lit($3),$7);}
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
@@ -427,27 +429,27 @@ method_call:
 
 /* Types */
 type:
-      INT_KW { $$ = mk_integer_type(); }
-    | DOUBLE_KW { $$ = mk_real_type(); }
-    | STRING_KW { $$ = mk_string_type(); }
-    | CHAR_KW { $$ = mk_char_type(); }
-    | BOOLEAN_KW { $$ = mk_boolean_type(); }
-    | ANY_KW { $$ = mk_any_type(); }
-    | UNIT_KW { $$ = mk_unit_type(); }
+      INT_KW { $$ = mk_integer_type();found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | DOUBLE_KW { $$ = mk_real_type(); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | STRING_KW { $$ = mk_string_type();found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | CHAR_KW { $$ = mk_char_type();found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | BOOLEAN_KW { $$ = mk_boolean_type();found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | ANY_KW { $$ = mk_any_type(); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | UNIT_KW { $$ = mk_unit_type();found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     ;
     
 type_list_car:
-      type { $$ = mk_list(); $$ = add_to_list($$, $1); }
-    | type_list_car RIGHT_ARROW_OPERATOR type { $$ = add_to_list($1, $3); }
+      type { $$ = mk_list(); $$ = add_to_list($$, $1); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | type_list_car RIGHT_ARROW_OPERATOR type { $$ = add_to_list($1, $3);found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     ;
 
 type_list:
-      type { $$ = mk_list(); $$ = add_to_list($$, $1); }
-    | type_list_simple ',' type { $$ = add_to_list($1, $3); }
+      type { $$ = mk_list(); $$ = add_to_list($$, $1);found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | type_list_simple ',' type { $$ = add_to_list($1, $3); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
 type_list_simple:
-     '(' type_list ')' RIGHT_ARROW_OPERATOR type { $$ = add_to_list($2, $5); }
+     '(' type_list ')' RIGHT_ARROW_OPERATOR type { $$ = add_to_list($2, $5);found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     ;
     
 
@@ -458,12 +460,12 @@ type_list_simple:
 
 /* Array */
 array:
-       array_literal {$$ = mk_array_literal($1); }
+       array_literal {$$ = $1; }
      | initialized_array {$$ = mk_initialized_array($1);}
      ;
       
 array_literal:
-       ARRAY endlOpt'(' expr_list_e ')' {  $$ = mk_array_with_expr_list($4); }
+       ARRAY endlOpt'(' expr_list_e ')' {  $$ = mk_array_literal($4); }
      | ARRAY %prec LOWER_THAN_EXPR { $$ = mk_empty_array(); }
      ;
 
