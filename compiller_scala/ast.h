@@ -234,3 +234,41 @@ mk_do_while_expr(Json* body_list, Json* cond) {
     Json_add_object_to_object(node, "cond", cond);
     return node;
 }
+
+Json* 
+add_alt_case(Json* cases, Json* cond, Json* body) {
+    Json* case_expr = Json_new(); 
+    add_type_to_node(case_expr, "cases"); 
+    Json_add_array_to_object(case_expr, "cond", cond);
+    Json_add_array_to_object(case_expr, "body", body);
+    Json_add_object_to_array(cases, case_expr);
+
+    return cases;
+}
+
+Json* 
+add_case_condition(Json* condition) {
+    Json* node = Json_new(); 
+    add_type_to_node(node, "case_cond"); 
+    Json_add_array_to_object(node, "condition", condition);
+
+    return node; 
+}
+
+Json* mk_case_expr(Json* cond, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "case");
+    Json_add_array_to_object(node, "expr", cond);
+    Json_add_array_to_object(node, "body", body);
+
+    return node;
+}
+
+Json* mk_match_expr(Json* expr, Json* cases) {
+    Json* node = Json_new(); 
+    add_type_to_node(node, "match_expr");
+    Json_add_object_to_object(node, "expr", expr);
+    Json_add_array_to_object(node, "cases", cases);
+
+    return node;
+}

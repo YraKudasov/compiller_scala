@@ -58,6 +58,7 @@ struct LOCATION
 %nonassoc IF
 %nonassoc DO
 %nonassoc WHILE
+%nonassoc MATCH
 %right ELSE
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -96,6 +97,7 @@ struct LOCATION
 %token PROTECTED PRIVATE
 %token CLASS EXTENDS ABSTRACT
 %token NOT
+%token CASE_PATTERN
 
 %type num_const
 
@@ -107,6 +109,7 @@ struct LOCATION
 %type <tree> method_call
 %type <tree> array array_literal initialized_array 
 %type <tree> while_expr do_while_expr
+%type <tree> match_expr case_condition case_list CASE_PATTERN case
 
 
 
@@ -290,33 +293,24 @@ do_while_expr:
 
 /*..................................................... MATCH................................................... */
 match_expr:
-          IDENTIFIER endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}' 
-        | const endlOpt MATCH endlOpt '{' endlOpt case_list endlOpt '}'
+          expr MATCH endlOpt '{' endlOpt case_list endlOpt'}' {$$ = mk_match_expr($1,$6);}
         ;
 
 
 case_condition:
-          const endlOpt IF endlOpt expr
-        | IDENTIFIER %prec LOWER_THAN_EXPR
-        | IDENTIFIER endlOpt IF endlOpt expr
-        | literal_list_case %prec LOWER_THAN_EXPR
-        | instance_case_class_in_case
-        | IDENTIFIER endlOpt ':' endlOpt const
-        | '_'
+          expr_list {$$ = add_case_condition($1);}
+        | CASE_PATTERN {$$ = add_case_condition($1);}
         ;
 
+case:
+          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr {$$ = mk_case_expr($3,$7);}
+        ;
+    
 case_list:
-          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr
-        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
-        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr 
+          CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr {$$ = mk_list();$$ = add_alt_case($$,$3,$7);}
+        | case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr {$$ = add_alt_case($1,$7,$11);}
+        | case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr {$$ = add_alt_case($1,$5,$9);}
         ;
-
-
-literal_list_case:
-          const %prec LOWER_THAN_EXPR
-        | literal_list_case  endlOpt '|' endlOpt const 
-        ;
-
 
 /*..................................................... EXPR................................................... */
 
@@ -362,8 +356,8 @@ expr:
     | for_expr { printf("PARSER found expr - for_expr\n"); }
     | while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | do_while_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    | match_expr { printf("PARSER found expr - match_expr\n"); }
-    | '{' statement_expr_list_e  '}' { printf("PARSER found expr -  { statement_expr_list_e }\n"); }
+    | match_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | case {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | anonymous_func { printf("Function:\n"); }
     | method_call { printf("method_call:\n"); }
     | create_instance_class { printf("instance_class:\n"); }

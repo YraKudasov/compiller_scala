@@ -237,7 +237,7 @@ BEGIN(INITIAL);  return ')';
 \: { printf("(%s) - Found COLON\n", yytext); }
 \. { printf("(%s) - Found DOT\n", yytext); }
 \& { printf("(%s) - Found AMPERSAND\n", yytext); }
-\_ {printf("(%s) - Found UNDERLINE\n", yytext); return '_';}
+\_ {printf("(%s) - Found UNDERLINE\n", yytext); return CASE_PATTERN;}
 
 
 [a-zA-Z_][a-zA-Z0-9_]* { 

@@ -108,7 +108,8 @@ extern int yydebug;
     CLASS = 309,                   /* CLASS  */
     EXTENDS = 310,                 /* EXTENDS  */
     ABSTRACT = 311,                /* ABSTRACT  */
-    NOT = 312                      /* NOT  */
+    NOT = 312,                     /* NOT  */
+    CASE_PATTERN = 313             /* CASE_PATTERN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -124,7 +125,7 @@ union YYSTYPE
     char* str_value;
     struct Json *tree;
 
-#line 128 "parser.tab.h"
+#line 129 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

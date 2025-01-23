@@ -1608,7 +1608,7 @@ YY_RULE_SETUP
 case 132:
 YY_RULE_SETUP
 #line 241 "sample.l"
-{printf("(%s) - Found UNDERLINE\n", yytext); return '_';}
+{printf("(%s) - Found UNDERLINE\n", yytext); return CASE_PATTERN;}
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
