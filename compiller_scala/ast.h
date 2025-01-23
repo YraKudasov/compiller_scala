@@ -81,7 +81,7 @@ Json*
 mk_array_literal(Json* expr_list) {
     Json* node = Json_new();
     add_type_to_node(node, "array_literal");
-    Json_add_object_to_object(node, "expr_list", expr_list);
+    Json_add_array_to_object(node, "expr_list", expr_list);
     return node;
 }
 
@@ -106,14 +106,6 @@ mk_initialized_array_with_type_and_expr(Json* type, Json* expr) {
     add_type_to_node(node, "initialized_array_with_type");
     Json_add_object_to_object(node, "type", type);
     Json_add_object_to_object(node, "expression", expr);
-    return node;
-}
-
-Json* 
-mk_array_with_expr_list(Json* expr_list) {
-    Json* node = Json_new();
-    add_type_to_node(node, "array_with_expr_list");
-    Json_add_object_to_object(node, "expr_list", expr_list);
     return node;
 }
 
@@ -255,8 +247,7 @@ add_case_condition(Json* condition) {
     return node; 
 }
 
-Json* 
-mk_case_expr(Json* cond, Json* body) {
+Json* mk_case_expr(Json* cond, Json* body) {
     Json* node = Json_new();
     add_type_to_node(node, "case");
     Json_add_array_to_object(node, "expr", cond);
@@ -265,8 +256,7 @@ mk_case_expr(Json* cond, Json* body) {
     return node;
 }
 
-Json* 
-mk_match_expr(Json* expr, Json* cases) {
+Json* mk_match_expr(Json* expr, Json* cases) {
     Json* node = Json_new(); 
     add_type_to_node(node, "match_expr");
     Json_add_object_to_object(node, "expr", expr);
@@ -275,11 +265,136 @@ mk_match_expr(Json* expr, Json* cases) {
     return node;
 }
 
-Json* 
-mk_declaration_expr(Json* identifier, Json* expr) {
+Json*
+mk_declaration_val(Json* identifier, Json* expr) {
     Json* node = Json_new();
     add_type_to_node(node, "declaration_val");
-    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "val identifier", identifier);
     Json_add_object_to_object(node, "expression", expr);
+    return node;
+}
+
+Json*
+mk_declaration_var(Json* identifier, Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "declaration_var");
+    Json_add_object_to_object(node, "var identifier", identifier);
+    Json_add_object_to_object(node, "expression", expr);
+    return node;
+}
+
+Json*
+mk_declaration_val_type(Json* identifier,Json* type, Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "declaration_val_type");
+    Json_add_object_to_object(node, "val identifier", identifier);
+    Json_add_array_to_object(node, "type", type);
+    Json_add_object_to_object(node, "expression", expr);
+    return node;
+}
+
+Json*
+mk_declaration_var_type(Json* identifier, Json* type, Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "declaration_val_type");
+    Json_add_object_to_object(node, "var identifier", identifier);
+    Json_add_array_to_object(node, "type", type);
+    Json_add_object_to_object(node, "expression", expr);
+    return node;
+}
+
+Json*
+mk_declaration_var_array(Json* identifier, Json* array_type, Json* array) {
+    Json* node = Json_new();
+    add_type_to_node(node, "declaration_var_array");
+    Json_add_object_to_object(node, "var identifier", identifier);
+    Json_add_object_to_object(node, "array_type", array_type);
+    Json_add_array_to_object(node, "expression", array);
+    return node;
+}
+
+Json*
+mk_declaration_val_array(Json* identifier, Json* array_type, Json* array) {
+    Json* node = Json_new();
+    add_type_to_node(node, "declaration_val_array");
+    Json_add_object_to_object(node, "val identifier", identifier);
+    Json_add_object_to_object(node, "array_type", array_type);
+    Json_add_array_to_object(node, "expression", array);
+
+    return node;
+}
+
+Json*
+mk_method_params(Json* identifier, Json* type) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_params");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_array_to_object(node, "type", type);
+
+    return node;
+}
+
+Json*
+mk_method_params_value(Json* identifier, Json* type,Json* value) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_params");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_array_to_object(node, "type", type);
+    Json_add_object_to_object(node, "value", value);
+
+    return node;
+}
+
+Json*
+mk_anonym_func(Json* params, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "anonym_func");
+    Json_add_array_to_object(node, "params",params);
+    Json_add_object_to_object(node, "body", body);
+
+    return node;
+}
+
+Json*
+mk_method_declaration(Json* identifier, Json* params, Json* type, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_declaration");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_array_to_object(node, "params", params);
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "body", body);
+
+    return node;
+}
+
+Json*
+mk_method_declaration_typeOnly(Json* identifier, Json* type, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_declaration");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "body", body);
+
+    return node;
+}
+
+Json*
+mk_method_declaration_paramsOnly(Json* identifier, Json* params, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_declaration");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_array_to_object(node, "params", params);
+    Json_add_object_to_object(node, "body", body);
+
+    return node;
+}
+
+Json*
+mk_method_declaration_bodyOnly(Json* identifier, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_declaration");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "body", body);
+
     return node;
 }

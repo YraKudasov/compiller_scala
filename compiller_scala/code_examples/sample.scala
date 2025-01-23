@@ -1,2 +1,1 @@
-val a = 
-17
+def greet (x : int,y : int) : int = 5+5
