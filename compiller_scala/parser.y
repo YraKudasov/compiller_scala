@@ -111,7 +111,7 @@ struct LOCATION
 %type <tree> array array_literal initialized_array 
 %type <tree> while_expr do_while_expr
 %type <tree> match_expr case_condition case_list CASE_PATTERN case
-%type <tree> statement 
+%type <tree> statement statement_expr_list statement_expr_list_e
 %type <tree> method params anonymous_func method_params_list method_arguments_list method_call
 %type <tree> for_expr generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
 

@@ -1,1 +1,1 @@
-def greet(name : int, surname : int ) = 5+ 5
+def greet(name : int, surname : int ) = {var a = 5}
