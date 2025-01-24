@@ -103,6 +103,9 @@ struct LOCATION
 
 %type num_const
 
+
+%type <tree> program
+%type <tree> create_instance_class
 %type <tree> expr expr_list expr_list_e
 %type <tree> const
 %type <tree> num_const
@@ -123,7 +126,7 @@ struct LOCATION
 
 /* Program description */
 program:
-      statement_expr_list_e
+      statement_expr_list_e {$$ = $1; found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
 /*************************************************************/
@@ -219,7 +222,7 @@ statement_expr_list:
     ;
 
 statement_expr_list_e:
-      separator_List_e statement_expr_list separator_List_e {$$ = mk_stmt_expr_list($2); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+      separator_List_e statement_expr_list separator_List_e {$$ = mk_stmt_expr_list($2);}
     | /* nothing */  { $$ = mk_empty();}
     ;
 
@@ -320,13 +323,13 @@ case_list:
 /* Expr */
 expr_list_e:
       expr_list    { printf("PARSER found expr_list - expr_list\n"); }
-    | /* nothing */  {  $$ = mk_list(); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | /* nothing */  {  $$ = mk_list();}
     ;
 
 
 expr_list:
-      expr            { $$ = add_to_list(mk_list(), $1); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    | expr_list endlOpt ',' endlOpt expr  { $$ = add_to_list($1, $5); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+      expr            { $$ = add_to_list(mk_list(), $1);}
+    | expr_list endlOpt ',' endlOpt expr  { $$ = add_to_list($1, $5); }
     ;
 
 
@@ -354,13 +357,13 @@ expr:
     | '+' expr  %prec UPLUS { $$ = mk_unary_op("unary_plus_op", $2); }
     | if_else_expr {$$=$1;}
     | for_expr { printf("PARSER found expr - for_expr\n"); }
-    | while_expr {$$=$1;found_classes=$$;}
+    | while_expr {$$=$1;}
     | do_while_expr {$$=$1;}
     | match_expr {$$=$1;}
     | '{' statement_expr_list_e '}' { $$ = $2; }
     | anonymous_func { $$=$1; }
     | method_call { $$=$1; }
-    | create_instance_class { printf("instance_class:\n"); }
+    | create_instance_class { $$ = $1; }
     | READLINE'('')' { printf("readLine:\n"); }
     | PRINTLN'(' expr ')' { printf("print:\n"); }
     | IDENTIFIER '.' '(' NUM_10 ')' { printf("array_call:\n"); }
