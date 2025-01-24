@@ -388,10 +388,10 @@ const:
     /*.....................................................FUNCTIONS/METHODS................................................... */
 
 params:
-       IDENTIFIER ':' type_list_car { $$ = mk_method_params(mk_ident_lit($1),$3); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    |  IDENTIFIER ':' type_list_car '=' const { $$ = mk_method_params_value(mk_ident_lit($1),$3,$5); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    |  params ',' IDENTIFIER ':' type_list_car { $$ = mk_list(), $$ = mk_method_params(mk_ident_lit($3),$5); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-    |  params ',' IDENTIFIER ':' type_list_car '=' const { $$ = mk_list(),  $$ = mk_method_params_value(mk_ident_lit($3),$5,$7); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+       IDENTIFIER ':' type_list_car {  $$ = add_to_list(mk_list(), mk_method_params(mk_ident_lit($1),$3));  found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  IDENTIFIER ':' type_list_car '=' const {  $$ = add_to_list(mk_list(), mk_method_params_value(mk_ident_lit($1),$3,$5)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  params ',' IDENTIFIER ':' type_list_car {  $$ = add_to_list($1, mk_method_params(mk_ident_lit($3),$5)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    |  params ',' IDENTIFIER ':' type_list_car '=' const {  $$ = add_to_list($1, mk_method_params_value(mk_ident_lit($3),$5,$7)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     |  /* nothing */
     ;
 

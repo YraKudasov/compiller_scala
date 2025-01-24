@@ -2678,25 +2678,25 @@ yyreduce:
 
   case 135: /* params: IDENTIFIER ':' type_list_car  */
 #line 391 "parser.y"
-                                    { (yyval.tree) = mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                    {  (yyval.tree) = add_to_list(mk_list(), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)));  found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
 #line 2683 "parser.tab.cpp"
     break;
 
   case 136: /* params: IDENTIFIER ':' type_list_car '=' const  */
 #line 392 "parser.y"
-                                              { (yyval.tree) = mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                              {  (yyval.tree) = add_to_list(mk_list(), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
 #line 2689 "parser.tab.cpp"
     break;
 
   case 137: /* params: params ',' IDENTIFIER ':' type_list_car  */
 #line 393 "parser.y"
-                                               { (yyval.tree) = mk_list(), (yyval.tree) = mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                               {  (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
 #line 2695 "parser.tab.cpp"
     break;
 
   case 138: /* params: params ',' IDENTIFIER ':' type_list_car '=' const  */
 #line 394 "parser.y"
-                                                         { (yyval.tree) = mk_list(),  (yyval.tree) = mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                         {  (yyval.tree) = add_to_list((yyvsp[-6].tree), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
 #line 2701 "parser.tab.cpp"
     break;
 
