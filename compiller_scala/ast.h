@@ -511,3 +511,41 @@ mk_method_call_identifier(Json* identifier,Json* method_identifier, Json* argume
     Json_add_array_to_object(node, "arguments", arguments);
     return node;
 }
+
+Json*
+mk_class_params_var(Json* identifier, Json* type) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_var");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    return node;
+}
+
+Json*
+mk_class_params_val(Json* identifier, Json* type) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_val");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    return node;
+}
+
+Json*
+mk_class_params_var_const(Json* identifier, Json* type,Json* value) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_var");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "const", value);
+    return node;
+}
+
+Json*
+mk_class_params_val_const(Json* identifier, Json* type,Json* value) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_val");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "const", value);
+    return node;
+}

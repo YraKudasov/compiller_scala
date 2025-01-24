@@ -157,15 +157,15 @@ case_class_header:
 
 
 class_params:
-      VAR IDENTIFIER ':' type
-    | VAL IDENTIFIER ':' type
-    | VAR IDENTIFIER ':' type '=' const
-    | VAL IDENTIFIER ':' type '=' const
-    | class_params ',' VAR IDENTIFIER ':' type
-    | class_params ',' VAL IDENTIFIER ':' type
-    | class_params ',' VAR IDENTIFIER ':' type '=' const
-    | class_params ',' VAL IDENTIFIER ':' type '=' const
-    | visibility_modifier VAR IDENTIFIER ':' type
+      VAR IDENTIFIER ':' type { $$ = add_to_list(mk_list(),mk_class_params_var(mk_ident_lit($2),$4)); }
+    | VAL IDENTIFIER ':' type { $$ = add_to_list(mk_list(),mk_class_params_val(mk_ident_lit($2),$4)); }
+    | VAR IDENTIFIER ':' type '=' const { $$ = add_to_list(mk_list(),mk_class_params_var_const(mk_ident_lit($2),$4,$6)); }
+    | VAL IDENTIFIER ':' type '=' const { $$ = add_to_list(mk_list(),mk_class_params_val_const(mk_ident_lit($2),$4,$6)); }
+    | class_params ',' VAR IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var($4,$6)); }
+    | class_params ',' VAL IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var($4,$6)); }
+    | class_params ',' VAR IDENTIFIER ':' type '=' const { $$ = add_to_list($1,mk_class_params_var_const(mk_ident_lit($4),$6,$8)); }
+    | class_params ',' VAL IDENTIFIER ':' type '=' const { $$ = add_to_list($1,mk_class_params_val_const(mk_ident_lit($4),$6,$8)); }
+    | visibility_modifier VAR IDENTIFIER ':' type 
     | visibility_modifier VAL IDENTIFIER ':' type
     | visibility_modifier VAR IDENTIFIER ':' type '=' const
     | visibility_modifier VAL IDENTIFIER ':' type '=' const
