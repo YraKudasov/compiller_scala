@@ -134,7 +134,7 @@ program:
 
 /*.....................................................CLASSES................................................... */
 class:
-      class_header '{' statement_expr_list_e '}' { $$ = mk_class($1,$3);  found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+      class_header '{' statement_expr_list_e '}' { $$ = mk_class($1,$3); }
     | abstract_class_header '{' statement_expr_list_e '}'
     | case_class_header '{' statement_expr_list_e '}'
     ;

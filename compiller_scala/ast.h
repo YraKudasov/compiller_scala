@@ -485,12 +485,7 @@ mk_stmt_expr_list(Json* stmt_expr_list) {
     return node;
 }
 
-Json*
-mk_empty() {
-    Json* node = Json_new();
-    add_type_to_node(node, "empty");
-    return node;
-}
+
 
 Json*
 mk_method_arguments_list(Json* arguments) {
