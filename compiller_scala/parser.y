@@ -112,7 +112,7 @@ struct LOCATION
 %type <tree> match_expr case_condition case_list CASE_PATTERN case
 %type <tree> statement 
 %type <tree> method params anonymous_func method_params_list method_arguments_list method_call
-%type <tree> generators_and_conditions_parentheses_List
+%type <tree> generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
 
 
 
@@ -268,17 +268,17 @@ generators_and_conditions_parentheses_List:
         ;
 
 generators_and_conditions_curly_braces_List:
-          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
-        | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr 
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr 
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER
+          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($5))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr { $$ = add_to_list($1, mk_if_cond($5)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr { $$ = add_to_list($1, mk_if_cond($6)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($5), mk_ident_lit($9))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($3), $7, $10)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($3),mk_ident_lit($7))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
         ;
 
 
