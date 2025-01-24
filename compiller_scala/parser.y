@@ -359,7 +359,7 @@ expr:
     | match_expr {$$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     | '{' statement_expr_list_e '}' { printf("  { statement_expr_list_e }\n"); }
     | anonymous_func { $$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
-    | method_call { printf("method_call:\n"); }
+    | method_call { $$=$1;found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | create_instance_class { printf("instance_class:\n"); }
     | READLINE'('')' { printf("readLine:\n"); }
     | PRINTLN'(' expr ')' { printf("print:\n"); }
@@ -418,13 +418,13 @@ method:
     ;
 
 method_arguments_list:
-      '('expr_list_e')' 
-    | method_arguments_list '('expr_list_e')'
+      '('expr_list_e')' {$$ = $2;}
+    | method_arguments_list '('expr_list_e')' {$$ = mk_list(); add_to_list($1,mk_method_arguments_list($3));}
     ;
 
 method_call:
-      IDENTIFIER method_arguments_list 
-    | IDENTIFIER '.' IDENTIFIER method_arguments_list 
+      IDENTIFIER method_arguments_list { $$ = mk_method_call(mk_ident_lit($1),$2);} 
+    | IDENTIFIER '.' IDENTIFIER method_arguments_list { $$ = mk_method_call_identifier(mk_ident_lit($1),mk_ident_lit($3),$4);}
     ;
 
 

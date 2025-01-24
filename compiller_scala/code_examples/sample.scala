@@ -1,1 +1,1 @@
-def greet(name : int, surname : int ) = {var a = 5}
+method(a + 5,b+ 3)

@@ -449,3 +449,29 @@ Json* mk_if_cond(Json* expr) {
 }
 
 
+Json*
+mk_method_arguments_list(Json* arguments) {
+    Json* node = Json_new();
+    add_type_to_node(node, "arguments");
+    Json_add_array_to_object(node, "arguments", arguments);
+    return node;
+}
+
+Json* 
+mk_method_call(Json* method_identifier, Json* arguments) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_call");
+    Json_add_object_to_object(node, "method_identifier", method_identifier);
+    Json_add_array_to_object(node, "arguments", arguments);
+    return node;
+}
+
+Json*
+mk_method_call_identifier(Json* identifier,Json* method_identifier, Json* arguments) {
+    Json* node = Json_new();
+    add_type_to_node(node, "method_call");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "method_identifier", method_identifier);
+    Json_add_array_to_object(node, "arguments", arguments);
+    return node;
+}
