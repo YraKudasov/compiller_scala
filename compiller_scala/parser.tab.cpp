@@ -2156,43 +2156,43 @@ yyreduce:
 
   case 44: /* statement_expr_list_e: %empty  */
 #line 223 "parser.y"
-                     { (yyval.tree) = mk_empty(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                     { (yyval.tree) = mk_empty();}
 #line 2161 "parser.tab.cpp"
     break;
 
   case 45: /* statement: VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
 #line 227 "parser.y"
-                                                       {(yyval.tree) = mk_declaration_val(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                       {(yyval.tree) = mk_declaration_val(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));}
 #line 2167 "parser.tab.cpp"
     break;
 
   case 46: /* statement: VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
 #line 228 "parser.y"
-                                                       {(yyval.tree) = mk_declaration_var(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                       {(yyval.tree) = mk_declaration_var(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));}
 #line 2173 "parser.tab.cpp"
     break;
 
   case 47: /* statement: VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr  */
 #line 229 "parser.y"
-                                                                                           {(yyval.tree) = mk_declaration_val_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                                                           {(yyval.tree) = mk_declaration_val_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));}
 #line 2179 "parser.tab.cpp"
     break;
 
   case 48: /* statement: VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr  */
 #line 230 "parser.y"
-                                                                                           {(yyval.tree) = mk_declaration_var_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                                                           {(yyval.tree) = mk_declaration_var_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));}
 #line 2185 "parser.tab.cpp"
     break;
 
   case 49: /* statement: VAR endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array  */
 #line 231 "parser.y"
-                                                                                              {(yyval.tree) = mk_declaration_var_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                                                              {(yyval.tree) = mk_declaration_var_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));}
 #line 2191 "parser.tab.cpp"
     break;
 
   case 50: /* statement: VAL endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array  */
 #line 232 "parser.y"
-                                                                                              {(yyval.tree) = mk_declaration_val_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                                                              {(yyval.tree) = mk_declaration_val_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));}
 #line 2197 "parser.tab.cpp"
     break;
 
@@ -2204,7 +2204,7 @@ yyreduce:
 
   case 52: /* statement: method  */
 #line 234 "parser.y"
-             {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+             {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); }
 #line 2209 "parser.tab.cpp"
     break;
 
@@ -2228,25 +2228,25 @@ yyreduce:
 
   case 56: /* for_expr: FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr  */
 #line 253 "parser.y"
-                                                                                                                          { (yyval.tree) = mk_for_expr((yyvsp[-5].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                                                                                                          { (yyval.tree) = mk_for_expr((yyvsp[-5].tree), (yyvsp[0].tree));  }
 #line 2233 "parser.tab.cpp"
     break;
 
   case 57: /* for_expr: FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr  */
 #line 254 "parser.y"
-                                                                                                             { (yyval.tree) = mk_for_expr((yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                                                                                             { (yyval.tree) = mk_for_expr((yyvsp[-3].tree), (yyvsp[0].tree));  }
 #line 2239 "parser.tab.cpp"
     break;
 
   case 58: /* for_expr: FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr  */
 #line 255 "parser.y"
-                                                                                                                                           { (yyval.tree) = mk_for_expr((yyvsp[-6].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                                                                                                                           { (yyval.tree) = mk_for_expr((yyvsp[-6].tree), (yyvsp[0].tree));  }
 #line 2245 "parser.tab.cpp"
     break;
 
   case 59: /* for_expr: FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr  */
 #line 256 "parser.y"
-                                                                                                                              { (yyval.tree) = mk_for_expr((yyvsp[-4].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                                                                                                              { (yyval.tree) = mk_for_expr((yyvsp[-4].tree), (yyvsp[0].tree));  }
 #line 2251 "parser.tab.cpp"
     break;
 
@@ -2462,109 +2462,109 @@ yyreduce:
 
   case 95: /* expr: expr '>' endlOpt expr  */
 #line 338 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) ">", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) ">", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2467 "parser.tab.cpp"
     break;
 
   case 96: /* expr: expr '<' endlOpt expr  */
 #line 339 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "<", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "<", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2473 "parser.tab.cpp"
     break;
 
   case 97: /* expr: expr MORE_OR_EQUAL_OPERATOR endlOpt expr  */
 #line 340 "parser.y"
-                                               { (yyval.tree) = mk_bin_op((char*) ">=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                               { (yyval.tree) = mk_bin_op((char*) ">=", (yyvsp[-3].tree), (yyvsp[0].tree));  }
 #line 2479 "parser.tab.cpp"
     break;
 
   case 98: /* expr: expr LESS_OR_EQUAL_OPERATOR endlOpt expr  */
 #line 341 "parser.y"
-                                               { (yyval.tree) = mk_bin_op((char*) "<=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                               { (yyval.tree) = mk_bin_op((char*) "<=", (yyvsp[-3].tree), (yyvsp[0].tree));  }
 #line 2485 "parser.tab.cpp"
     break;
 
   case 99: /* expr: expr EQ endlOpt expr  */
 #line 342 "parser.y"
-                           { (yyval.tree) = mk_bin_op((char*) "==", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                           { (yyval.tree) = mk_bin_op((char*) "==", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2491 "parser.tab.cpp"
     break;
 
   case 100: /* expr: expr NEQ endlOpt expr  */
 #line 343 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "!=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "!=", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2497 "parser.tab.cpp"
     break;
 
   case 101: /* expr: expr '+' endlOpt expr  */
 #line 344 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "+", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "+", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2503 "parser.tab.cpp"
     break;
 
   case 102: /* expr: expr '-' endlOpt expr  */
 #line 345 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "-", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "-", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2509 "parser.tab.cpp"
     break;
 
   case 103: /* expr: expr '/' endlOpt expr  */
 #line 346 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "/", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "/", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2515 "parser.tab.cpp"
     break;
 
   case 104: /* expr: expr '*' endlOpt expr  */
 #line 347 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "*", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "*", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2521 "parser.tab.cpp"
     break;
 
   case 105: /* expr: expr '%' endlOpt expr  */
 #line 348 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "%", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "%", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2527 "parser.tab.cpp"
     break;
 
   case 106: /* expr: expr '&' endlOpt expr  */
 #line 349 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "&", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "&", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2533 "parser.tab.cpp"
     break;
 
   case 107: /* expr: expr '|' endlOpt expr  */
 #line 350 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "|", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_bin_op((char*) "|", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2539 "parser.tab.cpp"
     break;
 
   case 108: /* expr: expr KW_OR endlOpt expr  */
 #line 351 "parser.y"
-                              { (yyval.tree) = mk_bin_op((char*) "||", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                              { (yyval.tree) = mk_bin_op((char*) "||", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2545 "parser.tab.cpp"
     break;
 
   case 109: /* expr: expr KW_AND endlOpt expr  */
 #line 352 "parser.y"
-                               { (yyval.tree) = mk_bin_op((char*) "&&", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                               { (yyval.tree) = mk_bin_op((char*) "&&", (yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2551 "parser.tab.cpp"
     break;
 
   case 110: /* expr: '-' expr  */
 #line 353 "parser.y"
-                             { (yyval.tree) = mk_unary_op("unary_minus_op", (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                             { (yyval.tree) = mk_unary_op("unary_minus_op", (yyvsp[0].tree)); }
 #line 2557 "parser.tab.cpp"
     break;
 
   case 111: /* expr: '+' expr  */
 #line 354 "parser.y"
-                            { (yyval.tree) = mk_unary_op("unary_plus_op", (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                            { (yyval.tree) = mk_unary_op("unary_plus_op", (yyvsp[0].tree)); }
 #line 2563 "parser.tab.cpp"
     break;
 
   case 112: /* expr: if_else_expr  */
 #line 355 "parser.y"
-                   {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                   {(yyval.tree)=(yyvsp[0].tree);}
 #line 2569 "parser.tab.cpp"
     break;
 
@@ -2576,37 +2576,37 @@ yyreduce:
 
   case 114: /* expr: while_expr  */
 #line 357 "parser.y"
-                 {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                 {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree);}
 #line 2581 "parser.tab.cpp"
     break;
 
   case 115: /* expr: do_while_expr  */
 #line 358 "parser.y"
-                    {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                    {(yyval.tree)=(yyvsp[0].tree);}
 #line 2587 "parser.tab.cpp"
     break;
 
   case 116: /* expr: match_expr  */
 #line 359 "parser.y"
-                 {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                 {(yyval.tree)=(yyvsp[0].tree);}
 #line 2593 "parser.tab.cpp"
     break;
 
   case 117: /* expr: '{' statement_expr_list_e '}'  */
 #line 360 "parser.y"
-                                    { printf("  { statement_expr_list_e }\n"); }
+                                    { (yyval.tree) = (yyvsp[-1].tree); }
 #line 2599 "parser.tab.cpp"
     break;
 
   case 118: /* expr: anonymous_func  */
 #line 361 "parser.y"
-                     { (yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                     { (yyval.tree)=(yyvsp[0].tree); }
 #line 2605 "parser.tab.cpp"
     break;
 
   case 119: /* expr: method_call  */
 #line 362 "parser.y"
-                  { (yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                  { (yyval.tree)=(yyvsp[0].tree); }
 #line 2611 "parser.tab.cpp"
     break;
 
@@ -2690,31 +2690,31 @@ yyreduce:
 
   case 134: /* const: array  */
 #line 385 "parser.y"
-            { (yyval.tree) = mk_array_const((yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+            { (yyval.tree) = mk_array_const((yyvsp[0].tree)); }
 #line 2695 "parser.tab.cpp"
     break;
 
   case 135: /* params: IDENTIFIER ':' type_list_car  */
 #line 391 "parser.y"
-                                    {  (yyval.tree) = add_to_list(mk_list(), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)));  found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                    {  (yyval.tree) = add_to_list(mk_list(), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)));  }
 #line 2701 "parser.tab.cpp"
     break;
 
   case 136: /* params: IDENTIFIER ':' type_list_car '=' const  */
 #line 392 "parser.y"
-                                              {  (yyval.tree) = add_to_list(mk_list(), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                              {  (yyval.tree) = add_to_list(mk_list(), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); }
 #line 2707 "parser.tab.cpp"
     break;
 
   case 137: /* params: params ',' IDENTIFIER ':' type_list_car  */
 #line 393 "parser.y"
-                                               {  (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                               {  (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree))); }
 #line 2713 "parser.tab.cpp"
     break;
 
   case 138: /* params: params ',' IDENTIFIER ':' type_list_car '=' const  */
 #line 394 "parser.y"
-                                                         {  (yyval.tree) = add_to_list((yyvsp[-6].tree), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                                         {  (yyval.tree) = add_to_list((yyvsp[-6].tree), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); }
 #line 2719 "parser.tab.cpp"
     break;
 
@@ -2786,73 +2786,73 @@ yyreduce:
 
   case 155: /* type: INT_KW  */
 #line 433 "parser.y"
-             { (yyval.tree) = mk_integer_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+             { (yyval.tree) = mk_integer_type(); }
 #line 2791 "parser.tab.cpp"
     break;
 
   case 156: /* type: DOUBLE_KW  */
 #line 434 "parser.y"
-                { (yyval.tree) = mk_real_type(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                { (yyval.tree) = mk_real_type(); }
 #line 2797 "parser.tab.cpp"
     break;
 
   case 157: /* type: STRING_KW  */
 #line 435 "parser.y"
-                { (yyval.tree) = mk_string_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                { (yyval.tree) = mk_string_type(); }
 #line 2803 "parser.tab.cpp"
     break;
 
   case 158: /* type: CHAR_KW  */
 #line 436 "parser.y"
-              { (yyval.tree) = mk_char_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+              { (yyval.tree) = mk_char_type(); }
 #line 2809 "parser.tab.cpp"
     break;
 
   case 159: /* type: BOOLEAN_KW  */
 #line 437 "parser.y"
-                 { (yyval.tree) = mk_boolean_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                 { (yyval.tree) = mk_boolean_type(); }
 #line 2815 "parser.tab.cpp"
     break;
 
   case 160: /* type: ANY_KW  */
 #line 438 "parser.y"
-             { (yyval.tree) = mk_any_type(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+             { (yyval.tree) = mk_any_type(); }
 #line 2821 "parser.tab.cpp"
     break;
 
   case 161: /* type: UNIT_KW  */
 #line 439 "parser.y"
-              { (yyval.tree) = mk_unit_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+              { (yyval.tree) = mk_unit_type(); }
 #line 2827 "parser.tab.cpp"
     break;
 
   case 162: /* type_list_car: type  */
 #line 443 "parser.y"
-           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree));  }
 #line 2833 "parser.tab.cpp"
     break;
 
   case 163: /* type_list_car: type_list_car RIGHT_ARROW_OPERATOR type  */
 #line 444 "parser.y"
-                                              { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                              { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
 #line 2839 "parser.tab.cpp"
     break;
 
   case 164: /* type_list: type  */
 #line 448 "parser.y"
-           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); }
 #line 2845 "parser.tab.cpp"
     break;
 
   case 165: /* type_list: type_list_simple ',' type  */
 #line 449 "parser.y"
-                                { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+                                { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
 #line 2851 "parser.tab.cpp"
     break;
 
   case 166: /* type_list_simple: '(' type_list ')' RIGHT_ARROW_OPERATOR type  */
 #line 453 "parser.y"
-                                                 { (yyval.tree) = add_to_list((yyvsp[-3].tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+                                                 { (yyval.tree) = add_to_list((yyvsp[-3].tree), (yyvsp[0].tree)); }
 #line 2857 "parser.tab.cpp"
     break;
 
