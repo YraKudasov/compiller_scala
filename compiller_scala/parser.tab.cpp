@@ -2600,6 +2600,8 @@ yyreduce:
 
   case 119: /* expr: method_call  */
 #line 362 "parser.y"
+                  { (yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2593 "parser.tab.cpp"
                   { printf("method_call:\n"); }
 #line 2605 "parser.tab.cpp"
     break;
@@ -2754,164 +2756,188 @@ yyreduce:
 #line 2755 "parser.tab.cpp"
     break;
 
+  case 151: /* method_arguments_list: '(' expr_list_e ')'  */
+#line 421 "parser.y"
+                        {(yyval.tree) = (yyvsp[-1].tree);}
+#line 2749 "parser.tab.cpp"
+    break;
+
+  case 152: /* method_arguments_list: method_arguments_list '(' expr_list_e ')'  */
+#line 422 "parser.y"
+                                              {(yyval.tree) = mk_list(); add_to_list((yyvsp[-3].tree),mk_method_arguments_list((yyvsp[-1].tree)));}
+#line 2755 "parser.tab.cpp"
+    break;
+
+  case 153: /* method_call: IDENTIFIER method_arguments_list  */
+#line 426 "parser.y"
+                                       { (yyval.tree) = mk_method_call(mk_ident_lit((yyvsp[-1].str_value)),(yyvsp[0].tree));}
+#line 2761 "parser.tab.cpp"
+    break;
+
+  case 154: /* method_call: IDENTIFIER '.' IDENTIFIER method_arguments_list  */
+#line 427 "parser.y"
+                                                      { (yyval.tree) = mk_method_call_identifier(mk_ident_lit((yyvsp[-3].str_value)),mk_ident_lit((yyvsp[-1].str_value)),(yyvsp[0].tree));}
+#line 2767 "parser.tab.cpp"
+    break;
+
   case 155: /* type: INT_KW  */
 #line 433 "parser.y"
              { (yyval.tree) = mk_integer_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2761 "parser.tab.cpp"
+#line 2749 "parser.tab.cpp"
     break;
 
   case 156: /* type: DOUBLE_KW  */
 #line 434 "parser.y"
                 { (yyval.tree) = mk_real_type(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
-#line 2767 "parser.tab.cpp"
+#line 2755 "parser.tab.cpp"
     break;
 
   case 157: /* type: STRING_KW  */
 #line 435 "parser.y"
                 { (yyval.tree) = mk_string_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2773 "parser.tab.cpp"
+#line 2761 "parser.tab.cpp"
     break;
 
   case 158: /* type: CHAR_KW  */
 #line 436 "parser.y"
               { (yyval.tree) = mk_char_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2779 "parser.tab.cpp"
+#line 2767 "parser.tab.cpp"
     break;
 
   case 159: /* type: BOOLEAN_KW  */
 #line 437 "parser.y"
                  { (yyval.tree) = mk_boolean_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2785 "parser.tab.cpp"
+#line 2773 "parser.tab.cpp"
     break;
 
   case 160: /* type: ANY_KW  */
 #line 438 "parser.y"
              { (yyval.tree) = mk_any_type(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
-#line 2791 "parser.tab.cpp"
+#line 2779 "parser.tab.cpp"
     break;
 
   case 161: /* type: UNIT_KW  */
 #line 439 "parser.y"
               { (yyval.tree) = mk_unit_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2797 "parser.tab.cpp"
+#line 2785 "parser.tab.cpp"
     break;
 
   case 162: /* type_list_car: type  */
 #line 443 "parser.y"
            { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2803 "parser.tab.cpp"
+#line 2791 "parser.tab.cpp"
     break;
 
   case 163: /* type_list_car: type_list_car RIGHT_ARROW_OPERATOR type  */
 #line 444 "parser.y"
                                               { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2809 "parser.tab.cpp"
+#line 2797 "parser.tab.cpp"
     break;
 
   case 164: /* type_list: type  */
 #line 448 "parser.y"
            { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2815 "parser.tab.cpp"
+#line 2803 "parser.tab.cpp"
     break;
 
   case 165: /* type_list: type_list_simple ',' type  */
 #line 449 "parser.y"
                                 { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
-#line 2821 "parser.tab.cpp"
+#line 2809 "parser.tab.cpp"
     break;
 
   case 166: /* type_list_simple: '(' type_list ')' RIGHT_ARROW_OPERATOR type  */
 #line 453 "parser.y"
                                                  { (yyval.tree) = add_to_list((yyvsp[-3].tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
-#line 2827 "parser.tab.cpp"
+#line 2815 "parser.tab.cpp"
     break;
 
   case 167: /* array: array_literal  */
 #line 464 "parser.y"
                      {(yyval.tree) = (yyvsp[0].tree); }
-#line 2833 "parser.tab.cpp"
+#line 2821 "parser.tab.cpp"
     break;
 
   case 168: /* array: initialized_array  */
 #line 465 "parser.y"
                          {(yyval.tree) = mk_initialized_array((yyvsp[0].tree));}
-#line 2839 "parser.tab.cpp"
+#line 2827 "parser.tab.cpp"
     break;
 
   case 169: /* array_literal: ARRAY endlOpt '(' expr_list_e ')'  */
 #line 469 "parser.y"
                                         {  (yyval.tree) = mk_array_literal((yyvsp[-1].tree)); }
-#line 2845 "parser.tab.cpp"
+#line 2833 "parser.tab.cpp"
     break;
 
   case 170: /* array_literal: ARRAY  */
 #line 470 "parser.y"
                                    { (yyval.tree) = mk_empty_array(); }
-#line 2851 "parser.tab.cpp"
+#line 2839 "parser.tab.cpp"
     break;
 
   case 171: /* initialized_array: NEW endlOpt ARRAY endlOpt '[' type ']' '(' expr ')'  */
 #line 474 "parser.y"
                                                            { (yyval.tree) = mk_initialized_array_with_type_and_expr((yyvsp[-4].tree), (yyvsp[-1].tree));}
-#line 2857 "parser.tab.cpp"
+#line 2845 "parser.tab.cpp"
     break;
 
   case 172: /* endlList: ENDL  */
 #line 483 "parser.y"
                     { printf("PARSER found ENDL\n"); }
-#line 2863 "parser.tab.cpp"
+#line 2851 "parser.tab.cpp"
     break;
 
   case 173: /* endlList: endlList ENDL  */
 #line 484 "parser.y"
                     { printf("PARSER found endlList\n"); }
-#line 2869 "parser.tab.cpp"
+#line 2857 "parser.tab.cpp"
     break;
 
   case 174: /* endlOpt: endlList  */
 #line 489 "parser.y"
                { printf("PARSER found endlOpt\n"); }
-#line 2875 "parser.tab.cpp"
+#line 2863 "parser.tab.cpp"
     break;
 
   case 176: /* semicolonList: ';'  */
 #line 495 "parser.y"
                    { printf("PARSER found SEMICOLON\n"); }
-#line 2881 "parser.tab.cpp"
+#line 2869 "parser.tab.cpp"
     break;
 
   case 177: /* semicolonList: semicolonList ';'  */
 #line 496 "parser.y"
                         { printf("PARSER found semicolonList\n"); }
-#line 2887 "parser.tab.cpp"
+#line 2875 "parser.tab.cpp"
     break;
 
   case 178: /* separator_List: ENDL  */
 #line 500 "parser.y"
             { printf("PARSER found ENDL\n"); }
-#line 2893 "parser.tab.cpp"
+#line 2881 "parser.tab.cpp"
     break;
 
   case 179: /* separator_List: ';'  */
 #line 501 "parser.y"
             { printf("PARSER found SEMICOLON\n"); }
-#line 2899 "parser.tab.cpp"
+#line 2887 "parser.tab.cpp"
     break;
 
   case 180: /* separator_List: separator_List ENDL  */
 #line 502 "parser.y"
                             { printf("PARSER add ENDL to separator_List\n"); }
-#line 2905 "parser.tab.cpp"
+#line 2893 "parser.tab.cpp"
     break;
 
   case 181: /* separator_List: separator_List ';'  */
 #line 503 "parser.y"
                            { printf("PARSER add ; to separator_List\n"); }
-#line 2911 "parser.tab.cpp"
+#line 2899 "parser.tab.cpp"
     break;
 
 
-#line 2915 "parser.tab.cpp"
+#line 2903 "parser.tab.cpp"
 
       default: break;
     }
