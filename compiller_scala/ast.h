@@ -198,6 +198,7 @@ mk_simple_call(char* feature_name, Json* args_list) {
     return simple_call;
 }
 
+
 Json*
 mk_list() {
     return Json_new();
@@ -448,4 +449,30 @@ Json* mk_if_cond(Json* expr) {
     return node;
 }
 
+
+Json*
+mk_visibility_modifier(char* visibility_modifier_name) {
+    Json* simple_call = Json_new();
+    Json_add_string_to_object(simple_call, "visibility_modifier_name", visibility_modifier_name);
+    return simple_call;
+}
+
+
+
+Json*
+mk_visibility_modifier_stmt(Json* visibility_modifier_name, Json* stmt) {
+    Json* node = Json_new();
+    add_type_to_node(node, "visibility_modifier_stmt");
+    Json_add_object_to_object(node, "visibility_modifier", visibility_modifier_name);
+    Json_add_object_to_object(node, "stmt", stmt);
+    return node;
+}
+
+Json*
+mk_stmt_expr_list(Json* stmt_expr_list) {
+    Json* node = Json_new();
+    add_type_to_node(node, "stmt_expr_list");
+    Json_add_object_to_object(node, "stmt_expr_list", stmt_expr_list);
+    return node;
+}
 

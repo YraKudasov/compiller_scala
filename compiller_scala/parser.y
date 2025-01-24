@@ -114,7 +114,7 @@ struct LOCATION
 %type <tree> statement statement_expr_list statement_expr_list_e
 %type <tree> method params anonymous_func method_params_list method_arguments_list method_call
 %type <tree> for_expr generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
-
+%type <tree> visibility_modifier
 
 
 %%
@@ -192,8 +192,8 @@ instance_case_class_in_case:
     ;
 
 visibility_modifier:
-      PRIVATE
-    | PROTECTED
+      PRIVATE  {$$ = mk_visibility_modifier((char*)"private");}
+    | PROTECTED {$$ = mk_visibility_modifier((char*)"protected");}
     ;
 
 
@@ -210,12 +210,12 @@ inheritance:
 
 /* Statements */
 statement_expr_list:
-      statement { printf("Add first statement :\n"); }
-    | visibility_modifier statement { printf("Add first visibility_modifier statement :\n"); }
-    | expr { printf("Add first statement :\n"); }
-    | statement_expr_list  separator_List statement { printf("Add new statement to statement_expr_list :\n"); }
-    | statement_expr_list  separator_List expr { printf("Add new expr to statement_expr_list :\n"); }
-    | statement_expr_list  separator_List visibility_modifier statement { printf("Add new visibility_modifier to statement_expr_list :\n"); }
+      statement { $$ = add_to_list(mk_list(),$1);}
+    | visibility_modifier statement { $$ = add_to_list(mk_list(), mk_visibility_modifier_stmt($1, $2));}
+    | expr { $$ = add_to_list(mk_list(),$1);}
+    | statement_expr_list  separator_List statement {  $$ = add_to_list($1, $3); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | statement_expr_list  separator_List expr {   $$ = add_to_list($1, $3); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+    | statement_expr_list  separator_List visibility_modifier statement { $$ = add_to_list($1, mk_visibility_modifier_stmt($3, $4));  found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
 statement_expr_list_e:

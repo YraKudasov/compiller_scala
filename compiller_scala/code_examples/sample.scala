@@ -1,1 +1,2 @@
-def greet(name : int, surname : int ) = {var a = 5}
+protected val a = 5
+var s = 7
