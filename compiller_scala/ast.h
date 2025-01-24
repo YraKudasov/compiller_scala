@@ -103,6 +103,13 @@ mk_initialized_array(Json* array_node) {
 }
 
 Json*
+mk_empty() {
+    Json* node = Json_new();
+    add_type_to_node(node, "empty");
+    return node;
+}
+
+Json*
 mk_initialized_array_with_type_and_expr(Json* type, Json* expr) {
     Json* node = Json_new();
     add_type_to_node(node, "initialized_array_with_type");
@@ -547,5 +554,117 @@ mk_class_params_val_const(Json* identifier, Json* type,Json* value) {
     Json_add_object_to_object(node, "identifier", identifier);
     Json_add_object_to_object(node, "type", type);
     Json_add_object_to_object(node, "const", value);
+    return node;
+}
+
+Json*
+mk_class_params_var_vis_mod(Json* vis_mod,Json* identifier, Json* type) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_var");
+    Json_add_object_to_object(node, "visibility_modifier", vis_mod);
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    return node;
+}
+
+Json*
+mk_class_params_val_vis_mod(Json* vis_mod, Json* identifier, Json* type) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_val");
+    Json_add_object_to_object(node, "visibility_modifier", vis_mod);
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    return node;
+}
+
+Json*
+mk_class_params_var_const_vis_mod(Json* vis_mod, Json* identifier, Json* type, Json* value) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_var");
+    Json_add_object_to_object(node, "visibility_modifier", vis_mod);
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "const", value);
+    return node;
+}
+
+Json*
+mk_class_params_val_const_vis_mod(Json* vis_mod, Json* identifier, Json* type, Json* value) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_params_val");
+    Json_add_object_to_object(node, "visibility_modifier", vis_mod);
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "type", type);
+    Json_add_object_to_object(node, "const", value);
+    return node;
+}
+
+Json*
+mk_inheritance(Json* identifier) {
+    Json* node = Json_new();
+    add_type_to_node(node, "inheritance");
+    Json_add_object_to_object(node, "identifier", identifier);
+  
+    return node;
+}
+
+Json*
+mk_inheritance_expr(Json* identifier,Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "inheritance");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "identifier", expr);
+
+    return node;
+}
+
+Json*
+mk_class_header(Json* identifier, Json* params) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_header");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_array_to_object(node, "params", params);
+
+    return node;
+}
+
+
+Json*
+mk_class_header_inheritance(Json* identifier, Json* params,Json* inheritance) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_header");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_array_to_object(node, "params", params);
+    Json_add_object_to_object(node, "inheritance", inheritance);
+
+    return node;
+}
+
+Json*
+mk_class_header_inheritance_identifier(Json* identifier, Json* inheritance) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_header");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "inheritance", inheritance);
+
+    return node;
+}
+
+Json*
+mk_class_header_identifierOnly(Json* identifier) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class_header");
+    Json_add_object_to_object(node, "identifier", identifier);
+
+    return node;
+}
+
+Json*
+mk_class(Json* header, Json* body) {
+    Json* node = Json_new();
+    add_type_to_node(node, "class");
+    Json_add_object_to_object(node, "class_header", header);
+    Json_add_array_to_object(node, "body", body);
+
     return node;
 }

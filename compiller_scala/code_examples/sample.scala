@@ -1,4 +1,1 @@
-if (a>b){
-var c = 111
-
-}
+class greet(var wqe : int) { val a = 5 }

@@ -118,6 +118,7 @@ struct LOCATION
 %type <tree> method params anonymous_func method_params_list method_arguments_list method_call
 %type <tree> for_expr generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
 %type <tree> visibility_modifier
+%type <tree> class_params class_params_e class_header inheritance class
 
 
 %%
@@ -133,16 +134,16 @@ program:
 
 /*.....................................................CLASSES................................................... */
 class:
-      class_header '{' statement_expr_list_e '}'
+      class_header '{' statement_expr_list_e '}' { $$ = mk_class($1,$3);  found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
     | abstract_class_header '{' statement_expr_list_e '}'
     | case_class_header '{' statement_expr_list_e '}'
     ;
 
 class_header:
-      CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')'
-    | CLASS endlOpt IDENTIFIER endlOpt'(' class_params_e ')' inheritance
-    | CLASS endlOpt IDENTIFIER
-    | CLASS endlOpt IDENTIFIER endlOpt inheritance
+      CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')' { $$ = mk_class_header(mk_ident_lit($3),$6); }
+    | CLASS endlOpt IDENTIFIER endlOpt'(' class_params_e ')' inheritance { $$ = mk_class_header_inheritance(mk_ident_lit($3),$6,$8); }
+    | CLASS endlOpt IDENTIFIER { $$ = mk_class_header_identifierOnly(mk_ident_lit($3)); }
+    | CLASS endlOpt IDENTIFIER endlOpt inheritance { $$ = mk_class_header_inheritance_identifier(mk_ident_lit($3),$5); }
     ;
 
 abstract_class_header:
@@ -161,27 +162,27 @@ class_params:
     | VAL IDENTIFIER ':' type { $$ = add_to_list(mk_list(),mk_class_params_val(mk_ident_lit($2),$4)); }
     | VAR IDENTIFIER ':' type '=' const { $$ = add_to_list(mk_list(),mk_class_params_var_const(mk_ident_lit($2),$4,$6)); }
     | VAL IDENTIFIER ':' type '=' const { $$ = add_to_list(mk_list(),mk_class_params_val_const(mk_ident_lit($2),$4,$6)); }
-    | class_params ',' VAR IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var($4,$6)); }
-    | class_params ',' VAL IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var($4,$6)); }
+    | class_params ',' VAR IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var(mk_ident_lit($4),$6)); }
+    | class_params ',' VAL IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var(mk_ident_lit($4),$6)); }
     | class_params ',' VAR IDENTIFIER ':' type '=' const { $$ = add_to_list($1,mk_class_params_var_const(mk_ident_lit($4),$6,$8)); }
     | class_params ',' VAL IDENTIFIER ':' type '=' const { $$ = add_to_list($1,mk_class_params_val_const(mk_ident_lit($4),$6,$8)); }
-    | visibility_modifier VAR IDENTIFIER ':' type 
-    | visibility_modifier VAL IDENTIFIER ':' type
-    | visibility_modifier VAR IDENTIFIER ':' type '=' const
-    | visibility_modifier VAL IDENTIFIER ':' type '=' const
-    | class_params ',' visibility_modifier VAR IDENTIFIER ':' type
-    | class_params ',' visibility_modifier VAL IDENTIFIER ':' type
-    | class_params ',' visibility_modifier VAR IDENTIFIER ':' type '=' const
-    | class_params ',' visibility_modifier VAL IDENTIFIER ':' type '=' const
+    | visibility_modifier VAR IDENTIFIER ':' type  { $$ = add_to_list(mk_list(),mk_class_params_var_vis_mod($1,mk_ident_lit($3),$5)); }
+    | visibility_modifier VAL IDENTIFIER ':' type  { $$ = add_to_list(mk_list(),mk_class_params_val_vis_mod($1,mk_ident_lit($3),$5)); }
+    | visibility_modifier VAR IDENTIFIER ':' type '=' const { $$ = add_to_list(mk_list(),mk_class_params_var_const_vis_mod($1,mk_ident_lit($3),$5,$7)); }
+    | visibility_modifier VAL IDENTIFIER ':' type '=' const { $$ = add_to_list(mk_list(),mk_class_params_val_const_vis_mod($1,mk_ident_lit($3),$5,$7)); }
+    | class_params ',' visibility_modifier VAR IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_var_vis_mod($3,mk_ident_lit($5),$7)); } 
+    | class_params ',' visibility_modifier VAL IDENTIFIER ':' type { $$ = add_to_list($1,mk_class_params_val_vis_mod($3,mk_ident_lit($5),$7)); } 
+    | class_params ',' visibility_modifier VAR IDENTIFIER ':' type '=' const { $$ = add_to_list($1,mk_class_params_var_const_vis_mod($3,mk_ident_lit($5),$7,$9)); }
+    | class_params ',' visibility_modifier VAL IDENTIFIER ':' type '=' const { $$ = add_to_list($1,mk_class_params_var_const_vis_mod($3,mk_ident_lit($5),$7,$9)); }
     ;
 
 class_params_e:
-      class_params
-    | /* nothing */
+      class_params {$$ = $1;}
+    | /* nothing */ { $$ = mk_empty();}
     ;
 
 create_instance_class:
-      NEW endlOpt IDENTIFIER
+      NEW endlOpt IDENTIFIER 
     | NEW endlOpt IDENTIFIER'(' expr_list_e ')'
     ;
 
@@ -204,8 +205,8 @@ visibility_modifier:
 /*...........................Наследование...........................*/
 
 inheritance:
-      EXTENDS endlOpt IDENTIFIER
-    | EXTENDS endlOpt IDENTIFIER '('expr_list')'
+      EXTENDS endlOpt IDENTIFIER { $$ = mk_inheritance(mk_ident_lit($3));}
+    | EXTENDS endlOpt IDENTIFIER '('expr_list')' { $$ = mk_inheritance_expr(mk_ident_lit($3),$5);}
     ;
 
 

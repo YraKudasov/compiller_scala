@@ -653,25 +653,25 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   129,   129,   136,   137,   138,   142,   143,   144,   145,
-     149,   154,   155,   160,   161,   162,   163,   164,   165,   166,
-     167,   168,   169,   170,   171,   172,   173,   174,   175,   179,
-     180,   184,   185,   198,   199,   207,   208,   216,   217,   218,
-     219,   220,   221,   225,   226,   230,   231,   232,   233,   234,
-     235,   236,   237,   246,   247,   248,   256,   257,   258,   259,
-     264,   265,   266,   267,   268,   269,   270,   271,   275,   276,
-     277,   278,   279,   280,   281,   282,   283,   284,   285,   291,
-     295,   301,   306,   307,   313,   314,   315,   325,   326,   331,
-     332,   337,   338,   339,   340,   341,   342,   343,   344,   345,
-     346,   347,   348,   349,   350,   351,   352,   353,   354,   355,
-     356,   357,   358,   359,   360,   361,   362,   363,   364,   365,
-     366,   367,   368,   369,   374,   375,   376,   377,   382,   383,
-     384,   385,   386,   387,   388,   394,   395,   396,   397,   398,
-     403,   408,   409,   413,   414,   415,   416,   417,   418,   419,
-     420,   424,   425,   429,   430,   436,   437,   438,   439,   440,
-     441,   442,   446,   447,   451,   452,   456,   467,   468,   472,
-     473,   477,   486,   487,   492,   493,   498,   499,   503,   504,
-     505,   506,   510,   511
+       0,   127,   127,   134,   135,   136,   140,   141,   142,   143,
+     147,   152,   153,   158,   159,   160,   161,   162,   163,   164,
+     165,   166,   167,   168,   169,   170,   171,   172,   173,   177,
+     178,   182,   183,   196,   197,   205,   206,   214,   215,   216,
+     217,   218,   219,   223,   224,   228,   229,   230,   231,   232,
+     233,   234,   235,   244,   245,   246,   254,   255,   256,   257,
+     262,   263,   264,   265,   266,   267,   268,   269,   273,   274,
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   289,
+     293,   299,   304,   305,   311,   312,   313,   323,   324,   329,
+     330,   335,   336,   337,   338,   339,   340,   341,   342,   343,
+     344,   345,   346,   347,   348,   349,   350,   351,   352,   353,
+     354,   355,   356,   357,   358,   359,   360,   361,   362,   363,
+     364,   365,   366,   367,   372,   373,   374,   375,   380,   381,
+     382,   383,   384,   385,   386,   392,   393,   394,   395,   396,
+     401,   406,   407,   411,   412,   413,   414,   415,   416,   417,
+     418,   422,   423,   427,   428,   434,   435,   436,   437,   438,
+     439,   440,   444,   445,   449,   450,   454,   465,   466,   470,
+     471,   475,   484,   485,   490,   491,   496,   497,   501,   502,
+     503,   504,   508,   509
 };
 #endif
 
@@ -2100,58 +2100,64 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* program: statement_expr_list_e  */
-#line 129 "parser.y"
-                            {(yyval.tree) = (yyvsp[0].tree); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+  case 33: /* visibility_modifier: PRIVATE  */
+#line 195 "parser.y"
+               {(yyval.tree) = mk_visibility_modifier((char*)"private");}
 #line 2107 "parser.tab.cpp"
     break;
 
-  case 33: /* visibility_modifier: PRIVATE  */
-#line 198 "parser.y"
-               {(yyval.tree) = mk_visibility_modifier((char*)"private");}
+  case 34: /* visibility_modifier: PROTECTED  */
+#line 196 "parser.y"
+                {(yyval.tree) = mk_visibility_modifier((char*)"protected");}
 #line 2113 "parser.tab.cpp"
     break;
 
-  case 34: /* visibility_modifier: PROTECTED  */
-#line 199 "parser.y"
-                {(yyval.tree) = mk_visibility_modifier((char*)"protected");}
-#line 2119 "parser.tab.cpp"
+  case 35: /* inheritance: EXTENDS endlOpt IDENTIFIER  */
+#line 205 "parser.y"
+                                 { (yyval.tree) = mk_inheritance(mk_ident_lit((yyvsp[0].str_value)));}
+#line 2257 "parser.tab.cpp"
+    break;
+
+  case 36: /* inheritance: EXTENDS endlOpt IDENTIFIER '(' expr_list ')'  */
+#line 206 "parser.y"
+                                                 { (yyval.tree) = mk_inheritance_expr(mk_ident_lit((yyvsp[-3].str_value)),(yyvsp[-1].tree));}
+#line 2263 "parser.tab.cpp"
     break;
 
   case 37: /* statement_expr_list: statement  */
-#line 216 "parser.y"
+#line 213 "parser.y"
                 { (yyval.tree) = add_to_list(mk_list(),(yyvsp[0].tree));}
-#line 2125 "parser.tab.cpp"
+#line 2119 "parser.tab.cpp"
     break;
 
   case 38: /* statement_expr_list: visibility_modifier statement  */
-#line 217 "parser.y"
+#line 214 "parser.y"
                                     { (yyval.tree) = add_to_list(mk_list(), mk_visibility_modifier_stmt((yyvsp[-1].tree), (yyvsp[0].tree)));}
-#line 2131 "parser.tab.cpp"
+#line 2125 "parser.tab.cpp"
     break;
 
   case 39: /* statement_expr_list: expr  */
-#line 218 "parser.y"
+#line 215 "parser.y"
            { (yyval.tree) = add_to_list(mk_list(),(yyvsp[0].tree));}
-#line 2137 "parser.tab.cpp"
+#line 2131 "parser.tab.cpp"
     break;
 
   case 40: /* statement_expr_list: statement_expr_list separator_List statement  */
-#line 219 "parser.y"
-                                                    {  (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
-#line 2143 "parser.tab.cpp"
+#line 216 "parser.y"
+                                                    {  (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2137 "parser.tab.cpp"
     break;
 
   case 41: /* statement_expr_list: statement_expr_list separator_List expr  */
-#line 220 "parser.y"
-                                               {   (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree));  }
-#line 2149 "parser.tab.cpp"
+#line 217 "parser.y"
+                                               {   (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2143 "parser.tab.cpp"
     break;
 
   case 42: /* statement_expr_list: statement_expr_list separator_List visibility_modifier statement  */
-#line 221 "parser.y"
-                                                                        { (yyval.tree) = add_to_list((yyvsp[-3].tree), mk_visibility_modifier_stmt((yyvsp[-1].tree), (yyvsp[0].tree))); }
-#line 2155 "parser.tab.cpp"
+#line 218 "parser.y"
+                                                                        { (yyval.tree) = add_to_list((yyvsp[-3].tree), mk_visibility_modifier_stmt((yyvsp[-1].tree), (yyvsp[0].tree)));  found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2149 "parser.tab.cpp"
     break;
 
   case 43: /* statement_expr_list_e: separator_List_e statement_expr_list separator_List_e  */
@@ -2161,793 +2167,795 @@ yyreduce:
     break;
 
   case 44: /* statement_expr_list_e: %empty  */
-#line 226 "parser.y"
-                     { (yyval.tree) = mk_empty();}
-#line 2167 "parser.tab.cpp"
+#line 223 "parser.y"
+                     { printf("PARSER found statement_list_e - nothing\n"); }
+#line 2155 "parser.tab.cpp"
     break;
 
   case 45: /* statement: VAL endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 230 "parser.y"
-                                                       {(yyval.tree) = mk_declaration_val(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));}
-#line 2173 "parser.tab.cpp"
+#line 227 "parser.y"
+                                                       {(yyval.tree) = mk_declaration_val(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2161 "parser.tab.cpp"
     break;
 
   case 46: /* statement: VAR endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 231 "parser.y"
-                                                       {(yyval.tree) = mk_declaration_var(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));}
-#line 2179 "parser.tab.cpp"
+#line 228 "parser.y"
+                                                       {(yyval.tree) = mk_declaration_var(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2167 "parser.tab.cpp"
     break;
 
   case 47: /* statement: VAL endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr  */
-#line 232 "parser.y"
-                                                                                           {(yyval.tree) = mk_declaration_val_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2185 "parser.tab.cpp"
+#line 229 "parser.y"
+                                                                                           {(yyval.tree) = mk_declaration_val_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2173 "parser.tab.cpp"
     break;
 
   case 48: /* statement: VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr  */
-#line 233 "parser.y"
-                                                                                           {(yyval.tree) = mk_declaration_var_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2191 "parser.tab.cpp"
+#line 230 "parser.y"
+                                                                                           {(yyval.tree) = mk_declaration_var_type(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2179 "parser.tab.cpp"
     break;
 
   case 49: /* statement: VAR endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array  */
-#line 234 "parser.y"
-                                                                                              {(yyval.tree) = mk_declaration_var_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));}
-#line 2197 "parser.tab.cpp"
+#line 231 "parser.y"
+                                                                                              {(yyval.tree) = mk_declaration_var_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2185 "parser.tab.cpp"
     break;
 
   case 50: /* statement: VAL endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array  */
-#line 235 "parser.y"
-                                                                                              {(yyval.tree) = mk_declaration_val_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));}
-#line 2203 "parser.tab.cpp"
+#line 232 "parser.y"
+                                                                                              {(yyval.tree) = mk_declaration_val_array(mk_ident_lit((yyvsp[-11].str_value)),(yyvsp[-5].tree),(yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2191 "parser.tab.cpp"
     break;
 
   case 51: /* statement: class  */
-#line 236 "parser.y"
+#line 233 "parser.y"
             { printf("Class:\n"); }
-#line 2209 "parser.tab.cpp"
+#line 2197 "parser.tab.cpp"
     break;
 
   case 52: /* statement: method  */
-#line 237 "parser.y"
-             {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); }
-#line 2215 "parser.tab.cpp"
+#line 234 "parser.y"
+             {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2203 "parser.tab.cpp"
     break;
 
   case 53: /* if_else_expr: IF endlOpt '(' expr ')' endlOpt expr ELSE endlOpt expr  */
-#line 246 "parser.y"
+#line 243 "parser.y"
                                                                            { (yyval.tree) = mk_if_else_expr((yyvsp[-6].tree), (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2221 "parser.tab.cpp"
+#line 2209 "parser.tab.cpp"
     break;
 
   case 54: /* if_else_expr: IF endlOpt '(' expr ')' endlOpt expr endlList ELSE endlOpt expr  */
-#line 247 "parser.y"
+#line 244 "parser.y"
                                                                                     { (yyval.tree) = mk_if_else_expr((yyvsp[-7].tree), (yyvsp[-4].tree), (yyvsp[0].tree)); }
-#line 2227 "parser.tab.cpp"
+#line 2215 "parser.tab.cpp"
     break;
 
   case 55: /* if_else_expr: IF endlOpt '(' expr ')' endlOpt expr  */
-#line 248 "parser.y"
+#line 245 "parser.y"
                                                       { (yyval.tree) = mk_if_expr((yyvsp[-3].tree), (yyvsp[0].tree));}
-#line 2233 "parser.tab.cpp"
+#line 2221 "parser.tab.cpp"
     break;
 
   case 56: /* for_expr: FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr  */
-#line 256 "parser.y"
-                                                                                                                          { (yyval.tree) = mk_for_expr((yyvsp[-5].tree), (yyvsp[0].tree));  }
-#line 2239 "parser.tab.cpp"
+#line 253 "parser.y"
+                                                                                                                          { (yyval.tree) = mk_for_expr((yyvsp[-5].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2227 "parser.tab.cpp"
     break;
 
   case 57: /* for_expr: FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr  */
-#line 257 "parser.y"
-                                                                                                             { (yyval.tree) = mk_for_expr((yyvsp[-3].tree), (yyvsp[0].tree));  }
-#line 2245 "parser.tab.cpp"
+#line 254 "parser.y"
+                                                                                                             { (yyval.tree) = mk_for_expr((yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2233 "parser.tab.cpp"
     break;
 
   case 58: /* for_expr: FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr  */
-#line 258 "parser.y"
-                                                                                                                                           { (yyval.tree) = mk_for_expr((yyvsp[-6].tree), (yyvsp[0].tree));  }
-#line 2251 "parser.tab.cpp"
+#line 255 "parser.y"
+                                                                                                                                           { (yyval.tree) = mk_for_expr((yyvsp[-6].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2239 "parser.tab.cpp"
     break;
 
   case 59: /* for_expr: FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr  */
-#line 259 "parser.y"
-                                                                                                                              { (yyval.tree) = mk_for_expr((yyvsp[-4].tree), (yyvsp[0].tree));  }
-#line 2257 "parser.tab.cpp"
+#line 256 "parser.y"
+                                                                                                                              { (yyval.tree) = mk_for_expr((yyvsp[-4].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2245 "parser.tab.cpp"
     break;
 
   case 60: /* generators_and_conditions_parentheses_List: IDENTIFIER GENERATOR_OPERATOR const TO const  */
-#line 264 "parser.y"
+#line 261 "parser.y"
                                                         {(yyval.tree) = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit((yyvsp[-4].str_value)), (yyvsp[-2].tree), (yyvsp[0].tree))); }
-#line 2263 "parser.tab.cpp"
+#line 2251 "parser.tab.cpp"
     break;
 
   case 61: /* generators_and_conditions_parentheses_List: IDENTIFIER GENERATOR_OPERATOR const TO const BY const  */
-#line 265 "parser.y"
+#line 262 "parser.y"
                                                                 {(yyval.tree) = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit((yyvsp[-6].str_value)), (yyvsp[-4].tree), (yyvsp[-2].tree), (yyvsp[0].tree))); }
-#line 2269 "parser.tab.cpp"
+#line 2257 "parser.tab.cpp"
     break;
 
   case 62: /* generators_and_conditions_parentheses_List: IDENTIFIER GENERATOR_OPERATOR IDENTIFIER  */
-#line 266 "parser.y"
+#line 263 "parser.y"
                                                    {(yyval.tree) = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit((yyvsp[-2].str_value)),mk_ident_lit((yyvsp[0].str_value)))); }
-#line 2275 "parser.tab.cpp"
+#line 2263 "parser.tab.cpp"
     break;
 
   case 63: /* generators_and_conditions_parentheses_List: generators_and_conditions_parentheses_List IF expr  */
-#line 267 "parser.y"
+#line 264 "parser.y"
                                                              { (yyval.tree) = add_to_list((yyvsp[-2].tree), mk_if_cond((yyvsp[0].tree))); }
-#line 2281 "parser.tab.cpp"
+#line 2269 "parser.tab.cpp"
     break;
 
   case 64: /* generators_and_conditions_parentheses_List: generators_and_conditions_parentheses_List ';' IF expr  */
-#line 268 "parser.y"
+#line 265 "parser.y"
                                                                  { (yyval.tree) = add_to_list((yyvsp[-3].tree), mk_if_cond((yyvsp[0].tree))); }
-#line 2287 "parser.tab.cpp"
+#line 2275 "parser.tab.cpp"
     break;
 
   case 65: /* generators_and_conditions_parentheses_List: generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const  */
-#line 269 "parser.y"
+#line 266 "parser.y"
                                                                                                       { (yyval.tree) = add_to_list((yyvsp[-6].tree), mk_generator_without_by(mk_ident_lit((yyvsp[-4].str_value)), (yyvsp[-2].tree), (yyvsp[0].tree)));}
-#line 2293 "parser.tab.cpp"
+#line 2281 "parser.tab.cpp"
     break;
 
   case 66: /* generators_and_conditions_parentheses_List: generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const  */
-#line 270 "parser.y"
+#line 267 "parser.y"
                                                                                                                { (yyval.tree) = add_to_list((yyvsp[-8].tree), mk_generator_with_by(mk_ident_lit((yyvsp[-6].str_value)), (yyvsp[-4].tree), (yyvsp[-2].tree), (yyvsp[0].tree)));}
-#line 2299 "parser.tab.cpp"
+#line 2287 "parser.tab.cpp"
     break;
 
   case 67: /* generators_and_conditions_parentheses_List: generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER  */
-#line 271 "parser.y"
+#line 268 "parser.y"
                                                                                                   { (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_generator_without_to_and_by(mk_ident_lit((yyvsp[-2].str_value)), mk_ident_lit((yyvsp[0].str_value)))); }
-#line 2305 "parser.tab.cpp"
+#line 2293 "parser.tab.cpp"
     break;
 
   case 68: /* generators_and_conditions_curly_braces_List: IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const  */
-#line 275 "parser.y"
+#line 272 "parser.y"
                                                                                {(yyval.tree) = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit((yyvsp[-7].str_value)), (yyvsp[-3].tree), (yyvsp[0].tree))); }
-#line 2311 "parser.tab.cpp"
+#line 2299 "parser.tab.cpp"
     break;
 
   case 69: /* generators_and_conditions_curly_braces_List: IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const  */
-#line 276 "parser.y"
+#line 273 "parser.y"
                                                                                                 {(yyval.tree) = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit((yyvsp[-10].str_value)), (yyvsp[-6].tree), (yyvsp[-3].tree), (yyvsp[0].tree)));}
-#line 2317 "parser.tab.cpp"
+#line 2305 "parser.tab.cpp"
     break;
 
   case 70: /* generators_and_conditions_curly_braces_List: IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER  */
-#line 277 "parser.y"
+#line 274 "parser.y"
                                                                    {(yyval.tree) = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit((yyvsp[-4].str_value)),mk_ident_lit((yyvsp[0].str_value)))); }
-#line 2323 "parser.tab.cpp"
+#line 2311 "parser.tab.cpp"
     break;
 
   case 71: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr  */
-#line 278 "parser.y"
+#line 275 "parser.y"
                                                                               { (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_if_cond((yyvsp[0].tree)));}
-#line 2329 "parser.tab.cpp"
+#line 2317 "parser.tab.cpp"
     break;
 
   case 72: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr  */
-#line 279 "parser.y"
+#line 276 "parser.y"
                                                                                   { (yyval.tree) = add_to_list((yyvsp[-5].tree), mk_if_cond((yyvsp[0].tree))); }
-#line 2335 "parser.tab.cpp"
+#line 2323 "parser.tab.cpp"
     break;
 
   case 73: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const  */
-#line 280 "parser.y"
+#line 277 "parser.y"
                                                                                                                                                { (yyval.tree) = add_to_list((yyvsp[-11].tree), mk_generator_without_by(mk_ident_lit((yyvsp[-7].str_value)), (yyvsp[-3].tree), (yyvsp[0].tree))); }
-#line 2341 "parser.tab.cpp"
+#line 2329 "parser.tab.cpp"
     break;
 
   case 74: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const  */
-#line 281 "parser.y"
+#line 278 "parser.y"
                                                                                                                                                                 { (yyval.tree) = add_to_list((yyvsp[-14].tree), mk_generator_with_by(mk_ident_lit((yyvsp[-10].str_value)), (yyvsp[-6].tree), (yyvsp[-3].tree), (yyvsp[0].tree))); }
-#line 2347 "parser.tab.cpp"
+#line 2335 "parser.tab.cpp"
     break;
 
   case 75: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER  */
-#line 282 "parser.y"
+#line 279 "parser.y"
                                                                                                                                    { (yyval.tree) = add_to_list((yyvsp[-8].tree), mk_generator_without_to_and_by(mk_ident_lit((yyvsp[-4].str_value)), mk_ident_lit((yyvsp[0].str_value))));}
-#line 2353 "parser.tab.cpp"
+#line 2341 "parser.tab.cpp"
     break;
 
   case 76: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const  */
-#line 283 "parser.y"
+#line 280 "parser.y"
                                                                                                                                     {(yyval.tree) = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit((yyvsp[-7].str_value)), (yyvsp[-3].tree), (yyvsp[0].tree)));}
-#line 2359 "parser.tab.cpp"
+#line 2347 "parser.tab.cpp"
     break;
 
   case 77: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const  */
-#line 284 "parser.y"
+#line 281 "parser.y"
                                                                                                                                                      {(yyval.tree) = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit((yyvsp[-10].str_value)), (yyvsp[-6].tree), (yyvsp[-3].tree), (yyvsp[0].tree))); }
-#line 2365 "parser.tab.cpp"
+#line 2353 "parser.tab.cpp"
     break;
 
   case 78: /* generators_and_conditions_curly_braces_List: generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER  */
-#line 285 "parser.y"
+#line 282 "parser.y"
                                                                                                                         {(yyval.tree) = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit((yyvsp[-4].str_value)),mk_ident_lit((yyvsp[0].str_value)))); }
-#line 2371 "parser.tab.cpp"
+#line 2359 "parser.tab.cpp"
     break;
 
   case 79: /* while_expr: WHILE endlOpt '(' expr ')' endlOpt expr  */
-#line 291 "parser.y"
+#line 288 "parser.y"
                                                               { (yyval.tree) = mk_while_expr((yyvsp[-3].tree),(yyvsp[0].tree)); }
-#line 2377 "parser.tab.cpp"
+#line 2365 "parser.tab.cpp"
     break;
 
   case 80: /* do_while_expr: DO endlOpt expr endlOpt WHILE '(' expr ')'  */
-#line 295 "parser.y"
+#line 292 "parser.y"
                                                                  { (yyval.tree) = mk_do_while_expr((yyvsp[-5].tree),(yyvsp[-1].tree)); }
-#line 2383 "parser.tab.cpp"
+#line 2371 "parser.tab.cpp"
     break;
 
   case 81: /* match_expr: expr MATCH endlOpt '{' endlOpt case_list endlOpt '}'  */
-#line 301 "parser.y"
+#line 298 "parser.y"
                                                               {(yyval.tree) = mk_match_expr((yyvsp[-7].tree),(yyvsp[-2].tree));}
-#line 2389 "parser.tab.cpp"
+#line 2377 "parser.tab.cpp"
     break;
 
   case 82: /* case_condition: expr_list  */
-#line 306 "parser.y"
+#line 303 "parser.y"
                                           {(yyval.tree) = add_case_condition((yyvsp[0].tree));}
-#line 2395 "parser.tab.cpp"
+#line 2383 "parser.tab.cpp"
     break;
 
   case 83: /* case_condition: CASE_PATTERN  */
-#line 307 "parser.y"
+#line 304 "parser.y"
                        {(yyval.tree) = add_case_condition((yyvsp[0].tree));}
-#line 2401 "parser.tab.cpp"
+#line 2389 "parser.tab.cpp"
     break;
 
   case 84: /* case_list: CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr  */
-#line 313 "parser.y"
+#line 310 "parser.y"
                                                                                          {(yyval.tree) = mk_list();(yyval.tree) = add_alt_case((yyval.tree),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2407 "parser.tab.cpp"
+#line 2395 "parser.tab.cpp"
     break;
 
   case 85: /* case_list: case_list endlOpt semicolonList endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr  */
-#line 314 "parser.y"
+#line 311 "parser.y"
                                                                                                                                  {(yyval.tree) = add_alt_case((yyvsp[-10].tree),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2413 "parser.tab.cpp"
+#line 2401 "parser.tab.cpp"
     break;
 
   case 86: /* case_list: case_list endlOpt CASE endlOpt case_condition endlOpt RIGHT_ARROW_OPERATOR separator_List_e expr  */
-#line 315 "parser.y"
+#line 312 "parser.y"
                                                                                                            {(yyval.tree) = add_alt_case((yyvsp[-8].tree),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2419 "parser.tab.cpp"
+#line 2407 "parser.tab.cpp"
     break;
 
   case 87: /* expr_list_e: expr_list  */
-#line 325 "parser.y"
+#line 322 "parser.y"
                    { printf("PARSER found expr_list - expr_list\n"); }
-#line 2425 "parser.tab.cpp"
+#line 2413 "parser.tab.cpp"
     break;
 
   case 88: /* expr_list_e: %empty  */
-#line 326 "parser.y"
-                     {  (yyval.tree) = mk_list();}
-#line 2431 "parser.tab.cpp"
+#line 323 "parser.y"
+                     {  (yyval.tree) = mk_list(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2419 "parser.tab.cpp"
     break;
 
   case 89: /* expr_list: expr  */
-#line 331 "parser.y"
-                      { (yyval.tree) = add_to_list(mk_list(), (yyvsp[0].tree));}
-#line 2437 "parser.tab.cpp"
+#line 328 "parser.y"
+                      { (yyval.tree) = add_to_list(mk_list(), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2425 "parser.tab.cpp"
     break;
 
   case 90: /* expr_list: expr_list endlOpt ',' endlOpt expr  */
-#line 332 "parser.y"
-                                          { (yyval.tree) = add_to_list((yyvsp[-4].tree), (yyvsp[0].tree)); }
-#line 2443 "parser.tab.cpp"
+#line 329 "parser.y"
+                                          { (yyval.tree) = add_to_list((yyvsp[-4].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2431 "parser.tab.cpp"
     break;
 
   case 91: /* expr: const  */
-#line 337 "parser.y"
+#line 334 "parser.y"
                                   {printf("PARSER found expr - const\n"); }
-#line 2449 "parser.tab.cpp"
+#line 2437 "parser.tab.cpp"
     break;
 
   case 92: /* expr: IDENTIFIER  */
-#line 338 "parser.y"
+#line 335 "parser.y"
                                        {(yyval.tree) = mk_ident_lit((yyvsp[0].str_value)); }
-#line 2455 "parser.tab.cpp"
+#line 2443 "parser.tab.cpp"
     break;
 
   case 93: /* expr: IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 339 "parser.y"
+#line 336 "parser.y"
                                           { printf("Assignment:\n"); }
-#line 2461 "parser.tab.cpp"
+#line 2449 "parser.tab.cpp"
     break;
 
   case 94: /* expr: '(' expr ')'  */
-#line 340 "parser.y"
+#line 337 "parser.y"
                    { printf("PARSER found expr - ( expr ) \n"); }
-#line 2467 "parser.tab.cpp"
+#line 2455 "parser.tab.cpp"
     break;
 
   case 95: /* expr: expr '>' endlOpt expr  */
-#line 341 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) ">", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2473 "parser.tab.cpp"
+#line 338 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) ">", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2461 "parser.tab.cpp"
     break;
 
   case 96: /* expr: expr '<' endlOpt expr  */
-#line 342 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "<", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2479 "parser.tab.cpp"
+#line 339 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "<", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2467 "parser.tab.cpp"
     break;
 
   case 97: /* expr: expr MORE_OR_EQUAL_OPERATOR endlOpt expr  */
-#line 343 "parser.y"
-                                               { (yyval.tree) = mk_bin_op((char*) ">=", (yyvsp[-3].tree), (yyvsp[0].tree));  }
-#line 2485 "parser.tab.cpp"
+#line 340 "parser.y"
+                                               { (yyval.tree) = mk_bin_op((char*) ">=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2473 "parser.tab.cpp"
     break;
 
   case 98: /* expr: expr LESS_OR_EQUAL_OPERATOR endlOpt expr  */
-#line 344 "parser.y"
-                                               { (yyval.tree) = mk_bin_op((char*) "<=", (yyvsp[-3].tree), (yyvsp[0].tree));  }
-#line 2491 "parser.tab.cpp"
+#line 341 "parser.y"
+                                               { (yyval.tree) = mk_bin_op((char*) "<=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2479 "parser.tab.cpp"
     break;
 
   case 99: /* expr: expr EQ endlOpt expr  */
-#line 345 "parser.y"
-                           { (yyval.tree) = mk_bin_op((char*) "==", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2497 "parser.tab.cpp"
+#line 342 "parser.y"
+                           { (yyval.tree) = mk_bin_op((char*) "==", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2485 "parser.tab.cpp"
     break;
 
   case 100: /* expr: expr NEQ endlOpt expr  */
-#line 346 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "!=", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2503 "parser.tab.cpp"
+#line 343 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "!=", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2491 "parser.tab.cpp"
     break;
 
   case 101: /* expr: expr '+' endlOpt expr  */
-#line 347 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "+", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2509 "parser.tab.cpp"
+#line 344 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "+", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2497 "parser.tab.cpp"
     break;
 
   case 102: /* expr: expr '-' endlOpt expr  */
-#line 348 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "-", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2515 "parser.tab.cpp"
+#line 345 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "-", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2503 "parser.tab.cpp"
     break;
 
   case 103: /* expr: expr '/' endlOpt expr  */
-#line 349 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "/", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2521 "parser.tab.cpp"
+#line 346 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "/", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2509 "parser.tab.cpp"
     break;
 
   case 104: /* expr: expr '*' endlOpt expr  */
-#line 350 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "*", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2527 "parser.tab.cpp"
+#line 347 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "*", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2515 "parser.tab.cpp"
     break;
 
   case 105: /* expr: expr '%' endlOpt expr  */
-#line 351 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "%", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2533 "parser.tab.cpp"
+#line 348 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "%", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2521 "parser.tab.cpp"
     break;
 
   case 106: /* expr: expr '&' endlOpt expr  */
-#line 352 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "&", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2539 "parser.tab.cpp"
+#line 349 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "&", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2527 "parser.tab.cpp"
     break;
 
   case 107: /* expr: expr '|' endlOpt expr  */
-#line 353 "parser.y"
-                            { (yyval.tree) = mk_bin_op((char*) "|", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2545 "parser.tab.cpp"
+#line 350 "parser.y"
+                            { (yyval.tree) = mk_bin_op((char*) "|", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2533 "parser.tab.cpp"
     break;
 
   case 108: /* expr: expr KW_OR endlOpt expr  */
-#line 354 "parser.y"
-                              { (yyval.tree) = mk_bin_op((char*) "||", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2551 "parser.tab.cpp"
+#line 351 "parser.y"
+                              { (yyval.tree) = mk_bin_op((char*) "||", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2539 "parser.tab.cpp"
     break;
 
   case 109: /* expr: expr KW_AND endlOpt expr  */
-#line 355 "parser.y"
-                               { (yyval.tree) = mk_bin_op((char*) "&&", (yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2557 "parser.tab.cpp"
+#line 352 "parser.y"
+                               { (yyval.tree) = mk_bin_op((char*) "&&", (yyvsp[-3].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2545 "parser.tab.cpp"
     break;
 
   case 110: /* expr: '-' expr  */
-#line 356 "parser.y"
-                             { (yyval.tree) = mk_unary_op("unary_minus_op", (yyvsp[0].tree)); }
-#line 2563 "parser.tab.cpp"
+#line 353 "parser.y"
+                             { (yyval.tree) = mk_unary_op("unary_minus_op", (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2551 "parser.tab.cpp"
     break;
 
   case 111: /* expr: '+' expr  */
-#line 357 "parser.y"
-                            { (yyval.tree) = mk_unary_op("unary_plus_op", (yyvsp[0].tree)); }
-#line 2569 "parser.tab.cpp"
+#line 354 "parser.y"
+                            { (yyval.tree) = mk_unary_op("unary_plus_op", (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2557 "parser.tab.cpp"
     break;
 
   case 112: /* expr: if_else_expr  */
-#line 358 "parser.y"
-                   {(yyval.tree)=(yyvsp[0].tree);}
-#line 2575 "parser.tab.cpp"
+#line 355 "parser.y"
+                   {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2563 "parser.tab.cpp"
     break;
 
   case 113: /* expr: for_expr  */
-#line 359 "parser.y"
+#line 356 "parser.y"
                { printf("PARSER found expr - for_expr\n"); }
-#line 2581 "parser.tab.cpp"
+#line 2569 "parser.tab.cpp"
     break;
 
   case 114: /* expr: while_expr  */
-#line 360 "parser.y"
-                 {(yyval.tree)=(yyvsp[0].tree);}
-#line 2587 "parser.tab.cpp"
+#line 357 "parser.y"
+                 {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2575 "parser.tab.cpp"
     break;
 
   case 115: /* expr: do_while_expr  */
-#line 361 "parser.y"
-                    {(yyval.tree)=(yyvsp[0].tree);}
-#line 2593 "parser.tab.cpp"
+#line 358 "parser.y"
+                    {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2581 "parser.tab.cpp"
     break;
 
   case 116: /* expr: match_expr  */
-#line 362 "parser.y"
-                 {(yyval.tree)=(yyvsp[0].tree);}
-#line 2599 "parser.tab.cpp"
+#line 359 "parser.y"
+                 {(yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2587 "parser.tab.cpp"
     break;
 
   case 117: /* expr: '{' statement_expr_list_e '}'  */
-#line 363 "parser.y"
-                                    { (yyval.tree) = (yyvsp[-1].tree); }
-#line 2605 "parser.tab.cpp"
+#line 360 "parser.y"
+                                    { printf("  { statement_expr_list_e }\n"); }
+#line 2593 "parser.tab.cpp"
     break;
 
   case 118: /* expr: anonymous_func  */
-#line 364 "parser.y"
-                     { (yyval.tree)=(yyvsp[0].tree); }
-#line 2611 "parser.tab.cpp"
+#line 361 "parser.y"
+                     { (yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2599 "parser.tab.cpp"
     break;
 
   case 119: /* expr: method_call  */
-#line 365 "parser.y"
-                  { (yyval.tree)=(yyvsp[0].tree); }
-#line 2617 "parser.tab.cpp"
+#line 362 "parser.y"
+                  { (yyval.tree)=(yyvsp[0].tree);found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2593 "parser.tab.cpp"
+                  { printf("method_call:\n"); }
+#line 2605 "parser.tab.cpp"
     break;
 
   case 120: /* expr: create_instance_class  */
-#line 366 "parser.y"
-                            { (yyval.tree) = (yyvsp[0].tree); }
-#line 2623 "parser.tab.cpp"
+#line 363 "parser.y"
+                            { printf("instance_class:\n"); }
+#line 2611 "parser.tab.cpp"
     break;
 
   case 121: /* expr: READLINE '(' ')'  */
-#line 367 "parser.y"
+#line 364 "parser.y"
                      { printf("readLine:\n"); }
-#line 2629 "parser.tab.cpp"
+#line 2617 "parser.tab.cpp"
     break;
 
   case 122: /* expr: PRINTLN '(' expr ')'  */
-#line 368 "parser.y"
+#line 365 "parser.y"
                           { printf("print:\n"); }
-#line 2635 "parser.tab.cpp"
+#line 2623 "parser.tab.cpp"
     break;
 
   case 123: /* expr: IDENTIFIER '.' '(' NUM_10 ')'  */
-#line 369 "parser.y"
+#line 366 "parser.y"
                                     { printf("array_call:\n"); }
-#line 2641 "parser.tab.cpp"
+#line 2629 "parser.tab.cpp"
     break;
 
   case 124: /* num_const: NUM_10  */
-#line 374 "parser.y"
+#line 371 "parser.y"
              { (yyval.tree) = mk_int_const((yyvsp[0].int_value)); }
-#line 2647 "parser.tab.cpp"
+#line 2635 "parser.tab.cpp"
     break;
 
   case 125: /* num_const: NUM_16  */
-#line 375 "parser.y"
+#line 372 "parser.y"
              { (yyval.tree) = mk_int_const((yyvsp[0].int_value)); }
-#line 2653 "parser.tab.cpp"
+#line 2641 "parser.tab.cpp"
     break;
 
   case 126: /* num_const: REAL_NUMBER  */
-#line 376 "parser.y"
+#line 373 "parser.y"
                   { (yyval.tree) = mk_real_const((yyvsp[0].real_value)); }
-#line 2659 "parser.tab.cpp"
+#line 2647 "parser.tab.cpp"
     break;
 
   case 127: /* num_const: REAL_NUMBER_EXPONENT  */
-#line 377 "parser.y"
+#line 374 "parser.y"
                            { (yyval.tree) = mk_real_const((yyvsp[0].real_value)); }
-#line 2665 "parser.tab.cpp"
+#line 2653 "parser.tab.cpp"
     break;
 
   case 129: /* const: CONST_STRING  */
-#line 383 "parser.y"
+#line 380 "parser.y"
                    { (yyval.tree) = mk_string_const((yyvsp[0].str_value)); }
-#line 2671 "parser.tab.cpp"
+#line 2659 "parser.tab.cpp"
     break;
 
   case 130: /* const: CONST_CHAR  */
-#line 384 "parser.y"
+#line 381 "parser.y"
                  { (yyval.tree) = mk_char_const((yyvsp[0].str_value)); }
-#line 2677 "parser.tab.cpp"
+#line 2665 "parser.tab.cpp"
     break;
 
   case 131: /* const: KW_TRUE  */
-#line 385 "parser.y"
+#line 382 "parser.y"
               { (yyval.tree) = mk_boolean_const(true); }
-#line 2683 "parser.tab.cpp"
+#line 2671 "parser.tab.cpp"
     break;
 
   case 132: /* const: KW_FALSE  */
-#line 386 "parser.y"
+#line 383 "parser.y"
                { (yyval.tree) = mk_boolean_const(false); }
-#line 2689 "parser.tab.cpp"
+#line 2677 "parser.tab.cpp"
     break;
 
   case 133: /* const: KW_NULL  */
-#line 387 "parser.y"
+#line 384 "parser.y"
               { (yyval.tree) = mk_null_const(); }
-#line 2695 "parser.tab.cpp"
+#line 2683 "parser.tab.cpp"
     break;
 
   case 134: /* const: array  */
-#line 388 "parser.y"
-            { (yyval.tree) = mk_array_const((yyvsp[0].tree)); }
-#line 2701 "parser.tab.cpp"
+#line 385 "parser.y"
+            { (yyval.tree) = mk_array_const((yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2689 "parser.tab.cpp"
     break;
 
   case 135: /* params: IDENTIFIER ':' type_list_car  */
-#line 394 "parser.y"
-                                    {  (yyval.tree) = add_to_list(mk_list(), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)));  }
-#line 2707 "parser.tab.cpp"
+#line 391 "parser.y"
+                                    {  (yyval.tree) = add_to_list(mk_list(), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree)));  found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2695 "parser.tab.cpp"
     break;
 
   case 136: /* params: IDENTIFIER ':' type_list_car '=' const  */
-#line 395 "parser.y"
-                                              {  (yyval.tree) = add_to_list(mk_list(), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); }
-#line 2713 "parser.tab.cpp"
+#line 392 "parser.y"
+                                              {  (yyval.tree) = add_to_list(mk_list(), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2701 "parser.tab.cpp"
     break;
 
   case 137: /* params: params ',' IDENTIFIER ':' type_list_car  */
-#line 396 "parser.y"
-                                               {  (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree))); }
-#line 2719 "parser.tab.cpp"
+#line 393 "parser.y"
+                                               {  (yyval.tree) = add_to_list((yyvsp[-4].tree), mk_method_params(mk_ident_lit((yyvsp[-2].str_value)),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2707 "parser.tab.cpp"
     break;
 
   case 138: /* params: params ',' IDENTIFIER ':' type_list_car '=' const  */
-#line 397 "parser.y"
-                                                         {  (yyval.tree) = add_to_list((yyvsp[-6].tree), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); }
-#line 2725 "parser.tab.cpp"
+#line 394 "parser.y"
+                                                         {  (yyval.tree) = add_to_list((yyvsp[-6].tree), mk_method_params_value(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[-2].tree),(yyvsp[0].tree))); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2713 "parser.tab.cpp"
     break;
 
   case 140: /* anonymous_func: '(' params ')' endlOpt RIGHT_ARROW_OPERATOR endlOpt expr  */
-#line 403 "parser.y"
+#line 400 "parser.y"
                                                                                    { (yyval.tree) = mk_anonym_func((yyvsp[-5].tree),(yyvsp[0].tree));}
-#line 2731 "parser.tab.cpp"
+#line 2719 "parser.tab.cpp"
     break;
 
   case 141: /* method_params_list: '(' params ')'  */
-#line 408 "parser.y"
+#line 405 "parser.y"
                    { (yyval.tree) = (yyvsp[-1].tree); }
-#line 2737 "parser.tab.cpp"
+#line 2725 "parser.tab.cpp"
     break;
 
   case 142: /* method_params_list: method_params_list endlOpt '(' params ')'  */
-#line 409 "parser.y"
+#line 406 "parser.y"
                                               { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyvsp[-4].tree),(yyvsp[-1].tree));}
-#line 2743 "parser.tab.cpp"
+#line 2731 "parser.tab.cpp"
     break;
 
   case 143: /* method: DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr  */
-#line 413 "parser.y"
+#line 410 "parser.y"
                                                                                                           { (yyval.tree) = mk_method_declaration(mk_ident_lit((yyvsp[-10].str_value)),(yyvsp[-8].tree),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2749 "parser.tab.cpp"
+#line 2737 "parser.tab.cpp"
     break;
 
   case 144: /* method: DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr  */
-#line 414 "parser.y"
+#line 411 "parser.y"
                                                                                { (yyval.tree) = mk_method_declaration_typeOnly(mk_ident_lit((yyvsp[-8].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2755 "parser.tab.cpp"
+#line 2743 "parser.tab.cpp"
     break;
 
   case 145: /* method: DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr  */
-#line 415 "parser.y"
+#line 412 "parser.y"
                                                                                  { (yyval.tree) = mk_method_declaration_paramsOnly(mk_ident_lit((yyvsp[-6].str_value)),(yyvsp[-4].tree),(yyvsp[0].tree));}
-#line 2761 "parser.tab.cpp"
+#line 2749 "parser.tab.cpp"
     break;
 
   case 146: /* method: DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr  */
-#line 416 "parser.y"
+#line 413 "parser.y"
                                                       { (yyval.tree) = mk_method_declaration_bodyOnly(mk_ident_lit((yyvsp[-4].str_value)),(yyvsp[0].tree));}
-#line 2767 "parser.tab.cpp"
+#line 2755 "parser.tab.cpp"
     break;
 
   case 151: /* method_arguments_list: '(' expr_list_e ')'  */
-#line 424 "parser.y"
+#line 421 "parser.y"
                         {(yyval.tree) = (yyvsp[-1].tree);}
-#line 2773 "parser.tab.cpp"
+#line 2749 "parser.tab.cpp"
     break;
 
   case 152: /* method_arguments_list: method_arguments_list '(' expr_list_e ')'  */
-#line 425 "parser.y"
+#line 422 "parser.y"
                                               {(yyval.tree) = mk_list(); add_to_list((yyvsp[-3].tree),mk_method_arguments_list((yyvsp[-1].tree)));}
-#line 2779 "parser.tab.cpp"
+#line 2755 "parser.tab.cpp"
     break;
 
   case 153: /* method_call: IDENTIFIER method_arguments_list  */
-#line 429 "parser.y"
+#line 426 "parser.y"
                                        { (yyval.tree) = mk_method_call(mk_ident_lit((yyvsp[-1].str_value)),(yyvsp[0].tree));}
-#line 2785 "parser.tab.cpp"
+#line 2761 "parser.tab.cpp"
     break;
 
   case 154: /* method_call: IDENTIFIER '.' IDENTIFIER method_arguments_list  */
-#line 430 "parser.y"
+#line 427 "parser.y"
                                                       { (yyval.tree) = mk_method_call_identifier(mk_ident_lit((yyvsp[-3].str_value)),mk_ident_lit((yyvsp[-1].str_value)),(yyvsp[0].tree));}
-#line 2791 "parser.tab.cpp"
+#line 2767 "parser.tab.cpp"
     break;
 
   case 155: /* type: INT_KW  */
-#line 436 "parser.y"
-             { (yyval.tree) = mk_integer_type(); }
-#line 2797 "parser.tab.cpp"
+#line 433 "parser.y"
+             { (yyval.tree) = mk_integer_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2749 "parser.tab.cpp"
     break;
 
   case 156: /* type: DOUBLE_KW  */
-#line 437 "parser.y"
-                { (yyval.tree) = mk_real_type(); }
-#line 2803 "parser.tab.cpp"
+#line 434 "parser.y"
+                { (yyval.tree) = mk_real_type(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2755 "parser.tab.cpp"
     break;
 
   case 157: /* type: STRING_KW  */
-#line 438 "parser.y"
-                { (yyval.tree) = mk_string_type(); }
-#line 2809 "parser.tab.cpp"
+#line 435 "parser.y"
+                { (yyval.tree) = mk_string_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2761 "parser.tab.cpp"
     break;
 
   case 158: /* type: CHAR_KW  */
-#line 439 "parser.y"
-              { (yyval.tree) = mk_char_type(); }
-#line 2815 "parser.tab.cpp"
+#line 436 "parser.y"
+              { (yyval.tree) = mk_char_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2767 "parser.tab.cpp"
     break;
 
   case 159: /* type: BOOLEAN_KW  */
-#line 440 "parser.y"
-                 { (yyval.tree) = mk_boolean_type(); }
-#line 2821 "parser.tab.cpp"
+#line 437 "parser.y"
+                 { (yyval.tree) = mk_boolean_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2773 "parser.tab.cpp"
     break;
 
   case 160: /* type: ANY_KW  */
-#line 441 "parser.y"
-             { (yyval.tree) = mk_any_type(); }
-#line 2827 "parser.tab.cpp"
+#line 438 "parser.y"
+             { (yyval.tree) = mk_any_type(); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2779 "parser.tab.cpp"
     break;
 
   case 161: /* type: UNIT_KW  */
-#line 442 "parser.y"
-              { (yyval.tree) = mk_unit_type(); }
-#line 2833 "parser.tab.cpp"
+#line 439 "parser.y"
+              { (yyval.tree) = mk_unit_type();found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2785 "parser.tab.cpp"
     break;
 
   case 162: /* type_list_car: type  */
-#line 446 "parser.y"
-           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree));  }
-#line 2839 "parser.tab.cpp"
+#line 443 "parser.y"
+           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2791 "parser.tab.cpp"
     break;
 
   case 163: /* type_list_car: type_list_car RIGHT_ARROW_OPERATOR type  */
-#line 447 "parser.y"
-                                              { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
-#line 2845 "parser.tab.cpp"
+#line 444 "parser.y"
+                                              { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2797 "parser.tab.cpp"
     break;
 
   case 164: /* type_list: type  */
-#line 451 "parser.y"
-           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree)); }
-#line 2851 "parser.tab.cpp"
+#line 448 "parser.y"
+           { (yyval.tree) = mk_list(); (yyval.tree) = add_to_list((yyval.tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2803 "parser.tab.cpp"
     break;
 
   case 165: /* type_list: type_list_simple ',' type  */
-#line 452 "parser.y"
-                                { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); }
-#line 2857 "parser.tab.cpp"
+#line 449 "parser.y"
+                                { (yyval.tree) = add_to_list((yyvsp[-2].tree), (yyvsp[0].tree)); found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes));}
+#line 2809 "parser.tab.cpp"
     break;
 
   case 166: /* type_list_simple: '(' type_list ')' RIGHT_ARROW_OPERATOR type  */
-#line 456 "parser.y"
-                                                 { (yyval.tree) = add_to_list((yyvsp[-3].tree), (yyvsp[0].tree)); }
-#line 2863 "parser.tab.cpp"
+#line 453 "parser.y"
+                                                 { (yyval.tree) = add_to_list((yyvsp[-3].tree), (yyvsp[0].tree));found_classes=(yyval.tree); puts(Json_to_pretty_string(found_classes)); }
+#line 2815 "parser.tab.cpp"
     break;
 
   case 167: /* array: array_literal  */
-#line 467 "parser.y"
+#line 464 "parser.y"
                      {(yyval.tree) = (yyvsp[0].tree); }
-#line 2869 "parser.tab.cpp"
+#line 2821 "parser.tab.cpp"
     break;
 
   case 168: /* array: initialized_array  */
-#line 468 "parser.y"
+#line 465 "parser.y"
                          {(yyval.tree) = mk_initialized_array((yyvsp[0].tree));}
-#line 2875 "parser.tab.cpp"
+#line 2827 "parser.tab.cpp"
     break;
 
   case 169: /* array_literal: ARRAY endlOpt '(' expr_list_e ')'  */
-#line 472 "parser.y"
+#line 469 "parser.y"
                                         {  (yyval.tree) = mk_array_literal((yyvsp[-1].tree)); }
-#line 2881 "parser.tab.cpp"
+#line 2833 "parser.tab.cpp"
     break;
 
   case 170: /* array_literal: ARRAY  */
-#line 473 "parser.y"
+#line 470 "parser.y"
                                    { (yyval.tree) = mk_empty_array(); }
-#line 2887 "parser.tab.cpp"
+#line 2839 "parser.tab.cpp"
     break;
 
   case 171: /* initialized_array: NEW endlOpt ARRAY endlOpt '[' type ']' '(' expr ')'  */
-#line 477 "parser.y"
+#line 474 "parser.y"
                                                            { (yyval.tree) = mk_initialized_array_with_type_and_expr((yyvsp[-4].tree), (yyvsp[-1].tree));}
-#line 2893 "parser.tab.cpp"
+#line 2845 "parser.tab.cpp"
     break;
 
   case 172: /* endlList: ENDL  */
-#line 486 "parser.y"
+#line 483 "parser.y"
                     { printf("PARSER found ENDL\n"); }
-#line 2899 "parser.tab.cpp"
+#line 2851 "parser.tab.cpp"
     break;
 
   case 173: /* endlList: endlList ENDL  */
-#line 487 "parser.y"
+#line 484 "parser.y"
                     { printf("PARSER found endlList\n"); }
-#line 2905 "parser.tab.cpp"
+#line 2857 "parser.tab.cpp"
     break;
 
   case 174: /* endlOpt: endlList  */
-#line 492 "parser.y"
+#line 489 "parser.y"
                { printf("PARSER found endlOpt\n"); }
-#line 2911 "parser.tab.cpp"
+#line 2863 "parser.tab.cpp"
     break;
 
   case 176: /* semicolonList: ';'  */
-#line 498 "parser.y"
+#line 495 "parser.y"
                    { printf("PARSER found SEMICOLON\n"); }
-#line 2917 "parser.tab.cpp"
+#line 2869 "parser.tab.cpp"
     break;
 
   case 177: /* semicolonList: semicolonList ';'  */
-#line 499 "parser.y"
+#line 496 "parser.y"
                         { printf("PARSER found semicolonList\n"); }
-#line 2923 "parser.tab.cpp"
+#line 2875 "parser.tab.cpp"
     break;
 
   case 178: /* separator_List: ENDL  */
-#line 503 "parser.y"
+#line 500 "parser.y"
             { printf("PARSER found ENDL\n"); }
-#line 2929 "parser.tab.cpp"
+#line 2881 "parser.tab.cpp"
     break;
 
   case 179: /* separator_List: ';'  */
-#line 504 "parser.y"
+#line 501 "parser.y"
             { printf("PARSER found SEMICOLON\n"); }
-#line 2935 "parser.tab.cpp"
+#line 2887 "parser.tab.cpp"
     break;
 
   case 180: /* separator_List: separator_List ENDL  */
-#line 505 "parser.y"
+#line 502 "parser.y"
                             { printf("PARSER add ENDL to separator_List\n"); }
-#line 2941 "parser.tab.cpp"
+#line 2893 "parser.tab.cpp"
     break;
 
   case 181: /* separator_List: separator_List ';'  */
-#line 506 "parser.y"
+#line 503 "parser.y"
                            { printf("PARSER add ; to separator_List\n"); }
-#line 2947 "parser.tab.cpp"
+#line 2899 "parser.tab.cpp"
     break;
 
 
-#line 2951 "parser.tab.cpp"
+#line 2903 "parser.tab.cpp"
 
       default: break;
     }
@@ -3176,5 +3184,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 513 "parser.y"
+#line 510 "parser.y"
 
