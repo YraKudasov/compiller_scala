@@ -213,14 +213,14 @@ statement_expr_list:
       statement { $$ = add_to_list(mk_list(),$1);}
     | visibility_modifier statement { $$ = add_to_list(mk_list(), mk_visibility_modifier_stmt($1, $2));}
     | expr { $$ = add_to_list(mk_list(),$1);}
-    | statement_expr_list  separator_List statement {  $$ = add_to_list($1, $3); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
-    | statement_expr_list  separator_List expr {   $$ = add_to_list($1, $3); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
-    | statement_expr_list  separator_List visibility_modifier statement { $$ = add_to_list($1, mk_visibility_modifier_stmt($3, $4));  found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | statement_expr_list  separator_List statement {  $$ = add_to_list($1, $3); }
+    | statement_expr_list  separator_List expr {   $$ = add_to_list($1, $3);  }
+    | statement_expr_list  separator_List visibility_modifier statement { $$ = add_to_list($1, mk_visibility_modifier_stmt($3, $4)); }
     ;
 
 statement_expr_list_e:
-      separator_List_e statement_expr_list separator_List_e 
-    | /* nothing */  { printf("PARSER found statement_list_e - nothing\n"); }
+      separator_List_e statement_expr_list separator_List_e {$$ = mk_stmt_expr_list($2); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+    | /* nothing */  { $$ = mk_empty(); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
     ;
 
 statement:

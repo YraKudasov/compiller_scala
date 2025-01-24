@@ -92,6 +92,8 @@ mk_empty_array() {
     return node;
 }
 
+
+
 Json* 
 mk_initialized_array(Json* array_node) {
     Json* node = Json_new();
@@ -472,7 +474,14 @@ Json*
 mk_stmt_expr_list(Json* stmt_expr_list) {
     Json* node = Json_new();
     add_type_to_node(node, "stmt_expr_list");
-    Json_add_object_to_object(node, "stmt_expr_list", stmt_expr_list);
+    Json_add_array_to_object(node, "stmt_expr_list", stmt_expr_list);
+    return node;
+}
+
+Json*
+mk_empty() {
+    Json* node = Json_new();
+    add_type_to_node(node, "empty");
     return node;
 }
 
