@@ -59,6 +59,7 @@ struct LOCATION
 %nonassoc DO
 %nonassoc WHILE
 %nonassoc MATCH
+%nonassoc FOR
 %right ELSE
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -112,7 +113,7 @@ struct LOCATION
 %type <tree> match_expr case_condition case_list CASE_PATTERN case
 %type <tree> statement 
 %type <tree> method params anonymous_func method_params_list method_arguments_list method_call
-%type <tree> generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
+%type <tree> for_expr generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
 
 
 
@@ -249,36 +250,36 @@ if_else_expr:
 /*..................................................... FOR................................................... */
 
 for_expr:
-          FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in parentheses\n"); }
-        | FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in parentheses\n"); }
-        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in curly_braces\n"); }
-        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr %prec LOWER_THAN_EXPR { printf("FOR in curly_braces\n"); }
+          FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { $$ = mk_for_expr($4, $9); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+        | FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr %prec LOWER_THAN_EXPR  { $$ = mk_for_expr($4, $7); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { $$ = mk_for_expr($5, $11); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
+        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr %prec LOWER_THAN_EXPR  { $$ = mk_for_expr($5, $9); found_classes=$$; puts(Json_to_pretty_string(found_classes)); }
         ;
 
 
 generators_and_conditions_parentheses_List:
-          IDENTIFIER GENERATOR_OPERATOR const TO const  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $3, $5)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($3))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_parentheses_List IF expr { $$ = add_to_list($1, mk_if_cond($3)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_parentheses_List ';' IF expr { $$ = add_to_list($1, mk_if_cond($4)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($3), $5, $7)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($3), mk_ident_lit($5))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+          IDENTIFIER GENERATOR_OPERATOR const TO const  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $3, $5)); }
+        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); }
+        | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($3))); }
+        | generators_and_conditions_parentheses_List IF expr { $$ = add_to_list($1, mk_if_cond($3)); }
+        | generators_and_conditions_parentheses_List ';' IF expr { $$ = add_to_list($1, mk_if_cond($4)); }
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($3), $5, $7));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($3), mk_ident_lit($5))); }
         ;
 
 generators_and_conditions_curly_braces_List:
-          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($5))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr { $$ = add_to_list($1, mk_if_cond($5)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr { $$ = add_to_list($1, mk_if_cond($6)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($5), mk_ident_lit($9))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($3), $7, $10)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($3),mk_ident_lit($7))); found_classes=$$; puts(Json_to_pretty_string(found_classes));}
+          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); }
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11));}
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($5))); }
+        | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr { $$ = add_to_list($1, mk_if_cond($5));}
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr { $$ = add_to_list($1, mk_if_cond($6)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($5), mk_ident_lit($9)));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($3), $7, $10));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); }
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($3),mk_ident_lit($7))); }
         ;
 
 

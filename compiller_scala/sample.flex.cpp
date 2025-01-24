@@ -1113,7 +1113,7 @@ YY_RULE_SETUP
 case 44:
 YY_RULE_SETUP
 #line 94 "sample.l"
-{ printf("(%s) - Found KW_YIELD\n", yytext); }
+{ printf("(%s) - Found KW_YIELD\n", yytext); return YIELD;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP

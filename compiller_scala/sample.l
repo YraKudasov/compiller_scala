@@ -90,7 +90,7 @@ type { printf("(%s) - Found KW_TYPE\n", yytext);}
 var { printf("(%s) - Found KW_VAR\n", yytext); return VAR;}
 while { printf("(%s) - Found KW_WHILE\n", yytext); return WHILE;}
 with { printf("(%s) - Found KW_WITH\n", yytext); }
-yield { printf("(%s) - Found KW_YIELD\n", yytext); }
+yield { printf("(%s) - Found KW_YIELD\n", yytext); return YIELD;}
 to { printf("(%s) - Found KW_TO\n", yytext); return TO; }
 by { printf("(%s) - Found KW_BY\n", yytext); return BY; }
 int {printf("(%s) - Found KW_INT\n", yytext); return INT_KW;}

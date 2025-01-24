@@ -399,6 +399,13 @@ mk_method_declaration_bodyOnly(Json* identifier, Json* body) {
     return node;
 }
 
+Json* mk_for_expr(Json* list, Json* expr) {
+    Json* node = Json_new();
+    add_type_to_node(node, "for_expr");
+    Json_add_array_to_object(node, "generator_and_condition_list", list);
+    Json_add_object_to_object(node, "expr", expr);
+    return node;
+}
 
 Json*
 mk_generator_without_to_and_by(Json* identifier, Json* from) {
