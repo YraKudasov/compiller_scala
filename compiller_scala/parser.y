@@ -266,27 +266,27 @@ for_expr:
 
 
 generators_and_conditions_parentheses_List:
-          IDENTIFIER GENERATOR_OPERATOR const TO const  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $3, $5)); }
-        | IDENTIFIER GENERATOR_OPERATOR const TO const BY const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); }
+          IDENTIFIER GENERATOR_OPERATOR expr TO expr  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $3, $5)); }
+        | IDENTIFIER GENERATOR_OPERATOR expr TO expr BY const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); }
         | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($3))); }
         | generators_and_conditions_parentheses_List IF expr { $$ = add_to_list($1, mk_if_cond($3)); }
         | generators_and_conditions_parentheses_List ';' IF expr { $$ = add_to_list($1, mk_if_cond($4)); }
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($3), $5, $7));}
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR const TO const BY const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR expr TO expr { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($3), $5, $7));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR expr TO expr BY const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9));}
         | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($3), mk_ident_lit($5))); }
         ;
 
 generators_and_conditions_curly_braces_List:
-          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); }
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11));}
+          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); }
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11));}
         | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($5))); }
         | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr { $$ = add_to_list($1, mk_if_cond($5));}
         | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr { $$ = add_to_list($1, mk_if_cond($6)); }
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); }
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); }
         | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($5), mk_ident_lit($9)));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($3), $7, $10));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt const TO endlOpt const BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); }
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($3), $7, $10));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); }
         | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($3),mk_ident_lit($7))); }
         ;
 
