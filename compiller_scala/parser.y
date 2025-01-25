@@ -114,8 +114,9 @@ struct LOCATION
 %type <tree> array array_literal initialized_array 
 %type <tree> while_expr do_while_expr
 %type <tree> match_expr case_condition case_list CASE_PATTERN case
-%type <tree> statement statement_expr_list statement_expr_list_e
-%type <tree> method params anonymous_func method_params_list method_arguments_list method_call
+%type <tree> statement statement_expr_list statement_expr_list_e 
+%type <tree> method params method_params_list method_arguments_list method_call
+%type <tree> func anonymous_func
 %type <tree> for_expr generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
 %type <tree> visibility_modifier
 %type <tree> class_params class_params_e class_header inheritance class
@@ -138,6 +139,8 @@ class:
     | abstract_class_header '{' statement_expr_list_e '}'
     | case_class_header '{' statement_expr_list_e '}'
     ;
+
+
 
 class_header:
       CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')' { $$ = mk_class_header(mk_ident_lit($3),$6); }
@@ -215,7 +218,7 @@ inheritance:
 /* Statements */
 statement_expr_list:
       statement { $$ = add_to_list(mk_list(),$1);}
-    | visibility_modifier statement { $$ = add_to_list(mk_list(), mk_visibility_modifier_stmt($1, $2));}
+    | visibility_modifier statement{ $$ = add_to_list(mk_list(), mk_visibility_modifier_stmt($1, $2));}
     | expr { $$ = add_to_list(mk_list(),$1);}
     | statement_expr_list  separator_List statement {  $$ = add_to_list($1, $3); }
     | statement_expr_list  separator_List expr {   $$ = add_to_list($1, $3);  }
@@ -237,6 +240,7 @@ statement:
     | class { printf("Class:\n"); }
     | method {$$=$1;found_classes=$$; }
     ;
+
     
  
 
@@ -335,7 +339,7 @@ expr_list:
 
 
 expr:
-      const %prec LOWER_THAN_EXPR {printf("PARSER found expr - const\n"); }
+      const  {printf("PARSER found expr - const\n"); }
     | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
     | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
@@ -371,21 +375,16 @@ expr:
     ;
 
 /* Constants */
-num_const:
-      NUM_10 { $$ = mk_int_const($1); }
-    | NUM_16 { $$ = mk_int_const($1); }
-    | REAL_NUMBER { $$ = mk_real_const($1); }
-    | REAL_NUMBER_EXPONENT { $$ = mk_real_const($1); }
-    ;
 
 
 const:
-      num_const
+      NUM_10 { $$ = mk_int_const($1); }
     | CONST_STRING { $$ = mk_string_const($1); }
     | CONST_CHAR { $$ = mk_char_const($1); }
     | KW_TRUE { $$ = mk_boolean_const(true); }
     | KW_FALSE { $$ = mk_boolean_const(false); }
     | KW_NULL { $$ = mk_null_const(); }
+    | REAL_NUMBER { $$ = mk_real_const($1); }
     | array { $$ = mk_array_const($1); }
     ;
 
@@ -404,6 +403,12 @@ anonymous_func:
       '('params')' endlOpt RIGHT_ARROW_OPERATOR endlOpt expr %prec LOWER_THAN_EXPR { $$ = mk_anonym_func($2,$7);}
     ;
 
+func:
+      DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr { $$ = mk_method_declaration(mk_ident_lit($3),$5,$9,$13);}
+    | DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr { $$ = mk_method_declaration_typeOnly(mk_ident_lit($3),$7,$11);}
+    | DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr { $$ = mk_method_declaration_paramsOnly(mk_ident_lit($3),$5,$9);}
+    | DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr { $$ = mk_method_declaration_bodyOnly(mk_ident_lit($3),$7);}
+    ;
 
 method_params_list:
       '('params')' { $$ = $2; }
@@ -411,10 +416,7 @@ method_params_list:
     ;
 
 method:
-      DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr { $$ = mk_method_declaration(mk_ident_lit($3),$5,$9,$13);}
-    | DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr { $$ = mk_method_declaration_typeOnly(mk_ident_lit($3),$7,$11);}
-    | DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr { $$ = mk_method_declaration_paramsOnly(mk_ident_lit($3),$5,$9);}
-    | DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr { $$ = mk_method_declaration_bodyOnly(mk_ident_lit($3),$7);}
+      func { $$ = $1; }
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
     | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
@@ -427,8 +429,8 @@ method_arguments_list:
     ;
 
 method_call:
-      IDENTIFIER method_arguments_list { $$ = mk_method_call(mk_ident_lit($1),$2);} 
-    | IDENTIFIER '.' IDENTIFIER method_arguments_list { $$ = mk_method_call_identifier(mk_ident_lit($1),mk_ident_lit($3),$4);}
+      IDENTIFIER method_arguments_list { $$ = mk_method_call($1,$2);} 
+    | expr '.' IDENTIFIER method_arguments_list { $$ = mk_method_call_identifier(mk_ident_lit($1),mk_ident_lit($3),$4);}
     ;
 
 
@@ -441,6 +443,7 @@ type:
     | BOOLEAN_KW { $$ = mk_boolean_type(); }
     | ANY_KW { $$ = mk_any_type(); }
     | UNIT_KW { $$ = mk_unit_type(); }
+    | type_list_simple { $$ = $1;}
     ;
     
 type_list_car:

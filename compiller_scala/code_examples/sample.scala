@@ -1,1 +1,1 @@
-class greet(var wqe : int) { val a = 5 }
+if ( 5 > 2 ) 12 else 13
