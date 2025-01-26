@@ -1,1 +1,2 @@
-class greet(var wqe : int) { val a = 5 }
+
+var a = new qwer()

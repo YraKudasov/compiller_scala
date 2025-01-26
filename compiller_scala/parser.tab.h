@@ -63,8 +63,8 @@ extern int yydebug;
     REAL_NUMBER = 264,             /* REAL_NUMBER  */
     REAL_NUMBER_EXPONENT = 265,    /* REAL_NUMBER_EXPONENT  */
     IDENTIFIER = 266,              /* IDENTIFIER  */
-    CONST_CHAR = 267,              /* CONST_CHAR  */
-    CONST_STRING = 268,            /* CONST_STRING  */
+    TOKEN_CHAR = 267,              /* TOKEN_CHAR  */
+    TOKEN_STRING = 268,            /* TOKEN_STRING  */
     NEWLINE = 269,                 /* NEWLINE  */
     VAL = 270,                     /* VAL  */
     VAR = 271,                     /* VAR  */
@@ -98,18 +98,19 @@ extern int yydebug;
     TO = 299,                      /* TO  */
     BY = 300,                      /* BY  */
     YIELD = 301,                   /* YIELD  */
-    GENERATOR_OPERATOR = 302,      /* GENERATOR_OPERATOR  */
-    RIGHT_ARROW_OPERATOR = 303,    /* RIGHT_ARROW_OPERATOR  */
-    ID_COLLECTION = 304,           /* ID_COLLECTION  */
-    DEF = 305,                     /* DEF  */
-    NEW = 306,                     /* NEW  */
-    PROTECTED = 307,               /* PROTECTED  */
-    PRIVATE = 308,                 /* PRIVATE  */
-    CLASS = 309,                   /* CLASS  */
-    EXTENDS = 310,                 /* EXTENDS  */
-    ABSTRACT = 311,                /* ABSTRACT  */
-    NOT = 312,                     /* NOT  */
-    CASE_PATTERN = 313             /* CASE_PATTERN  */
+    APPLY = 302,                   /* APPLY  */
+    GENERATOR_OPERATOR = 303,      /* GENERATOR_OPERATOR  */
+    RIGHT_ARROW_OPERATOR = 304,    /* RIGHT_ARROW_OPERATOR  */
+    ID_COLLECTION = 305,           /* ID_COLLECTION  */
+    DEF = 306,                     /* DEF  */
+    NEW = 307,                     /* NEW  */
+    PROTECTED = 308,               /* PROTECTED  */
+    PRIVATE = 309,                 /* PRIVATE  */
+    CLASS = 310,                   /* CLASS  */
+    EXTENDS = 311,                 /* EXTENDS  */
+    ABSTRACT = 312,                /* ABSTRACT  */
+    NOT = 313,                     /* NOT  */
+    CASE_PATTERN = 314             /* CASE_PATTERN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -125,7 +126,7 @@ union YYSTYPE
     char* str_value;
     struct Json *tree;
 
-#line 129 "parser.tab.h"
+#line 130 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
