@@ -7,7 +7,7 @@ import sys
 from graphviz import Digraph
 
 
-PARSER_BUILD_PATH = r"E:\\4course\\1cem\\TIAP\\compiller_scala\\compiller_scala\\x64\\Debug\\compiller_scala.exe"
+PARSER_BUILD_PATH = r"x64\\Debug\\compiller_scala.exe"
 
 
 def replace_rn_with_n(string: str) -> str:

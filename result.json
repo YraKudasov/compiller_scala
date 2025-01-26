@@ -4,17 +4,17 @@
         {
             "type": "class",
             "class_header": {
-                "type": "class_header",
+                "type": "case_class_header",
                 "identifier": {
                     "type": "ident_lit",
-                    "value": "greet"
+                    "value": "asd"
                 },
                 "params": [
                     {
                         "type": "class_params_var",
                         "identifier": {
                             "type": "ident_lit",
-                            "value": "wqe"
+                            "value": "a"
                         },
                         "type": {
                             "type": "type_spec",
@@ -27,18 +27,79 @@
                 "stmt_expr_list",
                 [
                     {
-                        "type": "declaration_val",
-                        "val identifier": {
-                            "type": "ident_lit",
-                            "value": "a"
+                        "type": "+",
+                        "left": {
+                            "type": "int_const",
+                            "value": 5
                         },
-                        "expression": {
+                        "right": {
                             "type": "int_const",
                             "value": 5
                         }
                     }
                 ]
             ]
+        },
+        {
+            "type": "class",
+            "class_header": {
+                "type": "case_class_header",
+                "identifier": {
+                    "type": "ident_lit",
+                    "value": "xcc"
+                },
+                "params": [
+                    {
+                        "type": "class_params_var",
+                        "identifier": {
+                            "type": "ident_lit",
+                            "value": "a"
+                        },
+                        "type": {
+                            "type": "type_spec",
+                            "type_name": "INTEGER"
+                        }
+                    }
+                ],
+                "inheritance": {
+                    "type": "inheritance",
+                    "identifier": {
+                        "type": "ident_lit",
+                        "value": "qwer"
+                    }
+                }
+            },
+            "body": [
+                "stmt_expr_list",
+                [
+                    {
+                        "type": "+",
+                        "left": {
+                            "type": "int_const",
+                            "value": 5
+                        },
+                        "right": {
+                            "type": "int_const",
+                            "value": 5
+                        }
+                    }
+                ]
+            ]
+        },
+        {
+            "type": "declaration_var",
+            "var identifier": {
+                "type": "ident_lit",
+                "value": "a"
+            },
+            "expression": {
+                "type": "create_instance_class",
+                "identifier": {
+                    "type": "ident_lit",
+                    "value": "qwer"
+                },
+                "params": []
+            }
         }
     ]
 }

@@ -16,8 +16,8 @@ digraph {
 	"root.stmt_expr_list.0" -> "root.stmt_expr_list.0.class_header"
 	"root.stmt_expr_list.0.class_header.type" [label=type]
 	"root.stmt_expr_list.0.class_header" -> "root.stmt_expr_list.0.class_header.type"
-	"root.stmt_expr_list.0.class_header.type.class_header" [label=class_header]
-	"root.stmt_expr_list.0.class_header.type" -> "root.stmt_expr_list.0.class_header.type.class_header"
+	"root.stmt_expr_list.0.class_header.type.case_class_header" [label=case_class_header]
+	"root.stmt_expr_list.0.class_header.type" -> "root.stmt_expr_list.0.class_header.type.case_class_header"
 	"root.stmt_expr_list.0.class_header.identifier" [label=identifier]
 	"root.stmt_expr_list.0.class_header" -> "root.stmt_expr_list.0.class_header.identifier"
 	"root.stmt_expr_list.0.class_header.identifier.type" [label=type]
@@ -26,8 +26,8 @@ digraph {
 	"root.stmt_expr_list.0.class_header.identifier.type" -> "root.stmt_expr_list.0.class_header.identifier.type.ident_lit"
 	"root.stmt_expr_list.0.class_header.identifier.value" [label=value]
 	"root.stmt_expr_list.0.class_header.identifier" -> "root.stmt_expr_list.0.class_header.identifier.value"
-	"root.stmt_expr_list.0.class_header.identifier.value.greet" [label=greet]
-	"root.stmt_expr_list.0.class_header.identifier.value" -> "root.stmt_expr_list.0.class_header.identifier.value.greet"
+	"root.stmt_expr_list.0.class_header.identifier.value.asd" [label=asd]
+	"root.stmt_expr_list.0.class_header.identifier.value" -> "root.stmt_expr_list.0.class_header.identifier.value.asd"
 	"root.stmt_expr_list.0.class_header.params" [label=params]
 	"root.stmt_expr_list.0.class_header" -> "root.stmt_expr_list.0.class_header.params"
 	"root.stmt_expr_list.0.class_header.params.0" [label="[0]"]
@@ -50,8 +50,8 @@ digraph {
 	"root.stmt_expr_list.0.class_header.params.0.identifier.type" -> "root.stmt_expr_list.0.class_header.params.0.identifier.type.ident_lit"
 	"root.stmt_expr_list.0.class_header.params.0.identifier.value" [label=value]
 	"root.stmt_expr_list.0.class_header.params.0.identifier" -> "root.stmt_expr_list.0.class_header.params.0.identifier.value"
-	"root.stmt_expr_list.0.class_header.params.0.identifier.value.wqe" [label=wqe]
-	"root.stmt_expr_list.0.class_header.params.0.identifier.value" -> "root.stmt_expr_list.0.class_header.params.0.identifier.value.wqe"
+	"root.stmt_expr_list.0.class_header.params.0.identifier.value.a" [label=a]
+	"root.stmt_expr_list.0.class_header.params.0.identifier.value" -> "root.stmt_expr_list.0.class_header.params.0.identifier.value.a"
 	"root.stmt_expr_list.0.body" [label=body]
 	"root.stmt_expr_list.0" -> "root.stmt_expr_list.0.body"
 	"root.stmt_expr_list.0.body.0" [label="[0]"]
@@ -64,26 +64,156 @@ digraph {
 	"root.stmt_expr_list.0.body.1" -> "root.stmt_expr_list.0.body.1.0"
 	"root.stmt_expr_list.0.body.1.0.type" [label=type]
 	"root.stmt_expr_list.0.body.1.0" -> "root.stmt_expr_list.0.body.1.0.type"
-	"root.stmt_expr_list.0.body.1.0.type.declaration_val" [label=declaration_val]
-	"root.stmt_expr_list.0.body.1.0.type" -> "root.stmt_expr_list.0.body.1.0.type.declaration_val"
-	"root.stmt_expr_list.0.body.1.0.val identifier" [label="val identifier"]
-	"root.stmt_expr_list.0.body.1.0" -> "root.stmt_expr_list.0.body.1.0.val identifier"
-	"root.stmt_expr_list.0.body.1.0.val identifier.type" [label=type]
-	"root.stmt_expr_list.0.body.1.0.val identifier" -> "root.stmt_expr_list.0.body.1.0.val identifier.type"
-	"root.stmt_expr_list.0.body.1.0.val identifier.type.ident_lit" [label=ident_lit]
-	"root.stmt_expr_list.0.body.1.0.val identifier.type" -> "root.stmt_expr_list.0.body.1.0.val identifier.type.ident_lit"
-	"root.stmt_expr_list.0.body.1.0.val identifier.value" [label=value]
-	"root.stmt_expr_list.0.body.1.0.val identifier" -> "root.stmt_expr_list.0.body.1.0.val identifier.value"
-	"root.stmt_expr_list.0.body.1.0.val identifier.value.a" [label=a]
-	"root.stmt_expr_list.0.body.1.0.val identifier.value" -> "root.stmt_expr_list.0.body.1.0.val identifier.value.a"
-	"root.stmt_expr_list.0.body.1.0.expression" [label=expression]
-	"root.stmt_expr_list.0.body.1.0" -> "root.stmt_expr_list.0.body.1.0.expression"
-	"root.stmt_expr_list.0.body.1.0.expression.type" [label=type]
-	"root.stmt_expr_list.0.body.1.0.expression" -> "root.stmt_expr_list.0.body.1.0.expression.type"
-	"root.stmt_expr_list.0.body.1.0.expression.type.int_const" [label=int_const]
-	"root.stmt_expr_list.0.body.1.0.expression.type" -> "root.stmt_expr_list.0.body.1.0.expression.type.int_const"
-	"root.stmt_expr_list.0.body.1.0.expression.value" [label=value]
-	"root.stmt_expr_list.0.body.1.0.expression" -> "root.stmt_expr_list.0.body.1.0.expression.value"
-	"root.stmt_expr_list.0.body.1.0.expression.value.5" [label=5]
-	"root.stmt_expr_list.0.body.1.0.expression.value" -> "root.stmt_expr_list.0.body.1.0.expression.value.5"
+	"root.stmt_expr_list.0.body.1.0.type.+" [label="+"]
+	"root.stmt_expr_list.0.body.1.0.type" -> "root.stmt_expr_list.0.body.1.0.type.+"
+	"root.stmt_expr_list.0.body.1.0.left" [label=left]
+	"root.stmt_expr_list.0.body.1.0" -> "root.stmt_expr_list.0.body.1.0.left"
+	"root.stmt_expr_list.0.body.1.0.left.type" [label=type]
+	"root.stmt_expr_list.0.body.1.0.left" -> "root.stmt_expr_list.0.body.1.0.left.type"
+	"root.stmt_expr_list.0.body.1.0.left.type.int_const" [label=int_const]
+	"root.stmt_expr_list.0.body.1.0.left.type" -> "root.stmt_expr_list.0.body.1.0.left.type.int_const"
+	"root.stmt_expr_list.0.body.1.0.left.value" [label=value]
+	"root.stmt_expr_list.0.body.1.0.left" -> "root.stmt_expr_list.0.body.1.0.left.value"
+	"root.stmt_expr_list.0.body.1.0.left.value.5" [label=5]
+	"root.stmt_expr_list.0.body.1.0.left.value" -> "root.stmt_expr_list.0.body.1.0.left.value.5"
+	"root.stmt_expr_list.0.body.1.0.right" [label=right]
+	"root.stmt_expr_list.0.body.1.0" -> "root.stmt_expr_list.0.body.1.0.right"
+	"root.stmt_expr_list.0.body.1.0.right.type" [label=type]
+	"root.stmt_expr_list.0.body.1.0.right" -> "root.stmt_expr_list.0.body.1.0.right.type"
+	"root.stmt_expr_list.0.body.1.0.right.type.int_const" [label=int_const]
+	"root.stmt_expr_list.0.body.1.0.right.type" -> "root.stmt_expr_list.0.body.1.0.right.type.int_const"
+	"root.stmt_expr_list.0.body.1.0.right.value" [label=value]
+	"root.stmt_expr_list.0.body.1.0.right" -> "root.stmt_expr_list.0.body.1.0.right.value"
+	"root.stmt_expr_list.0.body.1.0.right.value.5" [label=5]
+	"root.stmt_expr_list.0.body.1.0.right.value" -> "root.stmt_expr_list.0.body.1.0.right.value.5"
+	"root.stmt_expr_list.1" [label="[1]"]
+	"root.stmt_expr_list" -> "root.stmt_expr_list.1"
+	"root.stmt_expr_list.1.type" [label=type]
+	"root.stmt_expr_list.1" -> "root.stmt_expr_list.1.type"
+	"root.stmt_expr_list.1.type.class" [label=class]
+	"root.stmt_expr_list.1.type" -> "root.stmt_expr_list.1.type.class"
+	"root.stmt_expr_list.1.class_header" [label=class_header]
+	"root.stmt_expr_list.1" -> "root.stmt_expr_list.1.class_header"
+	"root.stmt_expr_list.1.class_header.type" [label=type]
+	"root.stmt_expr_list.1.class_header" -> "root.stmt_expr_list.1.class_header.type"
+	"root.stmt_expr_list.1.class_header.type.case_class_header" [label=case_class_header]
+	"root.stmt_expr_list.1.class_header.type" -> "root.stmt_expr_list.1.class_header.type.case_class_header"
+	"root.stmt_expr_list.1.class_header.identifier" [label=identifier]
+	"root.stmt_expr_list.1.class_header" -> "root.stmt_expr_list.1.class_header.identifier"
+	"root.stmt_expr_list.1.class_header.identifier.type" [label=type]
+	"root.stmt_expr_list.1.class_header.identifier" -> "root.stmt_expr_list.1.class_header.identifier.type"
+	"root.stmt_expr_list.1.class_header.identifier.type.ident_lit" [label=ident_lit]
+	"root.stmt_expr_list.1.class_header.identifier.type" -> "root.stmt_expr_list.1.class_header.identifier.type.ident_lit"
+	"root.stmt_expr_list.1.class_header.identifier.value" [label=value]
+	"root.stmt_expr_list.1.class_header.identifier" -> "root.stmt_expr_list.1.class_header.identifier.value"
+	"root.stmt_expr_list.1.class_header.identifier.value.xcc" [label=xcc]
+	"root.stmt_expr_list.1.class_header.identifier.value" -> "root.stmt_expr_list.1.class_header.identifier.value.xcc"
+	"root.stmt_expr_list.1.class_header.params" [label=params]
+	"root.stmt_expr_list.1.class_header" -> "root.stmt_expr_list.1.class_header.params"
+	"root.stmt_expr_list.1.class_header.params.0" [label="[0]"]
+	"root.stmt_expr_list.1.class_header.params" -> "root.stmt_expr_list.1.class_header.params.0"
+	"root.stmt_expr_list.1.class_header.params.0.type" [label=type]
+	"root.stmt_expr_list.1.class_header.params.0" -> "root.stmt_expr_list.1.class_header.params.0.type"
+	"root.stmt_expr_list.1.class_header.params.0.type.type" [label=type]
+	"root.stmt_expr_list.1.class_header.params.0.type" -> "root.stmt_expr_list.1.class_header.params.0.type.type"
+	"root.stmt_expr_list.1.class_header.params.0.type.type.type_spec" [label=type_spec]
+	"root.stmt_expr_list.1.class_header.params.0.type.type" -> "root.stmt_expr_list.1.class_header.params.0.type.type.type_spec"
+	"root.stmt_expr_list.1.class_header.params.0.type.type_name" [label=type_name]
+	"root.stmt_expr_list.1.class_header.params.0.type" -> "root.stmt_expr_list.1.class_header.params.0.type.type_name"
+	"root.stmt_expr_list.1.class_header.params.0.type.type_name.INTEGER" [label=INTEGER]
+	"root.stmt_expr_list.1.class_header.params.0.type.type_name" -> "root.stmt_expr_list.1.class_header.params.0.type.type_name.INTEGER"
+	"root.stmt_expr_list.1.class_header.params.0.identifier" [label=identifier]
+	"root.stmt_expr_list.1.class_header.params.0" -> "root.stmt_expr_list.1.class_header.params.0.identifier"
+	"root.stmt_expr_list.1.class_header.params.0.identifier.type" [label=type]
+	"root.stmt_expr_list.1.class_header.params.0.identifier" -> "root.stmt_expr_list.1.class_header.params.0.identifier.type"
+	"root.stmt_expr_list.1.class_header.params.0.identifier.type.ident_lit" [label=ident_lit]
+	"root.stmt_expr_list.1.class_header.params.0.identifier.type" -> "root.stmt_expr_list.1.class_header.params.0.identifier.type.ident_lit"
+	"root.stmt_expr_list.1.class_header.params.0.identifier.value" [label=value]
+	"root.stmt_expr_list.1.class_header.params.0.identifier" -> "root.stmt_expr_list.1.class_header.params.0.identifier.value"
+	"root.stmt_expr_list.1.class_header.params.0.identifier.value.a" [label=a]
+	"root.stmt_expr_list.1.class_header.params.0.identifier.value" -> "root.stmt_expr_list.1.class_header.params.0.identifier.value.a"
+	"root.stmt_expr_list.1.class_header.inheritance" [label=inheritance]
+	"root.stmt_expr_list.1.class_header" -> "root.stmt_expr_list.1.class_header.inheritance"
+	"root.stmt_expr_list.1.class_header.inheritance.type" [label=type]
+	"root.stmt_expr_list.1.class_header.inheritance" -> "root.stmt_expr_list.1.class_header.inheritance.type"
+	"root.stmt_expr_list.1.class_header.inheritance.type.inheritance" [label=inheritance]
+	"root.stmt_expr_list.1.class_header.inheritance.type" -> "root.stmt_expr_list.1.class_header.inheritance.type.inheritance"
+	"root.stmt_expr_list.1.class_header.inheritance.identifier" [label=identifier]
+	"root.stmt_expr_list.1.class_header.inheritance" -> "root.stmt_expr_list.1.class_header.inheritance.identifier"
+	"root.stmt_expr_list.1.class_header.inheritance.identifier.type" [label=type]
+	"root.stmt_expr_list.1.class_header.inheritance.identifier" -> "root.stmt_expr_list.1.class_header.inheritance.identifier.type"
+	"root.stmt_expr_list.1.class_header.inheritance.identifier.type.ident_lit" [label=ident_lit]
+	"root.stmt_expr_list.1.class_header.inheritance.identifier.type" -> "root.stmt_expr_list.1.class_header.inheritance.identifier.type.ident_lit"
+	"root.stmt_expr_list.1.class_header.inheritance.identifier.value" [label=value]
+	"root.stmt_expr_list.1.class_header.inheritance.identifier" -> "root.stmt_expr_list.1.class_header.inheritance.identifier.value"
+	"root.stmt_expr_list.1.class_header.inheritance.identifier.value.qwer" [label=qwer]
+	"root.stmt_expr_list.1.class_header.inheritance.identifier.value" -> "root.stmt_expr_list.1.class_header.inheritance.identifier.value.qwer"
+	"root.stmt_expr_list.1.body" [label=body]
+	"root.stmt_expr_list.1" -> "root.stmt_expr_list.1.body"
+	"root.stmt_expr_list.1.body.0" [label="[0]"]
+	"root.stmt_expr_list.1.body" -> "root.stmt_expr_list.1.body.0"
+	"root.stmt_expr_list.1.body.0.stmt_expr_list" [label=stmt_expr_list]
+	"root.stmt_expr_list.1.body.0" -> "root.stmt_expr_list.1.body.0.stmt_expr_list"
+	"root.stmt_expr_list.1.body.1" [label="[1]"]
+	"root.stmt_expr_list.1.body" -> "root.stmt_expr_list.1.body.1"
+	"root.stmt_expr_list.1.body.1.0" [label="[0]"]
+	"root.stmt_expr_list.1.body.1" -> "root.stmt_expr_list.1.body.1.0"
+	"root.stmt_expr_list.1.body.1.0.type" [label=type]
+	"root.stmt_expr_list.1.body.1.0" -> "root.stmt_expr_list.1.body.1.0.type"
+	"root.stmt_expr_list.1.body.1.0.type.+" [label="+"]
+	"root.stmt_expr_list.1.body.1.0.type" -> "root.stmt_expr_list.1.body.1.0.type.+"
+	"root.stmt_expr_list.1.body.1.0.left" [label=left]
+	"root.stmt_expr_list.1.body.1.0" -> "root.stmt_expr_list.1.body.1.0.left"
+	"root.stmt_expr_list.1.body.1.0.left.type" [label=type]
+	"root.stmt_expr_list.1.body.1.0.left" -> "root.stmt_expr_list.1.body.1.0.left.type"
+	"root.stmt_expr_list.1.body.1.0.left.type.int_const" [label=int_const]
+	"root.stmt_expr_list.1.body.1.0.left.type" -> "root.stmt_expr_list.1.body.1.0.left.type.int_const"
+	"root.stmt_expr_list.1.body.1.0.left.value" [label=value]
+	"root.stmt_expr_list.1.body.1.0.left" -> "root.stmt_expr_list.1.body.1.0.left.value"
+	"root.stmt_expr_list.1.body.1.0.left.value.5" [label=5]
+	"root.stmt_expr_list.1.body.1.0.left.value" -> "root.stmt_expr_list.1.body.1.0.left.value.5"
+	"root.stmt_expr_list.1.body.1.0.right" [label=right]
+	"root.stmt_expr_list.1.body.1.0" -> "root.stmt_expr_list.1.body.1.0.right"
+	"root.stmt_expr_list.1.body.1.0.right.type" [label=type]
+	"root.stmt_expr_list.1.body.1.0.right" -> "root.stmt_expr_list.1.body.1.0.right.type"
+	"root.stmt_expr_list.1.body.1.0.right.type.int_const" [label=int_const]
+	"root.stmt_expr_list.1.body.1.0.right.type" -> "root.stmt_expr_list.1.body.1.0.right.type.int_const"
+	"root.stmt_expr_list.1.body.1.0.right.value" [label=value]
+	"root.stmt_expr_list.1.body.1.0.right" -> "root.stmt_expr_list.1.body.1.0.right.value"
+	"root.stmt_expr_list.1.body.1.0.right.value.5" [label=5]
+	"root.stmt_expr_list.1.body.1.0.right.value" -> "root.stmt_expr_list.1.body.1.0.right.value.5"
+	"root.stmt_expr_list.2" [label="[2]"]
+	"root.stmt_expr_list" -> "root.stmt_expr_list.2"
+	"root.stmt_expr_list.2.type" [label=type]
+	"root.stmt_expr_list.2" -> "root.stmt_expr_list.2.type"
+	"root.stmt_expr_list.2.type.declaration_var" [label=declaration_var]
+	"root.stmt_expr_list.2.type" -> "root.stmt_expr_list.2.type.declaration_var"
+	"root.stmt_expr_list.2.var identifier" [label="var identifier"]
+	"root.stmt_expr_list.2" -> "root.stmt_expr_list.2.var identifier"
+	"root.stmt_expr_list.2.var identifier.type" [label=type]
+	"root.stmt_expr_list.2.var identifier" -> "root.stmt_expr_list.2.var identifier.type"
+	"root.stmt_expr_list.2.var identifier.type.ident_lit" [label=ident_lit]
+	"root.stmt_expr_list.2.var identifier.type" -> "root.stmt_expr_list.2.var identifier.type.ident_lit"
+	"root.stmt_expr_list.2.var identifier.value" [label=value]
+	"root.stmt_expr_list.2.var identifier" -> "root.stmt_expr_list.2.var identifier.value"
+	"root.stmt_expr_list.2.var identifier.value.a" [label=a]
+	"root.stmt_expr_list.2.var identifier.value" -> "root.stmt_expr_list.2.var identifier.value.a"
+	"root.stmt_expr_list.2.expression" [label=expression]
+	"root.stmt_expr_list.2" -> "root.stmt_expr_list.2.expression"
+	"root.stmt_expr_list.2.expression.type" [label=type]
+	"root.stmt_expr_list.2.expression" -> "root.stmt_expr_list.2.expression.type"
+	"root.stmt_expr_list.2.expression.type.create_instance_class" [label=create_instance_class]
+	"root.stmt_expr_list.2.expression.type" -> "root.stmt_expr_list.2.expression.type.create_instance_class"
+	"root.stmt_expr_list.2.expression.identifier" [label=identifier]
+	"root.stmt_expr_list.2.expression" -> "root.stmt_expr_list.2.expression.identifier"
+	"root.stmt_expr_list.2.expression.identifier.type" [label=type]
+	"root.stmt_expr_list.2.expression.identifier" -> "root.stmt_expr_list.2.expression.identifier.type"
+	"root.stmt_expr_list.2.expression.identifier.type.ident_lit" [label=ident_lit]
+	"root.stmt_expr_list.2.expression.identifier.type" -> "root.stmt_expr_list.2.expression.identifier.type.ident_lit"
+	"root.stmt_expr_list.2.expression.identifier.value" [label=value]
+	"root.stmt_expr_list.2.expression.identifier" -> "root.stmt_expr_list.2.expression.identifier.value"
+	"root.stmt_expr_list.2.expression.identifier.value.qwer" [label=qwer]
+	"root.stmt_expr_list.2.expression.identifier.value" -> "root.stmt_expr_list.2.expression.identifier.value.qwer"
+	"root.stmt_expr_list.2.expression.params" [label=params]
+	"root.stmt_expr_list.2.expression" -> "root.stmt_expr_list.2.expression.params"
 }
