@@ -55,11 +55,14 @@ struct LOCATION
 
 %nonassoc ENDL
 %nonassoc LOWER_THAN_EXPR
+%nonassoc BY
+%nonassoc TO
 %nonassoc IF
 %nonassoc DO
 %nonassoc WHILE
 %nonassoc MATCH
 %nonassoc FOR
+%nonassoc YIELD
 %right ELSE
 %left ','
 %right '=' RIGHT_ARROW_OPERATOR
@@ -81,7 +84,7 @@ struct LOCATION
 
 %token <int_value> NUM_10 NUM_16
 %token <real_value> REAL_NUMBER REAL_NUMBER_EXPONENT
-%token <str_value> IDENTIFIER CONST_CHAR CONST_STRING
+%token <str_value> IDENTIFIER TOKEN_CHAR TOKEN_STRING
 %token NEWLINE
 %token VAL VAR ELSE IF  FOR DO WHILE MATCH CASE PRINTLN READLINE ARRAY OVERRIDE
 %token KW_TRUE KW_FALSE 
@@ -90,7 +93,7 @@ struct LOCATION
 %token KW_OR KW_AND
 %token MORE_OR_EQUAL_OPERATOR LESS_OR_EQUAL_OPERATOR
 %token INT_KW DOUBLE_KW STRING_KW CHAR_KW BOOLEAN_KW ANY_KW UNIT_KW
-%token TO BY YIELD 
+%token TO BY YIELD APPLY
 %token GENERATOR_OPERATOR RIGHT_ARROW_OPERATOR /* <- | => */
 %token ID_COLLECTION
 %token ARRAY 
@@ -107,7 +110,7 @@ struct LOCATION
 %type <tree> program
 %type <tree> create_instance_class
 %type <tree> expr expr_list expr_list_e
-%type <tree> const
+%type <tree> const 
 %type <tree> num_const
 %type <tree> type type_list type_list_car type_list_simple
 %type <tree> if_else_expr
@@ -258,36 +261,36 @@ if_else_expr:
 /*..................................................... FOR................................................... */
 
 for_expr:
-          FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { $$ = mk_for_expr($4, $9);  }
-        | FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr %prec LOWER_THAN_EXPR  { $$ = mk_for_expr($4, $7);  }
-        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr %prec LOWER_THAN_EXPR { $$ = mk_for_expr($5, $11);  }
-        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr %prec LOWER_THAN_EXPR  { $$ = mk_for_expr($5, $9);  }
+          FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt YIELD endlOpt expr %prec FOR { $$ = mk_for_expr($4, $9);  }
+        | FOR endlOpt '(' generators_and_conditions_parentheses_List ')' endlOpt expr %prec FOR  { $$ = mk_for_expr($4, $7);  }
+        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt YIELD endlOpt expr %prec FOR  { $$ = mk_for_expr($5, $11);  }
+        | FOR endlOpt '{' endlOpt generators_and_conditions_curly_braces_List endlOpt '}' endlOpt expr %prec FOR  { $$ = mk_for_expr($5, $9);  }
         ;
 
 
 generators_and_conditions_parentheses_List:
           IDENTIFIER GENERATOR_OPERATOR expr TO expr  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $3, $5)); }
-        | IDENTIFIER GENERATOR_OPERATOR expr TO expr BY const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); }
+        | IDENTIFIER GENERATOR_OPERATOR expr TO expr BY expr {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $3, $5, $7)); }
         | IDENTIFIER GENERATOR_OPERATOR IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($3))); }
         | generators_and_conditions_parentheses_List IF expr { $$ = add_to_list($1, mk_if_cond($3)); }
         | generators_and_conditions_parentheses_List ';' IF expr { $$ = add_to_list($1, mk_if_cond($4)); }
         | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR expr TO expr { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($3), $5, $7));}
-        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR expr TO expr BY const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9));}
+        | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR expr TO expr BY expr { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($3), $5, $7, $9));}
         | generators_and_conditions_parentheses_List ';' IDENTIFIER GENERATOR_OPERATOR IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($3), mk_ident_lit($5))); }
         ;
 
 generators_and_conditions_curly_braces_List:
-          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); }
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11));}
-        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($5))); }
+          IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr  {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($1), $5, $8)); }
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt expr  {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($1), $5, $8, $11));}
+        | IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER %prec ENDL {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($1),mk_ident_lit($5))); }
         | generators_and_conditions_curly_braces_List endlOpt IF endlOpt expr { $$ = add_to_list($1, mk_if_cond($5));}
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr { $$ = add_to_list($1, mk_if_cond($6)); }
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); }
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt const { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); }
-        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($5), mk_ident_lit($9)));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr {$$ = add_to_list(mk_list(),  mk_generator_without_by(mk_ident_lit($3), $7, $10));}
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt const {$$ = add_to_list(mk_list(),  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); }
-        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER {$$ = add_to_list(mk_list(), mk_generator_without_to_and_by(mk_ident_lit($3),mk_ident_lit($7))); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IF expr  { $$ = add_to_list($1, mk_if_cond($6)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr  { $$ = add_to_list($1, mk_generator_without_by(mk_ident_lit($5), $9, $12)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt expr  { $$ = add_to_list($1, mk_generator_with_by(mk_ident_lit($5), $9, $12, $15)); }
+        | generators_and_conditions_curly_braces_List endlOpt ';' endlOpt IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER %prec ENDL { $$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($5), mk_ident_lit($9)));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr  {$$ = add_to_list($1,  mk_generator_without_by(mk_ident_lit($3), $7, $10));}
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt expr TO endlOpt expr BY endlOpt expr  {$$ = add_to_list($1,  mk_generator_with_by(mk_ident_lit($3), $7, $10, $13)); }
+        | generators_and_conditions_curly_braces_List endlList IDENTIFIER endlOpt GENERATOR_OPERATOR endlOpt IDENTIFIER %prec ENDL {$$ = add_to_list($1, mk_generator_without_to_and_by(mk_ident_lit($3),mk_ident_lit($7))); }
         ;
 
 
@@ -327,7 +330,7 @@ case_list:
 
 /* Expr */
 expr_list_e:
-      expr_list    { printf("PARSER found expr_list - expr_list\n"); }
+      expr_list    { $$ = $1; }
     | /* nothing */  {  $$ = mk_list();}
     ;
 
@@ -339,9 +342,9 @@ expr_list:
 
 
 expr:
-      const  {printf("PARSER found expr - const\n"); }
+      const  { $$ = $1; }
     | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
-    | IDENTIFIER endlOpt '=' endlOpt expr { printf("Assignment:\n"); }
+    | IDENTIFIER endlOpt '=' endlOpt expr  { printf("Assignment:\n"); }
     | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
     | expr '>' endlOpt expr { $$ = mk_bin_op((char*) ">", $1, $4); }
     | expr '<' endlOpt expr { $$ = mk_bin_op((char*) "<", $1, $4); }
@@ -361,7 +364,7 @@ expr:
     | '-' expr  %prec UMINUS { $$ = mk_unary_op("unary_minus_op", $2); }
     | '+' expr  %prec UPLUS { $$ = mk_unary_op("unary_plus_op", $2); }
     | if_else_expr {$$=$1;}
-    | for_expr { printf("PARSER found expr - for_expr\n"); }
+    | for_expr { $$ = $1; }
     | while_expr {$$=$1;}
     | do_while_expr {$$=$1;}
     | match_expr {$$=$1;}
@@ -371,7 +374,7 @@ expr:
     | create_instance_class { $$ = $1; }
     | READLINE'('')' { printf("readLine:\n"); }
     | PRINTLN'(' expr ')' { printf("print:\n"); }
-    | IDENTIFIER '.' '(' NUM_10 ')' { printf("array_call:\n"); }
+    | IDENTIFIER '.' APPLY '(' expr ')' { $$ = mk_array_call(mk_ident_lit($1),$5); }
     ;
 
 /* Constants */
@@ -379,8 +382,8 @@ expr:
 
 const:
       NUM_10 { $$ = mk_int_const($1); }
-    | CONST_STRING { $$ = mk_string_const($1); }
-    | CONST_CHAR { $$ = mk_char_const($1); }
+    | TOKEN_STRING { $$ = mk_string_const($1); }
+    | TOKEN_CHAR { $$ = mk_char_const($1); }
     | KW_TRUE { $$ = mk_boolean_const(true); }
     | KW_FALSE { $$ = mk_boolean_const(false); }
     | KW_NULL { $$ = mk_null_const(); }
@@ -417,10 +420,6 @@ method_params_list:
 
 method:
       func { $$ = $1; }
-    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
-    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt ':' endlOpt type endlOpt '=' endlOpt expr
-    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt method_params_list endlOpt '=' endlOpt expr 
-    | OVERRIDE DEF endlOpt IDENTIFIER endlOpt '=' endlOpt expr 
     ;
 
 method_arguments_list:
@@ -429,8 +428,8 @@ method_arguments_list:
     ;
 
 method_call:
-      IDENTIFIER method_arguments_list { $$ = mk_method_call($1,$2);} 
-    | expr '.' IDENTIFIER method_arguments_list { $$ = mk_method_call_identifier(mk_ident_lit($1),mk_ident_lit($3),$4);}
+      IDENTIFIER method_arguments_list { $$ = mk_method_call(mk_ident_lit($1),$2);} 
+    | expr '.' IDENTIFIER method_arguments_list { $$ = mk_method_call_identifier($1,mk_ident_lit($3),$4);}
     ;
 
 

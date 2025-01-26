@@ -68,6 +68,15 @@ mk_type(const char* type_name) {
     return user_type;
 }
 
+Json*
+mk_array_call(Json* identifier, Json* element) {
+    Json* node = Json_new();
+    add_type_to_node(node, "array_call");
+    Json_add_object_to_object(node, "identifier", identifier);
+    Json_add_object_to_object(node, "elemment", element);
+    return node;
+}
+
 
 Json* 
 mk_array_const(Json* elements) {

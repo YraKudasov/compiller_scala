@@ -49,6 +49,7 @@ char buf_char[2];
 
 abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); }
 array {printf("(%s) - Found KW_ARRAY\n", yytext); return ARRAY;}
+apply {printf("(%s) - Found KW_APPLY\n", yytext); return APPLY;}
 val { printf("(%s) - Found KW_VAL\n", yytext); return VAL; }
 case { printf("(%s) - Found KW_CASE\n", yytext); return CASE; }
 catch { printf("(%s) - Found KW_CATCH\n", yytext); }
@@ -120,7 +121,7 @@ int {printf("(%s) - Found KW_INT\n", yytext); return INT_KW;}
 <CONST_STRING>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING><<EOF>> {printf("(%s) - Found ERROR_STRING\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\\ {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
-<CONST_STRING>\" {printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL);}
+<CONST_STRING>\" {yylval.str_value = strdup(buffer);printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL); return TOKEN_STRING;}
 
 
 
@@ -152,7 +153,8 @@ int {printf("(%s) - Found KW_INT\n", yytext); return INT_KW;}
 <CONST_CHAR><<EOF>> {printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);}
 <CONST_CHAR>\' {
 if(strlen(buffer)==1){
-printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL);
+yylval.str_value = strdup(&buffer[0]);
+printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL); return TOKEN_CHAR;
 }else{
 printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
@@ -235,7 +237,7 @@ BEGIN(INITIAL);  return ')';
 \; { printf("(%s) - Found SEMICOLON\n", yytext); return ';';}
 \, { printf("(%s) - Found COMMA\n", yytext); return ',';}
 \: { printf("(%s) - Found COLON\n", yytext); return ':'; }
-\. { printf("(%s) - Found DOT\n", yytext); }
+\. { printf("(%s) - Found DOT\n", yytext); return '.'; }
 \& { printf("(%s) - Found AMPERSAND\n", yytext); }
 \_ {printf("(%s) - Found UNDERLINE\n", yytext); return CASE_PATTERN;}
 
