@@ -108,7 +108,6 @@ struct LOCATION
 
 
 %type <tree> program
-%type <tree> create_instance_class
 %type <tree> expr expr_list expr_list_e
 %type <tree> const 
 %type <tree> num_const
@@ -122,7 +121,8 @@ struct LOCATION
 %type <tree> func anonymous_func
 %type <tree> for_expr generators_and_conditions_parentheses_List generators_and_conditions_curly_braces_List
 %type <tree> visibility_modifier
-%type <tree> class_params class_params_e class_header inheritance class
+%type <tree> class_params class_params_e class_header inheritance class abstract_class_header case_class_header create_instance_class create_instance_case_class
+%type <tree> readline_params READLINE PRINTLN
 
 
 %%
@@ -139,8 +139,8 @@ program:
 /*.....................................................CLASSES................................................... */
 class:
       class_header '{' statement_expr_list_e '}' { $$ = mk_class($1,$3); }
-    | abstract_class_header '{' statement_expr_list_e '}'
-    | case_class_header '{' statement_expr_list_e '}'
+    | abstract_class_header '{' statement_expr_list_e '}' { $$ = mk_class($1,$3); }
+    | case_class_header '{' statement_expr_list_e '}' { $$ = mk_class($1,$3); }
     ;
 
 
@@ -153,13 +153,13 @@ class_header:
     ;
 
 abstract_class_header:
-      ABSTRACT endlOpt class_header
+      ABSTRACT endlOpt class_header { $$ = mk_abstract_class_header($3); }
     ;
 
 
 case_class_header:
-      CASE endlOpt CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')'
-    | CASE endlOpt CLASS endlOpt IDENTIFIER endlOpt'(' class_params_e ')' inheritance
+      CASE endlOpt CLASS endlOpt IDENTIFIER endlOpt '(' class_params_e ')' { $$ = mk_case_class_header(mk_ident_lit($5),$8);}
+    | CASE endlOpt CLASS endlOpt IDENTIFIER endlOpt'(' class_params_e ')' inheritance { $$ = mk_case_class_header_inheritance(mk_ident_lit($5),$8,$10);}
     ;
 
 
@@ -188,17 +188,13 @@ class_params_e:
     ;
 
 create_instance_class:
-      NEW endlOpt IDENTIFIER 
-    | NEW endlOpt IDENTIFIER'(' expr_list_e ')'
+      NEW endlOpt IDENTIFIER { $$ = mk_create_instance_class(mk_ident_lit($3)); }
+    | NEW endlOpt IDENTIFIER '(' expr_list_e ')' { $$ = mk_create_instance_class_params(mk_ident_lit($3),$5); }
     ;
 
 create_instance_case_class:
-      IDENTIFIER endlOpt '(' expr_list_e ')'
-    | NEW endlOpt IDENTIFIER'(' expr_list_e ')'
-    ;
-
-instance_case_class_in_case:
-      IDENTIFIER endlOpt '(' expr_list_e ')'
+      IDENTIFIER endlOpt '(' expr_list_e ')' { $$ = mk_create_instance_class_params(mk_ident_lit($1),$4); }
+    | NEW endlOpt IDENTIFIER '(' expr_list_e ')' { $$ = mk_create_instance_class_params(mk_ident_lit($3),$5); }
     ;
 
 visibility_modifier:
@@ -240,8 +236,8 @@ statement:
     | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt type_list_simple endlOpt '=' endlOpt expr {$$ = mk_declaration_var_type(mk_ident_lit($3),$7,$11);}
     | VAR endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array {$$ = mk_declaration_var_array(mk_ident_lit($3),$9,$14);} 
     | VAL endlOpt IDENTIFIER endlOpt ':' endlOpt ARRAY '[' type ']' endlOpt '=' endlOpt array {$$ = mk_declaration_val_array(mk_ident_lit($3),$9,$14);}
-    | class { printf("Class:\n"); }
-    | method {$$=$1;found_classes=$$; }
+    | class { $$ = $1;}
+    | method { $$=$1; }
     ;
 
     
@@ -344,8 +340,8 @@ expr_list:
 expr:
       const  { $$ = $1; }
     | IDENTIFIER %prec LOWER_THAN_EXPR {$$ = mk_ident_lit($1); }
-    | IDENTIFIER endlOpt '=' endlOpt expr  { printf("Assignment:\n"); }
-    | '(' expr ')' { printf("PARSER found expr - ( expr ) \n"); }
+    | IDENTIFIER endlOpt '=' endlOpt expr  { $$ = mk_bin_op((char*) "=", mk_ident_lit($1), $5); }
+    | '(' expr ')' { $$ = $2;}
     | expr '>' endlOpt expr { $$ = mk_bin_op((char*) ">", $1, $4); }
     | expr '<' endlOpt expr { $$ = mk_bin_op((char*) "<", $1, $4); }
     | expr MORE_OR_EQUAL_OPERATOR endlOpt expr { $$ = mk_bin_op((char*) ">=", $1, $4);  }
@@ -372,10 +368,18 @@ expr:
     | anonymous_func { $$=$1; }
     | method_call { $$=$1; }
     | create_instance_class { $$ = $1; }
-    | READLINE'('')' { printf("readLine:\n"); }
-    | PRINTLN'(' expr ')' { printf("print:\n"); }
+    | READLINE readline_params { $$ = mk_readLine($2); }
+    | PRINTLN '(' expr ')' { $$ = mk_printLn($3); }
     | IDENTIFIER '.' APPLY '(' expr ')' { $$ = mk_array_call(mk_ident_lit($1),$5); }
     ;
+
+readline_params:
+      '(' TOKEN_STRING ')' { $$ = mk_string_const($2); }
+    | '(' TOKEN_STRING ',' expr_list_e ')' { $$ = mk_readLine_params(mk_string_const($2),$4); }
+    | '(' /*nothing*/ ')' { $$ = mk_empty(); }
+    ;
+
+
 
 /* Constants */
 

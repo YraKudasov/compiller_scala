@@ -42,12 +42,12 @@ REAL_NUMBER_EXPONENT       ({REAL_NUMBER}|{NUM_10})[eE][\-+]?{NUM_10}+[fFDd]?
 int64_t int_number;
 double real_number;
 int int_buffer;
-static int brace_level;
+static int brace_level = 0;
 char buffer[1000];
 char buf_char[2];
 %}
 
-abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); }
+abstract { printf("(%s) - Found KW_ABSTRACT\n", yytext); return ABSTRACT;}
 array {printf("(%s) - Found KW_ARRAY\n", yytext); return ARRAY;}
 apply {printf("(%s) - Found KW_APPLY\n", yytext); return APPLY;}
 val { printf("(%s) - Found KW_VAL\n", yytext); return VAL; }
@@ -79,7 +79,7 @@ print { printf("(%s) - Found KW_PRINT\n", yytext);}
 println { printf("(%s) - Found KW_PRINTLN\n", yytext); return PRINTLN; }
 printf { printf("(%s) - Found KW_PRINTF\n", yytext); }
 return { printf("(%s) - Found KW_RETURN\n", yytext); }
-readLine { printf("(%s) - Found KW_READLINE\n", yytext); }
+readLine { printf("(%s) - Found KW_READLINE\n", yytext); return READLINE;}
 sealed { printf("(%s) - Found KW_SEALED\n", yytext); }
 super { printf("(%s) - Found KW_SUPER\n", yytext); }
 this { printf("(%s) - Found KW_THIS\n", yytext); }
@@ -121,7 +121,7 @@ int {printf("(%s) - Found KW_INT\n", yytext); return INT_KW;}
 <CONST_STRING>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING><<EOF>> {printf("(%s) - Found ERROR_STRING\n", buffer); BEGIN(INITIAL);}
 <CONST_STRING>\\ {printf("(%s) - Found NOT_ESCAPED_SLASH\n", buffer); BEGIN(INITIAL);}
-<CONST_STRING>\" {yylval.str_value = strdup(buffer);printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL); return TOKEN_STRING;}
+<CONST_STRING>\" {yylval.str_value = strdup(buffer);printf("(%s) - Found CONST_STRING\n", buffer); if(brace_level == 0){BEGIN(INITIAL);} else {BEGIN(PARENS);}; return TOKEN_STRING;}
 
 
 
@@ -149,12 +149,12 @@ int {printf("(%s) - Found KW_INT\n", yytext); return INT_KW;}
 <CONST_CHAR>\\r {strcat(buffer, "\r");}
 <CONST_CHAR>\\\" {strcat(buffer, "\"");}
 <CONST_CHAR>\\\' {strcat(buffer, "\'");}
-<CONST_CHAR>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
+<CONST_CHAR>\n {printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); if(brace_level == 0){BEGIN(INITIAL);} else {BEGIN(PARENS);};}
 <CONST_CHAR><<EOF>> {printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);}
 <CONST_CHAR>\' {
 if(strlen(buffer)==1){
 yylval.str_value = strdup(&buffer[0]);
-printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL); return TOKEN_CHAR;
+printf("(%s) - Found CHAR\n", buffer); if(brace_level == 0){BEGIN(INITIAL);} else {BEGIN(PARENS);}; return TOKEN_CHAR;
 }else{
 printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
@@ -162,13 +162,13 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 
 
 
-"(" { BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
-<PARENS>"("  { brace_level++; }
+"(" {brace_level++;BEGIN(PARENS); printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
+<PARENS>"("  { brace_level++;return '(';}
 <PARENS>"\n" {}
 <PARENS>")" { brace_level--; printf("(%s) - Found CIRCLE_BRACKET\n", yytext);
 if (brace_level == 0) {
 BEGIN(INITIAL);  return ')';
-} 
+}else{return ')';}
 }
 
 

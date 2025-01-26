@@ -831,7 +831,7 @@ YY_DECL
 int64_t int_number;
 double real_number;
 int int_buffer;
-static int brace_level;
+static int brace_level = 0;
 char buffer[1000];
 char buf_char[2];
 
@@ -902,7 +902,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 51 "sample.l"
-{ printf("(%s) - Found KW_ABSTRACT\n", yytext); }
+{ printf("(%s) - Found KW_ABSTRACT\n", yytext); return ABSTRACT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -1062,7 +1062,7 @@ YY_RULE_SETUP
 case 33:
 YY_RULE_SETUP
 #line 83 "sample.l"
-{ printf("(%s) - Found KW_READLINE\n", yytext); }
+{ printf("(%s) - Found KW_READLINE\n", yytext); return READLINE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
@@ -1222,7 +1222,7 @@ YY_RULE_SETUP
 case 62:
 YY_RULE_SETUP
 #line 125 "sample.l"
-{yylval.str_value = strdup(buffer);printf("(%s) - Found CONST_STRING\n", buffer); BEGIN(INITIAL); return TOKEN_STRING;}
+{yylval.str_value = strdup(buffer);printf("(%s) - Found CONST_STRING\n", buffer); if(brace_level == 0){BEGIN(INITIAL);} else {BEGIN(PARENS);}; return TOKEN_STRING;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
@@ -1292,7 +1292,7 @@ case 73:
 /* rule 73 can match eol */
 YY_RULE_SETUP
 #line 153 "sample.l"
-{printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); BEGIN(INITIAL);}
+{printf("(%s) - Found NOT_ESCAPED_SLASH_N\n", buffer); if(brace_level == 0){BEGIN(INITIAL);} else {BEGIN(PARENS);};}
 	YY_BREAK
 case YY_STATE_EOF(CONST_CHAR):
 #line 154 "sample.l"
@@ -1304,7 +1304,7 @@ YY_RULE_SETUP
 {
 if(strlen(buffer)==1){
 yylval.str_value = strdup(&buffer[0]);
-printf("(%s) - Found CHAR\n", buffer); BEGIN(INITIAL); return TOKEN_CHAR;
+printf("(%s) - Found CHAR\n", buffer); if(brace_level == 0){BEGIN(INITIAL);} else {BEGIN(PARENS);}; return TOKEN_CHAR;
 }else{
 printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 }
@@ -1313,12 +1313,12 @@ printf("(%s) - Error CHAR\n", buffer); BEGIN(INITIAL);
 case 75:
 YY_RULE_SETUP
 #line 166 "sample.l"
-{ BEGIN(PARENS); brace_level = 1;printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
+{brace_level++;BEGIN(PARENS); printf("(%s) - Found CIRCLE_BRACKET\n", yytext); return '('; }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 167 "sample.l"
-{ brace_level++; }
+{ brace_level++;return '(';}
 	YY_BREAK
 case 77:
 /* rule 77 can match eol */
@@ -1332,7 +1332,7 @@ YY_RULE_SETUP
 { brace_level--; printf("(%s) - Found CIRCLE_BRACKET\n", yytext);
 if (brace_level == 0) {
 BEGIN(INITIAL);  return ')';
-} 
+}else{return ')';}
 }
 	YY_BREAK
 case 79:
