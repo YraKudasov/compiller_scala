@@ -12,41 +12,7 @@ void yyerror(const char* s) {
 // Объявляем глобальный экземпляр лексера
 yyFlexLexer* lex;
 
-// Функция, которая вызывает yylex() из экземпляра лексера
-int yylex() {
-    return lex->yylex();
-}
 
-int main() {
-
-
-    std::ifstream in("./code_examples/sample.scala");
-    if (!in.is_open()) {
-        std::cerr << "Error opening file!" << std::endl;
-        return 1;
-    }
-
-    // Создаем экземпляр лексера
-    lex = new yyFlexLexer(in, std::cout);  // Передаем std::cout как второй аргумент
-
-    // Устанавливаем глобальную переменную для хранения значения токена
-    extern YYSTYPE yylval;
-
-    // Запускаем парсер
-    int parseResult = yyparse();
-
-    // Проверяем результат парсинга
-    if (parseResult == 0) {
-        std::cout << "Parsing completed successfully." << std::endl;
-    }
-    else {
-        std::cerr << "Parsing failed." << std::endl;
-    }
-
-    // Освобождаем память
-    delete lex;
-    return 0;
-}
 
 
 

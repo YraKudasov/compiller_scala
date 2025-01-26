@@ -35,6 +35,15 @@ struct LOCATION
             current_node_loc = (Current);\
         } while (0)
 
+FlexLexer* current_lexer = NULL;
+
+void set_lexer(FlexLexer* lexer) {
+    current_lexer = lexer;
+}
+
+int yylex() {
+    return current_lexer->yylex(); // Вызов метода yylex у текущего лексера
+}
 
 %}
 
@@ -512,3 +521,49 @@ separator_List_e:
     | /* nothing */
     ;
 %%
+
+#include <iostream>
+#include <fstream>
+#include "FlexLexer.h" // Базовый класс FlexLexer
+#include "parser.tab.h" // Заголовочный файл Bison (сгенерированный)
+
+
+
+FlexLexer* lexer; // Глобальная переменная для лексера
+
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::ifstream file(argv[1]);
+    if (!file) {
+        std::cerr << "Error opening file: " << argv[1] << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // Create the lexer for the input stream
+    lexer = new yyFlexLexer(&file);
+    set_lexer(lexer);  // Pass the lexer to Bison
+
+    // Open output file to write results
+    std::ofstream output_file("result.json");
+    if (!output_file) {
+        std::cerr << "Error opening output file: result.json" << std::endl;
+        delete lexer;  // Free memory
+        return EXIT_FAILURE;
+    }
+
+    if (yyparse() == 0 && found_classes) {
+        // Redirecting std::cout to the output file
+        output_file << Json_to_pretty_string(found_classes) << std::endl;
+    } else {
+        std::cerr << "Parsing failed or no classes found." << std::endl;
+        delete lexer;  // Free memory
+        return EXIT_FAILURE;
+    }
+
+    delete lexer;  // Free memory
+    return EXIT_SUCCESS;
+}

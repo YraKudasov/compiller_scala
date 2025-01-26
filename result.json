@@ -1,0 +1,44 @@
+{
+    "type": "stmt_expr_list",
+    "stmt_expr_list": [
+        {
+            "type": "class",
+            "class_header": {
+                "type": "class_header",
+                "identifier": {
+                    "type": "ident_lit",
+                    "value": "greet"
+                },
+                "params": [
+                    {
+                        "type": "class_params_var",
+                        "identifier": {
+                            "type": "ident_lit",
+                            "value": "wqe"
+                        },
+                        "type": {
+                            "type": "type_spec",
+                            "type_name": "INTEGER"
+                        }
+                    }
+                ]
+            },
+            "body": [
+                "stmt_expr_list",
+                [
+                    {
+                        "type": "declaration_val",
+                        "val identifier": {
+                            "type": "ident_lit",
+                            "value": "a"
+                        },
+                        "expression": {
+                            "type": "int_const",
+                            "value": 5
+                        }
+                    }
+                ]
+            ]
+        }
+    ]
+}
